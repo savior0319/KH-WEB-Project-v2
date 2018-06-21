@@ -1,4 +1,4 @@
-/*
+ /*
 CREATE USER THEPENSION IDENTIFIED BY THEPENSION;
 GRANT RESOURCE, CONNECT TO THEPENSION;
 
@@ -6,6 +6,12 @@ https://docs.google.com/spreadsheets/d/1BG2icxfUG2y90zw5zMY3xTotiBLUfEzau8mOnjRx
 */
 
 -- 삭제
+DROP SEQUENCE RC_NO_SEQ;
+DROP TABLE RES_CANCEL_TB;
+
+DROP SEQUENCE A_NO_SEQ;
+DROP TABLE ANSWER_TB;
+
 DROP SEQUENCE Q_NO_SEQ;
 DROP TABLE Question_TB;
 
@@ -459,15 +465,12 @@ insert into PENSION_PIC_TB values('햄버거방','/Image/room/202_10.jpg','N');
 insert into PENSION_PIC_TB values('햄버거방','/Image/room/202_11.jpg','N');
 insert into PENSION_PIC_TB values('햄버거방','/Image/room/202_12.jpg','N');
 
-COMMIT;
-
 -- 객실 예약 샘플 데이터
 --insert into reservation_tb values(RES_NO_SEQ.nextval,'옥수수방','asd123',3,sysdate,sysdate+2,sysdate+6,4,999999,sysdate);
 --insert into reservation_tb values(RES_NO_SEQ.nextval,'옥수수방','asd123',4,sysdate,sysdate+8,sysdate+10,2,999999,sysdate);
 --insert into reservation_tb values(RES_NO_SEQ.nextval,'햄버거방','asd123',5,sysdate,sysdate+1,sysdate+5,4,999999,sysdate);
 --insert into reservation_tb values(RES_NO_SEQ.nextval,'갈대방','asd123',4,sysdate,sysdate+7,sysdate+9,2,999999,sysdate);
 --INSERT INTO RESERVATION_TB VALUES(RES_NO_SEQ.NEXTVAL,'레몬방','asd123',3,SYSDATE,SYSDATE+140,SYSDATE+144,4,999999,SYSDATE);
-
 
 -- 게시판 샘플 데이터
 --INSERT INTO BOARD_TB VALUES(1, '공지1', '공지입니다', 'savior0319', SYSDATE, DEFAULT, DEFAULT, '공지');
@@ -476,7 +479,6 @@ COMMIT;
 --INSERT INTO BOARD_TB VALUES(4, '공지1', '공지입니다', 'savior0319', SYSDATE, DEFAULT, DEFAULT, '공지');
 --INSERT INTO BOARD_TB VALUES(5, '공지1', '공지입니다', 'savior0319', SYSDATE, DEFAULT, DEFAULT, '공지');
 --INSERT INTO BOARD_TB VALUES(6, '공지1', '공지입니다', 'savior0319', SYSDATE, DEFAULT, DEFAULT, '공지');
-commit;
 
 -- 1:1 문의 샘플 데이터
 --INSERT INTO QUESTION_TB VALUES(1, '문의1', '문의입니다', 'savior0319', SYSDATE, DEFAULT);
@@ -501,3 +503,5 @@ commit;
 --INSERT INTO QUESTION_TB VALUES(20, '문의20', '문의입니다', 'savior0319', SYSDATE, DEFAULT);
 --INSERT INTO QUESTION_TB VALUES(21, '문의21', '문의입니다', 'savior0319', SYSDATE, DEFAULT);
 --INSERT INTO QUESTION_TB VALUES(22, '문의22', '문의입니다', 'savior0319', SYSDATE, DEFAULT);
+
+COMMIT;
