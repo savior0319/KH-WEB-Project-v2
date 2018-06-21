@@ -34,17 +34,21 @@ public class NoticeSelectServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+		
 		// 2. view 에서 보낸 데이터를 변수에 저장
 		int bdNo = Integer.parseInt(request.getParameter("bdNo"));
 
+		// 3. 비즈니스 로직(조회수)
+		int hitsResult = new BoardService().hitsCount(bdNo);
+		
 		// 3. 비즈니스 로직(공지사항 내용)
 		BoardVo board = new BoardService().noticeSelect(bdNo);
 
 		// 3. 비즈니스 로직(댓글 내용)
 		ArrayList<Comment> list = new BoardService().Comment(bdNo);
-
+		
 		// 4. View에 결과 출력
-		if (board != null) {
+		if (board != null && hitsResult>0) {
 			RequestDispatcher view = request.getRequestDispatcher("/View/board/noticeSelect.jsp");
 			request.setAttribute("board", board);
 			request.setAttribute("comment", list);

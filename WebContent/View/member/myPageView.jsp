@@ -139,9 +139,9 @@
 						
 						<h3>예약 정보</h3>
 						
-						<table class="ui table" id="questionTbl">
+						<table class="ui table">
 							<thead> 
-								<tr>
+								<tr align="center">
 									<th>객실명</th>
 									<th>입실일</th>
 									<th>퇴실일</th>
@@ -160,9 +160,9 @@
 						
 						<h3>취소된 예약 정보</h3>
 						
-						<table class="ui table" id="questionTbl">
+						<table class="ui table">
 							<thead> 
-								<tr>
+								<tr align="center">
 									<th>객실명</th>
 									<th>입실일</th>
 									<th>퇴실일</th>
@@ -217,7 +217,7 @@
 						</div>
 						<table class="ui table" id="questionTbl">
 							<thead> 
-								<tr>
+								<tr align="center">
 									<th>문의번호</th>
 									<th style="width: 300px;">제목</th>
 									<th>작성날짜</th>
@@ -401,7 +401,7 @@
 
 						for(var i=0; i<resList.length; i++) {
 						
-							var tr = $("<tr>");
+							var tr = $("<tr align='center'>");
 						
 							var roomNameTd = $("<td>").text(resList[i].resRoomName); // 방이름
 							var tempDate = (resList[i].resInDate).split(',');
@@ -412,10 +412,14 @@
 							var outDateTd = $("<td>").text(tempDate[1]+'-'+temp[0]+'-'+temp[1]); // 퇴실일
 							var personnelTd = $("<td>").text(resList[i].resPersonnel); // 예약인원
 							var priceTd = $("<td>").text(resList[i].resPrice+'원'); // 요금
-							var paymentDateTd = $("<td>").text(resList[i].resPaymentDate); // 결제일
+							tempDate = (resList[i].resPaymentDate).split(' ');
+							var paymentDateTd = $("<td>");
+							var paymentOneLabel = $("<label>").text(tempDate[0]+' '+tempDate[1]+' '+tempDate[2]);
+							var paymentTwoLabel = $("<label>").text(tempDate[3]+' '+tempDate[4]);
 						
 							var buttonTd = $("<td>");
-							var buttonTag = $("<button id='cancelCall"+i+"' value='"+resList[i].resNo+"'>").text('예약취소');
+							var buttonTag = $("<button class='ui inverted red button' id='cancelCall"+i+"' value='"+resList[i].resNo
+											  +"' onclick='return reallyCancel();'>").text('예약취소');
 						
 
 						
@@ -425,6 +429,9 @@
 							tr.append(personnelTd);
 							tr.append(priceTd);
 							tr.append(paymentDateTd);
+							paymentDateTd.append(paymentOneLabel);
+							paymentDateTd.append($("<br>"));
+							paymentDateTd.append(paymentTwoLabel);
 						
 							tr.append(buttonTd);
 							buttonTd.append(buttonTag);
@@ -483,7 +490,7 @@
 						//<th>취소여부</th>
 						for(var i=0; i<ccList.length; i++) {
 							
-							var tr = $("<tr>");
+							var tr = $("<tr align='center'>");
 							
 							var rcRoomNameTd = $("<td>").text(ccList[i].rcResRoomName); // 방이름
 							var tempDate = (ccList[i].rcResInDate).split(',');
@@ -494,19 +501,22 @@
 							var rcOutDateTd = $("<td>").text(tempDate[1]+'-'+temp[0]+'-'+temp[1]); // 퇴실일
 							var rcPersonnelTd = $("<td>").text(ccList[i].rcResPersonnel); // 예약인원
 							var rcPriceTd = $("<td>").text(ccList[i].rcResPrice+'원'); // 요금
-							var rcPaymentDateTd = $("<td>").text(ccList[i].rcResPaymentDate); // 결제일
+							tempDate = (ccList[i].rcResPaymentDate).split(' ');
+							var rcPaymentDateTd = $("<td>");
+							var rcPaymentOneLabel = $("<label>").text(tempDate[0]+' '+tempDate[1]+' '+tempDate[2]);
+							var rcPaymentTwoLabel = $("<label>").text(tempDate[3]+' '+tempDate[4]);
 							var refundLabelTd = $("<td>");
 							var cancelLabelTd = $("<td>");
 							if(ccList[i].rcRefundCheck=='N') {
-								var refundLabel = $("<label>").text("취소처리중");
+								var refundLabel = $("<label>").text("처리중");
 							} else {
-								var refundLabel = $("<label>").text("취소완료");
+								var refundLabel = $("<label>").text("완료");
 							}
 							
 							if(ccList[i].rcCancelCheck=='N') {
-								var cancelLabel = $("<label>").text("환불처리중");
+								var cancelLabel = $("<label>").text("처리중");
 							} else {
-								var cancelLabel = $("<label>").text("환불완료");
+								var cancelLabel = $("<label>").text("완료");
 							}
 							
 							tr.append(rcRoomNameTd);
@@ -515,6 +525,9 @@
 							tr.append(rcPersonnelTd);
 							tr.append(rcPriceTd);
 							tr.append(rcPaymentDateTd);
+							rcPaymentDateTd.append(rcPaymentOneLabel);
+							rcPaymentDateTd.append($("<br>"));
+							rcPaymentDateTd.append(rcPaymentTwoLabel);
 
 							tr.append(refundLabelTd);
 							refundLabelTd.append(refundLabel);
@@ -574,7 +587,7 @@
 							alert('문의정보가 없습니다');
 						} else {
 							for (i = 0; i < items; i++) { 
-								var tr = $('<tr>');
+								var tr = $("<tr align='center'>");
 								var qNo = $("<td name='count'>").text(data[i].qNo);
 								var qName = $('<td>').html("<a href='#' id='test" + (i + 1)+ "'>" + data[i].qName + "</a>");
 								var qWriteDate = $('<td>').text(data[i].qWriteDate);
