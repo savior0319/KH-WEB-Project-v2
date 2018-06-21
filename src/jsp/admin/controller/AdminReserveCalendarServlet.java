@@ -10,20 +10,21 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import jsp.admin.model.service.AdminService;
-import jsp.admin.model.vo.MemberLoginLogVo;
+import jsp.reservation.model.service.ReservationService;
+import jsp.reservation.model.vo.PensionVo;
+import jsp.reservation.model.vo.ReservationVo;
 
 /**
- * Servlet implementation class AdminMemberLogServlet
+ * Servlet implementation class AdminReserveCalendarServlet
  */
-@WebServlet(name = "AdminMemberLog", urlPatterns = { "/adminMemberLog" })
-public class AdminMemberLogServlet extends HttpServlet {
+@WebServlet(name = "AdminReserveCalendar", urlPatterns = { "/adminReserveCalendar" })
+public class AdminReserveCalendarServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public AdminMemberLogServlet() {
+    public AdminReserveCalendarServlet() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -32,15 +33,16 @@ public class AdminMemberLogServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		//response.getWriter().append("Served at: ").append(request.getContextPath());
+		// 코드를 그대로 가져왔다
+		ArrayList<ReservationVo> rvList = new ReservationService().reservationDateList();
+		ArrayList<PensionVo> pvList = new ReservationService().pensionList();
 		
-		ArrayList<MemberLoginLogVo> list = new AdminService().selectAllMemberLog();
-		
-		RequestDispatcher view = request.getRequestDispatcher("/View/admin/member/memberLog.jsp");
-		request.setAttribute("allMemberLog", list);
-		view.forward(request, response);
-		
+		if(pvList != null) {
+			RequestDispatcher view = request.getRequestDispatcher("/View/admin/reserve/reservationCalendar.jsp");
+			request.setAttribute("reservationList", rvList);
+			request.setAttribute("pensionList", pvList);
+			view.forward(request, response);
+		}
 	}
 
 	/**

@@ -156,14 +156,14 @@ function addImg(){
 </script>
 <script type="text/javascript">
 	var $etc_img = $('#etc_img');
-	console.log($etc_img);
+	//console.log($etc_img);
 	$etc_img.on("change",function(e) {
 		//console.log(e);
 	    var files = e.target.files; // FileList 객체
-	for(var i=0; i<files.length; i++){
-	  if(i===0)
+		for(var i=0; i<files.length; i++){
+	 	 if(i===0)
 	      {
-	          document.getElementById('etc_preview').innerHTML = "";
+	          $('#etc_preview').html("");
 	      }
 	var fileReader = new FileReader();
 	fileReader.readAsDataURL(e.target.files[i]);

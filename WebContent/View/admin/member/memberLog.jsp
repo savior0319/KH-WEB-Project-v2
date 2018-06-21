@@ -38,7 +38,6 @@
     	<!-- 테이블 시작 -->
     	<h1>로그인 내역</h1>
     	   <%
-    	   @SuppressWarnings("all")
     	   ArrayList<MemberLoginLogVo> list = ( ArrayList<MemberLoginLogVo>)request.getAttribute("allMemberLog");			 	
 			%> 	
     	<table class="ui celled table">

@@ -57,32 +57,18 @@
 		   		<td><%= b.getBdWriteDate() %></td>
 		   		<td><%= b.getBdViewCount() %></td>
 		   		<td><%= b.getBdRecommendCount() %></td>
-		   		<td><!-- 이 부분에 상세보기  --></td>
+		   		<td>
+		   		<form action="/adminBoardDetail" method="post"  >
+		   		<input type="hidden" name="bdNo" value="<%=b.getBdNo() %>">
+		   		<input type="submit" value="상세보기">
+		   		</form>
+		   		</td>
 		   		
 		   	</tr>
 		   	<%} %>
 		   <%} %>
 		  </tbody>
-		  <!--  페이지 처리를 하는 부분. -->
-		 
-		  <!-- <tfoot>
-		    <tr>
-		    <th colspan="3">
-		      <div class="ui right floated pagination menu">
-		        <a class="icon item">
-		          <i class="left chevron icon"></i>
-		        </a>
-		        <a class="item">1</a>
-		        <a class="item">2</a>
-		        <a class="item">3</a>
-		        <a class="item">4</a>
-		        <a class="icon item">
-		          <i class="right chevron icon"></i>
-		        </a>
-		      </div>
-		    </th>
-		  </tr>
-		  </tfoot> -->
+		  
 		</table>
 		
 		

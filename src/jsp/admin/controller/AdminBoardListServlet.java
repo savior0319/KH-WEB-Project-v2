@@ -43,13 +43,10 @@ public class AdminBoardListServlet extends HttpServlet {
 		
 		BoardAdminPageVo bpv = new AdminService().boardList(currentPage);
 		// 
-		if(bpv != null) {
 			RequestDispatcher view = request.getRequestDispatcher("/View/admin/board/boardManager.jsp");
 			request.setAttribute("BoardPage",bpv );
 			view.forward(request, response);
-		}else {
-			response.sendRedirect("/View/error/errorPage.jsp");
-		}
+		
 		
 	}
 

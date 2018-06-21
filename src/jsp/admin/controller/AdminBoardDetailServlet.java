@@ -1,7 +1,6 @@
 package jsp.admin.controller;
 
 import java.io.IOException;
-import java.util.ArrayList;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -11,19 +10,19 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import jsp.admin.model.service.AdminService;
-import jsp.admin.model.vo.MemberLoginLogVo;
+import jsp.admin.model.vo.BoardTotalInfoVo;
 
 /**
- * Servlet implementation class AdminMemberLogServlet
+ * Servlet implementation class AdminBoardDetailServlet
  */
-@WebServlet(name = "AdminMemberLog", urlPatterns = { "/adminMemberLog" })
-public class AdminMemberLogServlet extends HttpServlet {
+@WebServlet(name = "AdminBoardDetail", urlPatterns = { "/adminBoardDetail" })
+public class AdminBoardDetailServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public AdminMemberLogServlet() {
+    public AdminBoardDetailServlet() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -34,13 +33,17 @@ public class AdminMemberLogServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		//response.getWriter().append("Served at: ").append(request.getContextPath());
+		request.setCharacterEncoding("utf-8");
+		int bdNo = Integer.parseInt(request.getParameter("bdNo"));
 		
-		ArrayList<MemberLoginLogVo> list = new AdminService().selectAllMemberLog();
-		
-		RequestDispatcher view = request.getRequestDispatcher("/View/admin/member/memberLog.jsp");
-		request.setAttribute("allMemberLog", list);
-		view.forward(request, response);
-		
+		BoardTotalInfoVo btlv = new AdminService().selectBoardOne(bdNo);
+		/*if(btlv != null) {*/
+			RequestDispatcher view  = request.getRequestDispatcher("/View/admin/board/boardDetail.jsp");
+			request.setAttribute("boardDetail", btlv);
+			view.forward(request, response);
+		/*}else {
+			response.sendRedirect("/View/error/errorPage");
+		}*/
 	}
 
 	/**

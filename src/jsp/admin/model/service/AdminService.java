@@ -1,11 +1,13 @@
 package jsp.admin.model.service;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.util.ArrayList;
 
 import jsp.admin.model.dao.AdminDao;
 import jsp.admin.model.vo.AnswerVo;
 import jsp.admin.model.vo.BoardAdminPageVo;
+import jsp.admin.model.vo.BoardTotalInfoVo;
 import jsp.admin.model.vo.MemberLoginLogVo;
 import jsp.admin.model.vo.MemberPageVo;
 import jsp.admin.model.vo.QnAVo;
@@ -13,6 +15,7 @@ import jsp.admin.model.vo.ReservePageVo;
 import jsp.admin.model.vo.RoomTotalInfoVo;
 import jsp.admin.model.vo.SalesPageVo;
 import jsp.board.model.vo.BoardVo;
+import jsp.board.model.vo.DataFile;
 import jsp.common.JDBCTemplate;
 import jsp.main.model.dao.MainDao;
 import jsp.main.model.vo.MainPicTb;
@@ -293,4 +296,82 @@ public class AdminService {
 		}
 		return result;
 	}
+	
+	// 예약 정보를 가져오는 쿼리 (달력에서)
+		public ReservationVo selectOneReservation(String roomName, Date comDate) {
+			Connection conn = null;
+			conn = JDBCTemplate.getConnect(conn);
+			ReservationVo rv = new AdminDao().selectOneReservation(conn, roomName,comDate);
+			JDBCTemplate.close(conn);
+			return rv;
+		}
+
+		public boolean boardInsert(BoardTotalInfoVo btlv) {
+			Connection conn = null;
+			conn = JDBCTemplate.getConnect(conn);
+			boolean totalResult = false;
+			int success = 0;
+			// 1. 게시판 등록
+			boolean boardResult = new AdminDao().boardInsert(conn, btlv.getBv());
+			// 2. 게시판 파일 등록
+			// 필요한 정보 -> 게시판 번호... 
+			// 게시판 번호 가져오기
+			// TODO: 야매
+			int bdNo = new AdminDao().boardSelectOne(conn,btlv.getBv()).getBdNo();
+			boolean fileResult[] = new boolean[btlv.getList().size()];
+			
+			// 3. 게시판에 첨부파일 추가
+			boolean picResultFianl = true;
+			for (int i = 0; i < btlv.getList().size(); i++) {
+				btlv.getList().get(i).setBdFilebdNo(bdNo);
+				fileResult[i] = new AdminDao().fileInsert(conn, btlv.getList().get(i));
+				//System.out.println("picResult[i] : " + picResult[i]);
+				if (!fileResult[i]) {
+					picResultFianl = false;
+				}
+			}
+
+			totalResult = boardResult && picResultFianl;
+			// 최종 결과
+			if (totalResult) {
+				JDBCTemplate.commit(conn);
+			} else {
+				JDBCTemplate.rollBack(conn);
+			}
+			JDBCTemplate.close(conn);
+			return totalResult;
+		}
+
+		public BoardTotalInfoVo selectBoardOne(int bdNo) {
+			Connection conn = null;
+			conn = JDBCTemplate.getConnect(conn);
+
+			BoardTotalInfoVo btlv = null;
+			BoardVo bv = new AdminDao().selectBoardOne(conn,bdNo);
+			ArrayList<DataFile> list = new AdminDao().selectBoardFiles(conn,bdNo);
+			btlv = new BoardTotalInfoVo(bv, list);
+			JDBCTemplate.close(conn);
+			return btlv;
+		}	
+
+		public ReservePageVo reserveList(int currentPage, String searchData, String searchOption) {
+			Connection conn = null;
+			conn = JDBCTemplate.getConnect(conn);
+			
+			int recordCountPerPage = 10; // 한 페이지당 갯수
+			int naviCountPerPage = 10; // 페이지가 몇개씩 보일지
+
+			// 1. 현재 페이지 리스트
+			ArrayList<ReservationVo> list = new AdminDao().getReserveCurrentPage(conn, currentPage, recordCountPerPage,searchData, searchOption);
+			System.out.println(list.size());
+			// 2. 현재 중심으로 만들어지는 NAVI 리스트(문자열)
+			String pageNavi = new AdminDao().getReservePageNavi(conn, currentPage, recordCountPerPage, naviCountPerPage,  searchData,  searchOption);
+
+			ReservePageVo rpv = null;
+			if (!list.isEmpty() && !pageNavi.isEmpty()) {
+				rpv = new ReservePageVo(list, pageNavi);
+			}
+			JDBCTemplate.close(conn);
+			return rpv;
+		}
 }
