@@ -2,8 +2,8 @@ package jsp.board.model.vo;
 
 import java.sql.Timestamp;
 
-public class CommentDEL {
-	public CommentDEL() {
+public class CommentDel {
+	public CommentDel() {
 	}
 
 	// 댓글 삭제
@@ -13,7 +13,7 @@ public class CommentDEL {
 	private String CmDelContents;
 	private Timestamp CmDelWriteDate;
 	private Timestamp CmDelDeleteDate;
-	public CommentDEL(int CmDelNo, int cmBdNo, String CmDelWriter, String CmDelContents,
+	public CommentDel(int CmDelNo, int cmBdNo, String CmDelWriter, String CmDelContents,
 			Timestamp CmDelWriteDate, Timestamp CmDelDeleteDate) {
 		super();
 		this.CmDelNo = CmDelNo;

@@ -2,8 +2,8 @@ package jsp.board.model.vo;
 
 import java.sql.Timestamp;
 
-public class BoardDEL {
-	public BoardDEL() {
+public class BoardDel {
+	public BoardDel() {
 	}
 
 	// 게시판 삭제
@@ -14,7 +14,7 @@ public class BoardDEL {
 	private Timestamp bdDelWriteDate;
 	private Timestamp bdDelDate;
 	
-	public BoardDEL(int bdDelNo, String bdDelName, String bdDelContents, String bdDelWriter,
+	public BoardDel(int bdDelNo, String bdDelName, String bdDelContents, String bdDelWriter,
 			Timestamp bdDelWriteDate, Timestamp bdDelDate) {
 		super();
 		this.bdDelNo = bdDelNo;
