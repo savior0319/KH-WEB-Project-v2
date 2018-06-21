@@ -18,7 +18,7 @@
 	gtag('config', 'UA-120156974-1');
 </script>
 <jsp:include page="/View/main/layout/cssjs.jsp"></jsp:include>
-<title>Main 수정</title>
+<title>펜션 방 사진 삭제</title>
 </head>
 
 <style>
@@ -49,23 +49,21 @@
 			<div class="ui grid">
 				<% for(int i = 0 ; i < list.size() ; i++){ %>
 					<div class="four wide column">
-						<form action="/roomPicUpdate" method="post"
-							enctype="Multipart/form-data" style="display: inline;">
+						<form action="/roomPicDelete" method="post" style="display: inline;">
 							<div id='image<%= i %>'>
 								<img src="<%=list.get(i).getPsPicPath()%>" style="width: 100%;">
 							</div>
 							<input type="hidden" name="image_path"
 								value="<%=list.get(i).getPsPicPath()%>">
 
-							<input type="hidden" name="img" id="update<%= i %>"
-								accept="image/*" required /><br> <br> <input
-								type="hidden" id="update<%= i %>_submit" value="수정"
+						   <input
+								type="hidden" id="delete<%= i %>_submit" value="삭제"
 								class="ui button">
-							<button type="button" id="update<%= i %>_btn"
-								onclick="update('update<%= i %>');" class="ui button">수정</button>
-							<button type="button" id="update<%= i %>_reBtn"
+							<button type="button" id="delete<%= i %>_btn"
+								onclick="deletefn('delete<%= i %>');" class="ui button">삭제</button>
+							<button type="button" id="delete<%= i %>_reBtn"
 								style="display: none;"
-								onclick="imageCancle('update<%= i %>');" class="ui button">취소</button>
+								onclick="imageCancle('delete<%= i %>');" class="ui button">취소</button>
 						</form>
 					</div>
 				<%} %>
@@ -96,14 +94,12 @@
 function back() {
 	location.href="/adminRoomManager";
 }
-function update(id){
-	document.getElementById(id).type="file";
+function deletefn(id){
 	document.getElementById(id+"_btn").style="display:none";
 	document.getElementById(id+"_submit").type="submit";
 	document.getElementById(id+"_reBtn").style="display:inline";
 }
 function imageCancle(id) {
-	document.getElementById(id).type="hidden";
 	document.getElementById(id+"_btn").style="display:inline";
 	document.getElementById(id+"_submit").type="hidden";
 	document.getElementById(id+"_reBtn").style="display:none";

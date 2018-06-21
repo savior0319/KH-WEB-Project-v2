@@ -34,18 +34,23 @@ public class AdminBoardListServlet extends HttpServlet {
 		request.setCharacterEncoding("utf-8");
 		
 		int currentPage =0;
+		String searchData = request.getParameter("searchData");
+		String searchOption = request.getParameter("searchOption");
 		if(request.getParameter("currentPage") == null) {
 			currentPage = 1;
 		}else {
 			currentPage = Integer.parseInt(request.getParameter("currentPage"));
 		}
-		
-		
-		BoardAdminPageVo bpv = new AdminService().boardList(currentPage);
-		// 
-			RequestDispatcher view = request.getRequestDispatcher("/View/admin/board/boardManager.jsp");
-			request.setAttribute("BoardPage",bpv );
-			view.forward(request, response);
+		BoardAdminPageVo bpv = null;
+		if(searchData != null && searchOption != null) {
+			bpv = new AdminService().boardList(currentPage,searchData,searchOption);
+		}else {
+			bpv = new AdminService().boardList(currentPage);
+		}
+
+		RequestDispatcher view = request.getRequestDispatcher("/View/admin/board/boardManager.jsp");
+		request.setAttribute("BoardPage",bpv );
+		view.forward(request, response);
 		
 		
 	}

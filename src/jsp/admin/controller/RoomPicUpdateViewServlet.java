@@ -1,7 +1,6 @@
 package jsp.admin.controller;
 
 import java.io.IOException;
-import java.util.ArrayList;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -11,20 +10,19 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import jsp.admin.model.service.AdminService;
-import jsp.admin.model.vo.QuestionPageVo;
-import jsp.member.model.vo.QuestionVo;
+import jsp.admin.model.vo.RoomTotalInfoVo;
 
 /**
- * Servlet implementation class AdminQuestionListServlet
+ * Servlet implementation class RoomPicUpdateServlet
  */
-@WebServlet(name = "AdminQuestionList", urlPatterns = { "/adminQuestionList" })
-public class AdminQuestionListServlet extends HttpServlet {
+@WebServlet(name = "RoomPicUpdateView", urlPatterns = { "/roomPicUpdateView" })
+public class RoomPicUpdateViewServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public AdminQuestionListServlet() {
+    public RoomPicUpdateViewServlet() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -33,28 +31,19 @@ public class AdminQuestionListServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
 		request.setCharacterEncoding("utf-8");
-		int currentPage =0;
-		String searchData = request.getParameter("searchData");
-		String searchOption = request.getParameter("searchOption");
-		if(request.getParameter("currentPage") == null) {
-			currentPage = 1;
-		}else {
-			currentPage = Integer.parseInt(request.getParameter("currentPage"));
-		}
-		QuestionPageVo qpv = null;
-		if(searchData != null && searchOption != null) {
-			qpv = new AdminService().questionList(currentPage,searchData,searchOption);
-		}else {
-			qpv = new AdminService().questionList(currentPage);
-		}
 		
-		//ArrayList<QuestionVo> list = new AdminService().questionList();
+		String psName = request.getParameter("roonNameModi");
 		
-		RequestDispatcher view = request.getRequestDispatcher("/View/admin/board/boardQuestion.jsp");
-		request.setAttribute("qList", qpv);
-		view.forward(request, response);
+		RoomTotalInfoVo rtiv  = new AdminService().selectRoomInfo(psName);
+		
+		if(rtiv != null) {
+			RequestDispatcher view = request.getRequestDispatcher("/View/admin/room/roomModify.jsp");
+			request.setAttribute("roomInfo", rtiv);
+			view.forward(request, response);
+		}else {
+			response.sendRedirect("/View/error/errorPage.jsp");
+		}
 	}
 
 	/**
