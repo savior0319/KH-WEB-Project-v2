@@ -174,4 +174,14 @@ public class BoardService {
 		return result1;
 	}
 
+	public int hitsCount(int bdNo) {
+		Connection conn = null;
+		conn = JDBCTemplate.getConnect(conn);
+		int result = new BoardDao().hitsCount(conn, bdNo);
+		if(result > 0) JDBCTemplate.commit(conn);
+		else JDBCTemplate.rollBack(conn);
+		JDBCTemplate.close(conn);
+		return result;
+	}
+
 }

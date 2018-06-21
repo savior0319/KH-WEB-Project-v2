@@ -925,6 +925,7 @@ public class AdminDao {
 		return result;
 	}
 
+	// 고정 사진 업데이트 DAO
 	public int updateImage(Connection conn, String afterPath, String beforeFileName) {
 		PreparedStatement pstmt = null;
 		String query = prop.getProperty("mainupdate7");
@@ -937,6 +938,8 @@ public class AdminDao {
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		} finally {
+			JDBCTemplate.close(pstmt);
 		}
 		return result;
 	}
@@ -1271,6 +1274,41 @@ public class AdminDao {
 		}
 		// 문자열 만들어짐.
 		return sb.toString();
+	}
+
+	public int mainUpdateImage(Connection conn, String afterPath, String beforeFileName) {
+		PreparedStatement pstmt = null;
+		String query = prop.getProperty("mainImageUpdate");
+		int result = 0;
+		try {
+			pstmt = conn.prepareStatement(query);
+			pstmt.setString(1, afterPath);
+			pstmt.setString(2, beforeFileName);
+			result = pstmt.executeUpdate();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			JDBCTemplate.close(pstmt);
+		}
+		return result;
+	}
+
+	public int mainDeleteImage(Connection conn, String deleteImage) {
+		PreparedStatement pstmt = null;
+		String query = prop.getProperty("mainImageDelete");
+		int result = 0;
+		try {
+			pstmt = conn.prepareStatement(query);
+			pstmt.setString(1, deleteImage);
+			result = pstmt.executeUpdate();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			JDBCTemplate.close(pstmt);
+		}
+		return result;
 	}
 	
 }

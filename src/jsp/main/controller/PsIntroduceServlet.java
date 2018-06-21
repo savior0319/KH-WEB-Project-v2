@@ -20,14 +20,14 @@ import jsp.main.model.vo.MainPicTb;
 @WebServlet(name = "PsIntroduce", urlPatterns = { "/psIntroduce" })
 public class PsIntroduceServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
-    public PsIntroduceServlet() {
-        super();
-        // TODO Auto-generated constructor stub
-    }
+
+	/**
+	 * @see HttpServlet#HttpServlet()
+	 */
+	public PsIntroduceServlet() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
@@ -37,16 +37,11 @@ public class PsIntroduceServlet extends HttpServlet {
 		DescriptionTb dTb = new MainService().introduce();
 		// 아래 사진 불러오는 비즈니스 로직
 		ArrayList<MainPicTb> list = new MainService().indexImage();
-		if(dTb!=null && !list.isEmpty())
-		{
-			RequestDispatcher view = request.getRequestDispatcher("/View/main/psIntroduce.jsp");
-			request.setAttribute("dTb", dTb);
-			request.setAttribute("MainPicTb", list);
-			view.forward(request, response);
-		}else
-		{
-			response.sendRedirect("/View/error/error.jsp");
-		}
+
+		RequestDispatcher view = request.getRequestDispatcher("/View/main/psIntroduce.jsp");
+		request.setAttribute("dTb", dTb);
+		request.setAttribute("MainPicTb", list);
+		view.forward(request, response);
 	}
 
 	/**

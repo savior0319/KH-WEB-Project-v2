@@ -21,14 +21,14 @@ import jsp.reservation.model.vo.PensionVo;
 @WebServlet(name = "RoomInfo", urlPatterns = { "/roomInfo" })
 public class RoomInfoServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
-    public RoomInfoServlet() {
-        super();
-        // TODO Auto-generated constructor stub
-    }
+
+	/**
+	 * @see HttpServlet#HttpServlet()
+	 */
+	public RoomInfoServlet() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
@@ -42,17 +42,12 @@ public class RoomInfoServlet extends HttpServlet {
 		PensionVo pv = new ReservationService().pensionInfo(roomName);
 		// 방 메인 사진 정보를 가지고 오는 로직
 		ArrayList<PensionPicTb> ppt = new MainService().room();
-		if(!roomNameImage.isEmpty() && pv!=null && !ppt.isEmpty())
-		{
-			RequestDispatcher view = request.getRequestDispatcher("/View/main/roomInfo.jsp");
-			request.setAttribute("roomNameImage", roomNameImage);
-			request.setAttribute("pv", pv);
-			request.setAttribute("PensionPicTb", ppt);
-			view.forward(request, response);
-		}else
-		{
-			response.sendRedirect("/View/error/error.jsp");
-		}
+
+		RequestDispatcher view = request.getRequestDispatcher("/View/main/roomInfo.jsp");
+		request.setAttribute("roomNameImage", roomNameImage);
+		request.setAttribute("pv", pv);
+		request.setAttribute("PensionPicTb", ppt);
+		view.forward(request, response);
 	}
 
 	/**
