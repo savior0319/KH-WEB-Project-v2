@@ -216,7 +216,7 @@ table {
 			</tr>
 			
 		</table>
-		<form action="/reservationThirdStep" method="get" style="display:inline;"> <!-- 나중에 post로 바꾸기 지금은 확인해야댕 -->
+		<form action="/reservationThirdStep" method="post" style="display:inline;"> <!-- 나중에 post로 바꾸기 지금은 확인해야댕 -->
 					<!-- res_no -->
 					<input type="hidden" name="loginId" value="<%=loginId%>" />
 					<input type="hidden" name="res_room_name" value="<%=pv.getPsName()%>" />

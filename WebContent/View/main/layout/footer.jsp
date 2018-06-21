@@ -31,3 +31,28 @@
 </div>
 <!-- pusher 끝 -->
 </div>
+
+<script>
+// 예약 기록 넘기기 위한 ajax 부르는 함수
+$(document).ready(function() { 
+	
+	var today = new Date().getFullYear() +"/"+ (new Date().getMonth()+1) +"/"+ new Date().getDate();
+	 
+	$.ajax ({
+		
+		url : '/moveReservationHistory',
+		data : {today:today},
+		type : 'post',
+		success : function() {
+			console.log("ㅎㅎ");
+			console.log(today);
+			
+		},
+		error : function() {
+			console.log("ㅠㅠ");
+		}
+		
+	});
+	
+});
+</script>

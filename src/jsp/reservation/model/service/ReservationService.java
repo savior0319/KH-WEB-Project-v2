@@ -120,6 +120,28 @@ public class ReservationService {
 		return list;
 	}
 
+
+	public int moveReservationHistory(String today) {
+		Connection conn = null;
+		conn = JDBCTemplate.getConnect(conn);
+		int result = new ReservationDao().moveReservationHistory(conn, today);
+		if(result>0) JDBCTemplate.commit(conn);
+		else JDBCTemplate.rollBack(conn);
+		JDBCTemplate.close(conn);
+		return result;
+	}
+
+
+	public int deleteReservationHistory(String today) {
+		Connection conn = null;
+		conn = JDBCTemplate.getConnect(conn);
+		int result = new ReservationDao().deleteReservationHistory(conn, today);
+		if(result>0) JDBCTemplate.commit(conn);
+		else JDBCTemplate.rollBack(conn);
+		JDBCTemplate.close(conn);
+		return result;
+	}
+
 	
 
 }
