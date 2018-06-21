@@ -8,6 +8,9 @@
 BoardVo board = (BoardVo) request.getAttribute("board");
 @SuppressWarnings("all")
 ArrayList<Comment> list = (ArrayList<Comment>) request.getAttribute("comment");
+
+System.out.println(board.getBdViewCount());
+
 %>
 <%
 Timestamp writeDay = board.getBdWriteDate();
