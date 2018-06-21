@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -49,10 +50,24 @@
 
 <!-- Main 사진 삭제 시작 -->
 <form action="/adminMainDeleteView" method="get" style="display:inline;">
-<input type="submit" value="삭제" class="ui button">
+<input type="submit" value="삭제" class="ui button" onclick="return check();">
 </form>
 <!-- Main 사진 삭제 끝 -->
 
+<script type="text/javascript">
+function check() {
+	var imgcount = ${fn:length(requestScope.MainPicTb) };
+	if(imgcount>8)
+		{
+		return true;
+		}else{
+			alert("8장 미만이라서 사진 삭제가 불가능 합니다.");
+			return false;
+		}
+	
+	
+}
+</script>
 <hr>
     <h2>Main 문구 변경</h2>
     <h5>(최대 1333글자)</h5>
