@@ -1,6 +1,8 @@
 package jsp.member.controller;
 
 import java.io.IOException;
+import java.sql.Date;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -29,14 +31,24 @@ public class MemberWithDrawServlet extends HttpServlet {
 
 		MemberVo mv = new MemberService().login(id, pwd);
 		
+		
 		HttpSession session = request.getSession(false);
 		session.getAttribute("member");
 		response.setCharacterEncoding("utf-8");
 		
 		
 		if (mv != null) {
+			// 탈퇴할 회원의 정보
+			String delId = mv.getMbId();
+			String delEmail = mv.getMbEmail();
+			Date delEntDate = mv.getMbEntDate();
+			String delName = mv.getMbName();
+			Date delBirth = mv.getMbBirth();
+			
 			int result = new MemberService().withDraw(id, pwd);
 			if (result > 0) {
+				// 탈퇴 테이블로 이동
+				new MemberService().memberDel(delId, delEmail, delEntDate, delName, delBirth);
 				session.invalidate();
 				response.getWriter().print("탈퇴가 완료되었습니다");
 			} else {
