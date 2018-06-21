@@ -54,20 +54,6 @@
 </form>
 <!-- Main 사진 삭제 끝 -->
 
-<script type="text/javascript">
-function check() {
-	var imgcount = ${fn:length(requestScope.MainPicTb) };
-	if(imgcount>8)
-		{
-		return true;
-		}else{
-			alert("8장 미만이라서 사진 삭제가 불가능 합니다.");
-			return false;
-		}
-	
-	
-}
-</script>
 <hr>
     <h2>Main 문구 변경</h2>
     <h5>(최대 1333글자)</h5>
@@ -181,7 +167,7 @@ $(document).ready(function(){
 	  })
 	  .sidebar('hide')
 	;
-});
+})
 function modify(id){
 	document.getElementById(id).readOnly=false;
 	text=document.getElementById(id).value;
@@ -239,7 +225,20 @@ desfile.onchange = function(e) {
 		  document.getElementById('desimage').src = e.target.result;
 	 }
 }
-//사진 1장 끝
+// 사진 1장 끝
+
+// 메인 사진 8장 확인 시작
+function check() {
+	var imgcount = ${fn:length(requestScope.MainPicTb) };
+	if(imgcount>8)
+		{
+		return true;
+		}else{
+			alert("8장 미만이라서 사진 삭제가 불가능 합니다.");
+			return false;
+		}
+}
+//메인 사진 8장 확인 끝
 </script>
 </body>
 </html>
