@@ -28,7 +28,7 @@
 
 
 <!-- 결제 라이브러리 -->
-<script type="text/javascript" src="https://code.jquery.com/jquery-1.12.4.min.js" ></script>
+<!-- <script type="text/javascript" src="https://code.jquery.com/jquery-1.12.4.min.js" ></script> -->
 <script type="text/javascript" src="https://service.iamport.kr/js/iamport.payment-1.1.2.js"></script>
 
 </head>
@@ -80,7 +80,7 @@
 
 		<!-- 소원 추가 시작 -->
 		
-		<div class="ui center aligned segment">
+		<div class="ui attached center aligned segment">
 			<table class="ui center aligned celled table" id="calendar" align="center" width="800" height="100%">
 				<thead>
 					<tr>

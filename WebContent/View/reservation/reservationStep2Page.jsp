@@ -89,7 +89,7 @@ table {
 			</div>
 		</div>
 		
-		<div class="ui center aligned segment">
+		<div class="ui attached center aligned segment">
 		
 		<%
 			String yearStr = request.getParameter("year");
@@ -186,7 +186,7 @@ table {
 			<tr>
 				<td class="center aligned">객실 요금</td>
 				<td>
-					<table class="ui center aligned celled table" id="calendar" >
+					<table class="ui center aligned celled table" id="charge" style="display:none;" >
 						<thead>
 						<tr>
 							<th>객실명</th>
@@ -197,7 +197,7 @@ table {
 						</tr>
 						</thead>
 						<tbody>
-						<tr id="charge" style="display:none;">
+						<tr>
 							<td><%=pv.getPsName()%></td>
 							<td><%=dateStr%> 14:00 이후</td>
 							<td id="printOutDate"></td>
@@ -216,16 +216,16 @@ table {
 			</tr>
 			
 		</table>
-		<form action="/reservationThirdStep" method="post" style="display:inline;"> <!-- 나중에 post로 바꾸기 지금은 확인해야댕 -->
+		<form action="/reservationThirdStep" method="get" style="display:inline;"> <!-- 나중에 post로 바꾸기 지금은 확인해야댕 -->
 					<!-- res_no -->
 					<input type="hidden" name="loginId" value="<%=loginId%>" />
 					<input type="hidden" name="res_room_name" value="<%=pv.getPsName()%>" />
-					<input type="hidden" name="res_personnel" id="res_personnel" />
+					<input type="hidden" name="res_personnel" id="res_personnel" value="" />
 					<!-- res_reservation_date -->
-					<input type="hidden" name="res_in_date" id="res_in_date" />
-					<input type="hidden" name="res_out_date" id="res_out_date" />
-					<input type="hidden" name="res_period" id="res_period" />
-					<input type="hidden" name="res_price" id="res_price" />
+					<input type="hidden" name="res_in_date" id="res_in_date" value=""/>
+					<input type="hidden" name="res_out_date" id="res_out_date" value=""/>
+					<input type="hidden" name="res_period" id="res_period" value=""/>
+					<input type="hidden" name="res_price" id="res_price" value=""/>
 					<input type="submit" id="step3Submit" class="ui blue button" value="예약하기" onclick="return submitForm();" style="display:inline;"/>		
 				</form>
 				<input type="button" id="step3Reset" class="ui orange button" value="처음으로" onclick="back();" style="display:inline;"/>
@@ -243,6 +243,7 @@ table {
 
 	function chargeSum() {
 		
+		//console.log("chargeSum()실행");
 		
 		var period = document.getElementById("period");
 		var periodValue = period.options[period.selectedIndex].value;
@@ -261,8 +262,8 @@ table {
 	    var outDate = new Date(year, month, outDay); // 3박 4일이면 3박-1 값이 더해져야함..!!
 	    var count = 0; // 평일, 주말 체크할 카운트변수
 	    
-	    console.log(inDate);
-	    console.log(outDate);
+	    //console.log(inDate);
+	    //console.log(outDate);
 	    
 	    
 	    while(true) {  
@@ -333,12 +334,26 @@ table {
 	}
 	
 	function submitForm() {
-		if(personnel.value==0 || personnelValue==null) {
-			alert("인원수를 선택해주세요.");
+		
+
+		var personnel = document.getElementById("personnel");
+		var personnelValue = personnel.options[personnel.selectedIndex].value;
+		
+		var emptyRP = document.getElementById("res_personnel").value;
+		var emptyRID = document.getElementById("res_in_date").value;
+		var emptyROD = document.getElementById("res_out_date").value;
+		var emptyRPer = document.getElementById("res_period").value;
+		var emptyRPri = document.getElementById("res_price").value;
+
+		
+		if(personnelValue==0 || personnelValue==null) {
+			alert("인원을 선택해주세요.");
+			return false;
+		} else if(emptyRP==""||emptyRID==""||emptyROD==""||emptyRPer==""||emptyRPri=="" || personnelValue=="") {
+			alert("객실 요금 확인 후 예약을 진행해주세요.\n기간 및 인원을 재선택해주세요.");
 			return false;
 		}
-		else 
-			return true;
+		
 	}
 	
 	function back() {

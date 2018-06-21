@@ -70,10 +70,29 @@
 		
 		<div class="ui center aligned segment">
 		
-		<h1>
-		예약이 완료되었습니다.<br>예약 확인은 마이페이지에서 가능합니다.
-		</h1>
-		<a class="ui inverted red button signupBtn" href="/View/member/myPage.jsp">마이페이지로 이동</a>
+			<div class="ui center aligned segment">
+				<br><br><br>
+				<div class="ui icon message" style="width: 80%; margin: 0 auto;">
+					<i class="bullhorn icon"></i>
+					<div class="content">
+						<div class="header">
+							<h1>
+								예약 완료
+							</h1>
+						</div>
+					</div>
+				</div>
+				<br>
+				<div class="ui large message" style="width: 80%; margin: 0 auto;">
+					<br>
+					<h2>예약이 완료되었습니다.</h2>
+					<h4>예약 사항은 마이페이지에서 확인하실 수 있습니다.</h4>
+					<br>
+				</div>
+				<button type="button" class="ui inverted red button" style="margin-top: 60px;" id="myPageGo">마이페이지로 이동</button>
+				<br>
+				<br><br><br><br>
+			</div>
 		
 		</div>
 		
@@ -86,6 +105,10 @@
 
 </body>
 
-
+<script type="text/javascript">
+	$('#myPageGo').click(function(){
+		location.href="/View/member/myPage.jsp";
+	});
+</script>
 
 </html>
