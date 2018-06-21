@@ -1,6 +1,7 @@
 package jsp.member.model.service;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.util.ArrayList;
 
 import jsp.admin.model.vo.AnswerVo;
@@ -192,13 +193,24 @@ public class MemberService {
 		JDBCTemplate.close(conn);
 		return av;
 	}
-	
+
 	// 지은 추가
 	public MemberVo loginIdInfo(String loginId) {
 		conn = JDBCTemplate.getConnect(conn);
 		MemberVo mv = mDao.loginIdInfo(conn, loginId);
 		JDBCTemplate.close(conn);
 		return mv;
+	}
+
+	public void memberDel(String delId, String delEmail, Date delEntDate, String delName, Date delBirth) {
+		conn = JDBCTemplate.getConnect(conn);
+		int result = mDao.memberDel(conn, delId, delEmail, delEntDate, delName, delBirth);
+		if (result > 0) {
+			JDBCTemplate.commit(conn);
+		} else {
+			JDBCTemplate.rollBack(conn);
+		}
+		JDBCTemplate.close(conn);
 	}
 
 }
