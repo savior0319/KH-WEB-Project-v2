@@ -74,7 +74,7 @@ MemberVo mv = (MemberVo)request.getAttribute("memberInfo");
 		<div class="ui red message" style="margin-top: 30px;">
 			<i class="close icon"></i>
 			<div class="header">
-				예약을 완료 하려면 결제 수단과 결제하기 버튼을 클릭하세요.
+				예약을 완료 하려면 결제 수단과 아래 항목 동의 후 결제하기 버튼을 클릭하세요.
 			</div>
 		</div>
 
@@ -108,14 +108,14 @@ MemberVo mv = (MemberVo)request.getAttribute("memberInfo");
 			<!-- 결제 선택했을 경우 동의 페이지 뜨기 -->
 			<div id="payTr" class="ui center aligned basic segment">          
 
-				<div class="ui center aligned segment" style="padding-top: 30px; padding-bottom: 30px;">
+				<div class="ui center aligned segment" style="padding-top: 30px; padding-bottom: 30px; background: #f9fafb;">
 					<div class="ui small header">예약 기간 / 객실 / 숙박인원 / 요금을 확인하였으며, 예약에 동의하시겠습니까?</div>
 					<input type="checkbox" id="agree1" name="agree" /> 동의합니다.
 				</div>
 
-				<div class="ui center aligned segment" style="padding-top: 30px; padding-bottom: 30px;">
-					<div class="ui small header">개인정보 취급 위탁 동의
-					예약 처리를 위한 목적으로 제공됩니다.
+				<div class="ui center aligned segment" style="padding-top: 30px; padding-bottom: 30px; background: #f9fafb;">
+					<div class="ui small header">개인정보 취급 위탁 동의<br>
+					(예약 처리를 위한 목적으로 제공됩니다.)
 				</div>
 					<input type="checkbox" id="agree2" name="agree" /> 동의합니다.<br><br>
 					<div class="ui form">
