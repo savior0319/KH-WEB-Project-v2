@@ -32,16 +32,27 @@
 <!-- Main 사진 추가 시작 -->
 <form action="/adminMainInsert" method="post" enctype="Multipart/form-data" style="display:inline;">
 <input type="hidden" name="img" id="upload" accept="image/*" multiple /><br>
-<div id='image'>
+<div id='upload_image'>
 
 </div>
 <br><button type="button" id="upload_btn" onclick="insert('upload');" class="ui button">추가</button>
 <input type="hidden" id="upload_submit" value="추가" class="ui button">
 <button type="button" id="upload_reBtn" style="display:none;" onclick="imageCancle('upload');" class="ui button">취소</button>
 </form>
+<!-- Main 사진 추가 끝 -->
+
+<!-- Main 사진 변경 시작 -->
 <form action="/adminMainUpdateView" method="get" style="display:inline;">
 <input type="submit" value="수정" class="ui button">
 </form>
+<!-- Main 사진 변경 끝 -->
+
+<!-- Main 사진 삭제 시작 -->
+<form action="/adminMainDeleteView" method="get" style="display:inline;">
+<input type="submit" value="삭제" class="ui button">
+</form>
+<!-- Main 사진 삭제 끝 -->
+
 <hr>
     <h2>Main 문구 변경</h2>
     <h5>(최대 1333글자)</h5>
@@ -64,7 +75,7 @@
 <input type="hidden" name="desimage_path" value="${requestScope.dTb.desImagePath }">
 <input type="hidden" name="img" id="desupload" accept="image/*"/><br>
 <br>
-<div id="image" style='display:none;'> <img id="desimage" style='width:100px; height:100px;'> </div>
+<div id="desupload_image" style='display:none;'> <img id="desimage" style='width:100px; height:100px;'> </div>
 
 <br><button type="button" id="desupload_btn" onclick="insert('desupload');" class="ui button">변경</button>
 <input type="hidden" id="desupload_submit" value="변경" class="ui button">
@@ -179,39 +190,41 @@ function insert(id){
 }
 function imageCancle(id) {
 	document.getElementById(id).type="hidden";
-	document.getElementById('image').innerHTML="";
+	document.getElementById(id+'_image').innerHTML="";
 	document.getElementById(id+"_btn").style="display:inline";
 	document.getElementById(id+"_submit").type="hidden";
 	document.getElementById(id+"_reBtn").style="display:none";
 }
-// 사진 여러장 input javascirpt 시작
+// 사진 여러장 미리보기 시작
 var mainfile = document.getElementById('upload');
 mainfile.onchange = function(e) {
     var files = e.target.files; // FileList 객체
 for(var i=0; i<files.length; i++){
   if(i===0)
       {
-          document.getElementById('image').innerHTML = "";
+          document.getElementById('upload_image').innerHTML = "";
       }
 var fileReader = new FileReader();
 fileReader.readAsDataURL(e.target.files[i]);
 fileReader.onload = function(e) { 
 var str = "<div style='display:inline;'> <img src='"+e.target.result+"'style='width:100px; height:100px;'> </div>";
-    document.getElementById('image').innerHTML += str;
+    document.getElementById('upload_image').innerHTML += str;
   }
 }
 }
-//사진 여러장 input javascirpt 끝
+// 사진 여러장 미리보기 끝
+
+// 사진 1장 미리보기
 var desfile = document.getElementById('desupload');
 desfile.onchange = function(e) {
 	  var fileReader = new FileReader();
 	  fileReader.readAsDataURL(e.target.files[0]);
 	  fileReader.onload = function(e) { 
-		  document.getElementById('desimage_div').style = "display:inline";
+		  document.getElementById('desupload_image').style = "display:inline";
 		  document.getElementById('desimage').src = e.target.result;
-	  }
-	}
-
+	 }
+}
+//사진 1장 끝
 </script>
 </body>
 </html>
