@@ -88,6 +88,8 @@ index db 불러오는 ajax 시작
 스와이프 시작
 -->
 <script type="text/javascript">
+
+
 	$(document).ready(function() {
 		$.ajax({
 			url : "/indexImage",

@@ -179,31 +179,23 @@
 						
 					</div>
 				</div>
-				<%-- 지난 예약 정보 --%>
+				<%-- 지난 예약 정보 --%> <%-- 지은2 작성 노력 중2 --%>
 				<div class="ui orange segment" id="reservationHistoryView" style="display: none">
-					<div class="ui centered grid">
-						<h1>
-							예약 정보 ㅎ
-							<br>
-							예약 정보 ㅎ
-							<br>
-							예약 정보 ㅎ
-							<br>
-							예약 정보 ㅎ
-							<br>
-							예약 정보 ㅎ
-							<br>
-							예약 정보 ㅎ
-							<br>
-							예약 정보 ㅎ
-							<br>
-							예약 정보 ㅎ
-							<br>
-							예약 정보 ㅎ
-							<br>
-							예약 정보 ㅎ
-							<br>
-						</h1>
+					<div class="ui basic segment">
+					<h3>지난 예약 정보</h3>
+						<table class="ui table">
+							<thead> 
+								<tr align="center">
+									<th>입실일</th>
+									<th>퇴실일</th>
+									<th>객실명</th>
+									<th>예약인원</th>
+									<th>요금</th>
+								</tr>
+							</thead>
+							<tbody id="resHistoryListInfo">
+							</tbody>
+						</table>
 					</div>
 				</div>
 				<%-- 1:1 문의 리스트 --%>
@@ -549,7 +541,7 @@
 		
 		
 		
-		/* 지난 예약 정보 */
+		/* 지난 예약 정보 */ /////////////// 지은2 작업 노력 중2
 		$('#reservationHistory').click(function() {
 			removeMenu();
 			removeContent();

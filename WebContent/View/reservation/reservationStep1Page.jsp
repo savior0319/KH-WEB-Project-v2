@@ -161,7 +161,7 @@ table {
 
  <%
       Calendar cal = Calendar.getInstance(); // 이전 달과 다음 달을 비교하기 위해 생성함
-      %>
+ %>
 
    var today = new Date(<%=cal.get(Calendar.YEAR)%>, <%=cal.get(Calendar.MONTH) %>, <%= cal.get(Calendar.DATE)%>); // 달력이 넘어갈 때의 현재 시간
    var standardTime = new Date(<%=cal.get(Calendar.YEAR)%>, <%=cal.get(Calendar.MONTH) %>, <%= cal.get(Calendar.DATE)%>); // 실제 현재 시간
@@ -311,7 +311,7 @@ table {
        // 지난 날짜인 경우
        for (var i = 1; i <= lastDate.getDate(); i++) {
          for(var j=0; j<<%=pvList.size()%>; j++) {
-           if(standardTime.getTime() > new Date(today.getFullYear(), today.getMonth(), i)) {
+           if(standardTime.getTime() >= new Date(today.getFullYear(), today.getMonth(), i)) { // 지은 수정(당일예약막기)
             arr[i-1][j] = 2;
           }
         }

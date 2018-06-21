@@ -440,5 +440,49 @@ public class ReservationDao {
 		}
 		return result;
 	}
+  
+  public int moveReservationHistory(Connection conn, String today) {
+		
+		int result=0;
+		String query = prop.getProperty("moveReservationHistory");
+		
+		try {
+			pstmt = conn.prepareStatement(query);
+			pstmt.setString(1, today);
+			
+			result = pstmt.executeUpdate();
+		
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			JDBCTemplate.close(pstmt);
+		}
+		
+		return result;
+	}
+
+	public int deleteReservationHistory(Connection conn, String today) {
+		
+		int result=0;
+		String query = prop.getProperty("deleteReservationHistory");
+		
+		try {
+			pstmt = conn.prepareStatement(query);
+			pstmt.setString(1, today);
+			
+			result = pstmt.executeUpdate();
+		
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			JDBCTemplate.close(pstmt);
+		}
+		
+		return result;
+	}
+
+
 
 }
