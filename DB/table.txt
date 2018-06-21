@@ -542,4 +542,5 @@ insert into PENSION_PIC_TB values('햄버거방','/Image/room/202_12.jpg','N');
 --INSERT INTO QUESTION_TB VALUES(21, '문의21', '문의입니다', 'savior0319', SYSDATE, DEFAULT);
 --INSERT INTO QUESTION_TB VALUES(22, '문의22', '문의입니다', 'savior0319', SYSDATE, DEFAULT);
 
+INSERT INTO MEMBER_TB VALUES('thepension', 'ba78181ad6ce8fe814dd84b8899f19e45038ed5dfcf8aba700d24366052eb309', '90/01/01', 'thepension@thepension.com', '010-0000-0000',  'M', '관리자', SYSDATE, '인천 계양구 계양대로 지하 73 작전역');
 COMMIT;
