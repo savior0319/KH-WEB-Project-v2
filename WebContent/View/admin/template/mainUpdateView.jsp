@@ -30,7 +30,7 @@
   <div class="ui pusher">
   <!-- 헤더 부분  -->
     <div class="ui segment">
-      <h3 class="ui header">Home</h3>
+      <h3 class="ui header">Main 사진 변경</h3>
     </div>
 	<!-- 헤더 끝 -->
 
