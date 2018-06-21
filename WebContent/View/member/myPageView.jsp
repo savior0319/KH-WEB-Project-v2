@@ -540,6 +540,11 @@
 		});
 		
 		
+		/* Ajax 중복 호출 방지 용*/
+		var ajaxLoadHis = 0;
+		var ajaxLoadNowHis = ajaxLoadHis;
+		
+		
 		
 		/* 지난 예약 정보 */ /////////////// 지은2 작업 노력 중2
 		$('#reservationHistory').click(function() {
@@ -549,6 +554,66 @@
 			$('#reservationHistory').addClass('active');
 			$('#title').attr('data-text', '지난 예약 정보');
 			$('#reservationHistoryView').show();
+			
+			
+			$.ajax ({
+				
+				url : '/reservationHistoryList',
+				data : {
+					loginId : '${requestScope.mypage.mbId}'
+				},
+				type : 'post',
+				beforeSend:function(hisList){ 
+					ajaxLoadHis = ajaxLoadHis + 1;
+				},
+				success : function(hisList) {
+				  /*<th>입실일</th>
+					<th>퇴실일</th>
+					<th>객실명</th>
+					<th>예약인원</th>
+					<th>요금</th> */
+					
+					if(ajaxLoadNowCc != ajaxLoadCc - 1){ 
+						console.log("중복출력방지");
+					} else {
+					
+						for(var i=0; i<hisList.length; i++) {
+						
+					
+							var tr = $("<tr align='center'>");
+					
+							var tempDate = (hisList[i].resHisInDate).split(',');
+							var temp = tempDate[0].split('월 ');
+							var inDateTd = $("<td>").text(tempDate[1]+'-'+temp[0]+'-'+temp[1]); // 입실일
+					
+							tempDate = (hisList[i].resHisOutDate).split(',');
+							temp = tempDate[0].split('월 ');
+							var outDateTd = $("<td>").text(tempDate[1]+'-'+temp[0]+'-'+temp[1]); // 퇴실일
+						
+							var roomNameTd = $("<td>").text(hisList[i].resHisRoomName); // 방이름
+					
+							var personnelTd = $("<td>").text(hisList[i].resHisPersonnel); // 예약인원
+					
+							var priceTd = $("<td>").text(hisList[i].resHisPrice+'원'); // 요금
+					
+							tr.append(inDateTd);
+							tr.append(outDateTd);
+							tr.append(roomNameTd);
+							tr.append(personnelTd);
+							tr.append(priceTd);
+					
+							$("#resHistoryListInfo").append(tr);
+						
+						} // for문 종료
+					
+					} // else문 종료
+				},
+				error : function() {
+					console.log("지난정보 ajax실패");
+				}
+				
+			});
+			
 		});
 
 		/* Ajax 중복 호출 방지 용*/
