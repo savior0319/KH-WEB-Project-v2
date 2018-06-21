@@ -42,36 +42,35 @@ body {
 }
 
 ::-webkit-scrollbar-track {
-	background: #F9FEFF; 
+	background: #F9FEFF;
 }
 
 ::-webkit-scrollbar-thumb {
-	background: #A5F7FF;
+	background: rgb(27, 28, 29);
 }
 
 ::-webkit-scrollbar-thumb:hover {
-	background: #00E6FF; 
+	background: rgb(120, 120, 120);
 }
 </style>
 <c:set value="${sessionScope.member.mbId}" var="id"></c:set>
 <c:if test="${id eq 'thepension'}">
-<div style="color: white; font-size: 14px; font-weight: 600">
-	관리자 로그인 했습니다
-	<a href="/View/admin/admin.jsp" style="color: orange;">관리 페이지로 이동</a>
-</div>
+	<div style="color: white; font-size: 14px; font-weight: 600">
+		관리자 로그인 했습니다 <a href="/View/admin/admin.jsp" style="color: orange;">관리 페이지로 이동</a>
+	</div>
 </c:if>
 
 <!-- 로그인  -->
 <c:set value="${sessionScope.member.mbId}" var="id"></c:set>
 <c:if test="${not empty id}">
-<script type="text/javascript">
-	$(document).ready(function() {
-		var $loginBtn = $('.loginBtn');
-		$loginBtn.html('로그아웃').attr('href', '/logout');
-		var $signupBtn = $('.signupBtn');
-		$signupBtn.html('마이페이지').attr('href', '/View/member/myPage.jsp');
-	});
-</script>
+	<script type="text/javascript">
+		$(document).ready(function() {
+			var $loginBtn = $('.loginBtn');
+			$loginBtn.html('로그아웃').attr('href', '/logout');
+			var $signupBtn = $('.signupBtn');
+			$signupBtn.html('마이페이지').attr('href', '/View/member/myPage.jsp');
+		});
+	</script>
 </c:if>
 
 <div id="load">
@@ -83,8 +82,7 @@ body {
 	<!-- 메인 타이틀 -->
 	<div class="ui center aligned basic segment" style="background-color: rgb(240, 240, 240); margin: 0px;">
 		<h1>
-			<a href="/" style="color: black;">
-				<img src="/Image/mainLogo.png" width="250px;">
+			<a href="/" style="color: black;"> <img src="/Image/mainLogo.png" width="250px;">
 			</a>
 		</h1>
 	</div>
@@ -96,7 +94,8 @@ body {
 			<div class="ui dropdown item">
 				예약 <i class="dropdown icon"></i>
 				<div class="menu">
-					<a class="item" href="/reservationGuide">예약 안내</a> <!-- 지은 : 예약안내 주소 추가 -->
+					<a class="item" href="/reservationGuide">예약 안내</a>
+					<!-- 지은 : 예약안내 주소 추가 -->
 					<a class="item" href="/reservationFirstStep">실시간 예약</a>
 				</div>
 			</div>
@@ -128,20 +127,15 @@ body {
 	<div class="ui vertical inverted sidebar menu">
 		<a class="item" href="/">홈</a>
 		<br>
-		<a class="item" href="/psIntroduce">펜션소개</a>
-		<a class="item" href="/roomIntroduce">객실 안내</a>
-		<a class="item" href="/reservationGuide">예약 안내</a> <!-- 지은 : 예약안내 주소 추가 -->
+		<a class="item" href="/psIntroduce">펜션소개</a> <a class="item" href="/roomIntroduce">객실 안내</a> <a class="item" href="/reservationGuide">예약 안내</a>
+		<!-- 지은 : 예약안내 주소 추가 -->
 		<a class="item" href="/reservationFirstStep">실시간 예약</a>
 		<br>
-		<a class="item" href="/board">공지사항</a>
-		<a class="item" href="#">자주 묻는 질문</a>
-		<a class="item" href="#">후기 게시판</a>
-		<a class="item" href="/View/member/question.jsp">1:1 문의</a>
+		<a class="item" href="/board">공지사항</a> <a class="item" href="#">자주 묻는 질문</a> <a class="item" href="#">후기 게시판</a> <a class="item" href="/View/member/question.jsp">1:1 문의</a>
 		<br>
 		<a class="item" href="/View/location/loc.jsp">오시는 길</a>
 		<br>
-		<a class="item loginBtn" href="/View/member/login.jsp">로그인</a>
-		<a class="item signupBtn" href="/View/member/termsAgreement.jsp">회원가입</a>
+		<a class="item loginBtn" href="/View/member/login.jsp">로그인</a> <a class="item signupBtn" href="/View/member/termsAgreement.jsp">회원가입</a>
 	</div>
 	<!-- 사이드 메뉴 끝 -->
 
@@ -149,19 +143,17 @@ body {
 	<div class="ui inverted vertical center aligned segment" style="padding-top: 3px; padding-bottom: 5px;">
 		<div class="ui container">
 			<div class="ui large secondary inverted pointing menu">
-				<a class="toc item">
-					<i class="sidebar icon"></i>
+				<a class="toc item"> <i class="sidebar icon"></i>
 				</a>
 				<!--<a class="item wholemenu">전체 메뉴</a>-->
-				<a class="item" href="/">홈</a>
-				<a class="item" href="/psIntroduce">펜션소개</a>
-				<a class="item" href="/roomIntroduce">객실 안내</a>
+				<a class="item" href="/">홈</a> <a class="item" href="/psIntroduce">펜션소개</a> <a class="item" href="/roomIntroduce">객실 안내</a>
 
 				<!-- 예약 메뉴  -->
 				<div class="ui dropdown item">
 					예약 <i class="dropdown icon"></i>
 					<div class="menu">
-						<a class="item" href="/reservationGuide">예약 안내</a> <!-- 지은 : 예약안내 주소 추가 -->
+						<a class="item" href="/reservationGuide">예약 안내</a>
+						<!-- 지은 : 예약안내 주소 추가 -->
 						<a class="item" href="/reservationFirstStep">실시간 예약</a>
 					</div>
 				</div>
@@ -171,18 +163,14 @@ body {
 				<div class="ui dropdown item">
 					고객센터 <i class="dropdown icon"></i>
 					<div class="menu">
-						<a class="item" href="/board">공지사항</a>
-						<a class="item">자주 묻는 질문</a>
-						<a class="item" href="/View/member/question.jsp">1:1 문의</a>
-						<a class="item">후기 게시판</a>
+						<a class="item" href="/board">공지사항</a> <a class="item">자주 묻는 질문</a> <a class="item" href="/View/member/question.jsp">1:1 문의</a> <a class="item">후기 게시판</a>
 					</div>
 				</div>
 				<!-- 고객센터 메뉴 끝-->
 
 				<a class="item" href="/View/location/loc.jsp">오시는 길</a>
 				<div class="right item">
-					<a class="ui inverted blue button loginBtn" href="/View/member/login.jsp">로그인</a>
-					<a class="ui inverted red button signupBtn" href="/View/member/termsAgreement.jsp" id="btnMargin">회원가입</a>
+					<a class="ui inverted blue button loginBtn" href="/View/member/login.jsp">로그인</a> <a class="ui inverted red button signupBtn" href="/View/member/termsAgreement.jsp" id="btnMargin">회원가입</a>
 				</div>
 			</div>
 		</div>
@@ -197,22 +185,22 @@ body {
 		}
 	});
 </script> -->
-<script type="text/javascript">
-	window.onload = function() {
-		$('#load').hide();
-	}
+	<script type="text/javascript">
+		window.onload = function() {
+			$('#load').hide();
+		}
 
-	/* 드롭 다운 메뉴 */
-	$('.ui.dropdown.item').dropdown();
+		/* 드롭 다운 메뉴 */
+		$('.ui.dropdown.item').dropdown();
 
-	/* 메뉴 hover */
-	$('.ui.menu a.item').on('mouseenter', function() {
-		$(this).addClass('active');
-	}).on('mouseleave', function() {
-		$(this).removeClass('active');
-	});
+		/* 메뉴 hover */
+		$('.ui.menu a.item').on('mouseenter', function() {
+			$(this).addClass('active');
+		}).on('mouseleave', function() {
+			$(this).removeClass('active');
+		});
 
-	$('.wholemenu').click(function() {
-		$('.ui.sidebar').sidebar('toggle');
-	});
-</script>
+		$('.wholemenu').click(function() {
+			$('.ui.sidebar').sidebar('toggle');
+		});
+	</script>
