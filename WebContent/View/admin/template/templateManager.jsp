@@ -31,7 +31,7 @@
 </div><br>
 <!-- Main 사진 추가 시작 -->
 <form action="/adminMainInsert" method="post" enctype="Multipart/form-data" style="display:inline;">
-<input type="hidden" name="img" id="upload" accept="image/*" multiple /><br>
+<input type="hidden" name="img" id="upload" accept="image/*" multiple required/><br>
 <div id='upload_image'>
 
 </div>
@@ -73,7 +73,7 @@
 <!-- 고정 사진 변경 시작 -->
 <form action="/adminUpdateImage" method="post" enctype="Multipart/form-data" style="display:inline;">
 <input type="hidden" name="desimage_path" value="${requestScope.dTb.desImagePath }">
-<input type="hidden" name="img" id="desupload" accept="image/*"/><br>
+<input type="hidden" name="img" id="desupload" accept="image/*" required/><br>
 <br>
 <div id="desupload_image" style='display:none;'> <img id="desimage" style='width:100px; height:100px;'> </div>
 

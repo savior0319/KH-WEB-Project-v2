@@ -49,7 +49,7 @@
 	<%-- <div id="update${i.count }_div" style='display:none;'> 
 	<img id="update${i.count }_preview" style='width:100px; height:100px;'> 
 	</div> --%>
-	<input type="hidden" name="img" id="update${i.count }" accept="image/*"/><br>
+	<input type="hidden" name="img" id="update${i.count }" accept="image/*" required/><br>
 	<br>
 	<input type="hidden" id="update${i.count }_submit" value="수정" class="ui button">
 	<button type="button" id="update${i.count }_btn" onclick="update('update${i.count }');" class="ui button">수정</button>
