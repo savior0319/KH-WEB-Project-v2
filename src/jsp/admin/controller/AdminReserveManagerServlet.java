@@ -34,6 +34,10 @@ public class AdminReserveManagerServlet extends HttpServlet {
 
 		request.setCharacterEncoding("utf-8");
 		// page정보, pageper정보 없으면 1로 줄까?
+		
+		String searchData = request.getParameter("searchData");
+		String searchOption = request.getParameter("searchOption");
+		//System.out.println(searchData +" : " +searchOption);
 		int currentPage =0;
 		
 		if(request.getParameter("currentPage") == null) {
@@ -41,8 +45,14 @@ public class AdminReserveManagerServlet extends HttpServlet {
 		}else {
 			currentPage = Integer.parseInt(request.getParameter("currentPage"));
 		}
-		
-		ReservePageVo mpv = new AdminService().reserveList(currentPage);
+		ReservePageVo mpv = null;
+		if(searchData != null && searchOption != null) {
+			System.out.println(searchData +" : "+searchOption);
+			mpv = new AdminService().reserveList(currentPage,searchData,searchOption);
+			
+		}else {
+			mpv = new AdminService().reserveList(currentPage);
+		}
 		// 
 		
 			RequestDispatcher view = request.getRequestDispatcher("/View/admin/reserve/reserveManager.jsp");

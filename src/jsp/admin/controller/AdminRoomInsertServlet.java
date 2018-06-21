@@ -48,7 +48,6 @@ public class AdminRoomInsertServlet extends HttpServlet {
 		request.setCharacterEncoding("utf-8");
 
 		boolean isMultipart = ServletFileUpload.isMultipartContent(request);
-		//System.out.println(isMultipart);
 		if (isMultipart) {  
 			// multipart로 전송 되었을 경우
 			String uploadFilePath = getServletContext().getRealPath("/") + "Image" + "\\" + "room";                 //톰켓의 전체 경로를 가져오고 upload라는 폴더를 만들고 거기다

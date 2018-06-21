@@ -3,6 +3,7 @@ package jsp.admin.model.dao;
 import java.io.FileReader;
 import java.io.IOException;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -13,6 +14,7 @@ import java.util.Properties;
 import jsp.admin.model.vo.AnswerVo;
 import jsp.admin.model.vo.MemberLoginLogVo;
 import jsp.board.model.vo.BoardVo;
+import jsp.board.model.vo.DataFile;
 import jsp.common.JDBCTemplate;
 import jsp.main.model.vo.PensionPicTb;
 import jsp.member.model.vo.MemberVo;
@@ -937,6 +939,338 @@ public class AdminDao {
 			e.printStackTrace();
 		}
 		return result;
+	}
+	
+	public ReservationVo selectOneReservation(Connection conn, String roomName, Date comDate) {
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		String query = "select * from reservation_tb where res_room_name=? and res_in_date <= ? and res_out_date >= ?";
+		ReservationVo rv = null;
+		
+		try {
+			pstmt = conn.prepareStatement(query);
+			//
+			//
+			pstmt.setString(1, roomName);
+			// 시간 비교를 하는 것이 좀 그러네...
+			pstmt.setDate(2, comDate);
+			pstmt.setDate(3, comDate);
+			
+			rs = pstmt.executeQuery();
+			while(rs.next()) {
+				rv = new ReservationVo();
+				rv.setResNo(rs.getInt("res_no"));
+				rv.setResRoomName(rs.getString("res_room_name"));
+				rv.setResId(rs.getString("res_id"));
+				rv.setResPersonnel(rs.getInt("res_personnel"));
+				rv.setResReservationDate(rs.getTimestamp("res_reservation_date"));
+				rv.setResInDate(rs.getDate("res_in_date"));
+				rv.setResOutDate(rs.getDate("res_out_date"));
+				rv.setResPeriod(rs.getInt("res_period"));
+				rv.setResPrice(rs.getInt("res_price"));
+				rv.setResPaymentDate(rs.getTimestamp("res_payment_date"));
+				System.out.println(rv.toString());
+			}
+			
+		} catch (SQLException e) {
+			
+			e.printStackTrace();
+		}finally {
+			JDBCTemplate.close(rs);
+			JDBCTemplate.close(pstmt);
+		}
+		
+		return rv;
+	}
+	
+	// 게시판 등록 (순수 게시판만...)
+	public boolean boardInsert(Connection conn, BoardVo bv) {
+		PreparedStatement pstmt = null;
+		int row = 0 ;
+		String query = "insert into board_tb values(BD_NO_SEQ.NEXTVAL,?,?,?,SYSDATE,0,0,?)";
+		boolean result = false;
+		try {
+			pstmt = conn.prepareStatement(query);
+			pstmt.setString(1, bv.getBdName());
+			pstmt.setString(2, bv.getBdContents());
+			pstmt.setString(3, bv.getBdWriter());
+			pstmt.setString(4, bv.getBdCategory());
+			row = pstmt.executeUpdate();
+			if(row>0) {
+				result = true;
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally {
+			JDBCTemplate.close(pstmt);
+		}
+
+		return result;
+	}
+	// 게시판 번호 가져오기
+	public BoardVo boardSelectOne(Connection conn, BoardVo bv) {
+		PreparedStatement pstmt = null;
+		BoardVo newBv = null;	
+		ResultSet rs = null;
+		// 좀 그렇다... 아니면 차라리 올릴때 같이 올리도록 하는 것이 좋을 텐데...
+		
+		String query = "select * from board_tb where bd_name = ? and bd_contents=? and bd_writer=?";
+		
+		try {
+			pstmt = conn.prepareStatement(query);
+			pstmt.setString(1,bv.getBdName());
+			pstmt.setString(2, bv.getBdContents());
+			pstmt.setString(3, bv.getBdWriter());
+			
+			rs = pstmt.executeQuery();
+			if(rs.next()) {
+				newBv = new BoardVo();
+				newBv.setBdNo(rs.getInt("BD_NO"));
+				newBv.setBdName(rs.getString("BD_NAME"));
+				newBv.setBdCategory(rs.getString("BD_CATEGORY"));
+				newBv.setBdContents(rs.getString("BD_CONTENTS"));
+				newBv.setBdWriter(rs.getString("BD_WRITER"));
+				newBv.setBdWriteDate(rs.getTimestamp("BD_WRITE_DATE"));
+				newBv.setBdViewCount(rs.getInt("BD_VIEW_COUNT"));
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally {
+			JDBCTemplate.close(rs);
+			JDBCTemplate.close(pstmt);
+		}
+		return newBv;
+	}
+	// 파일 삽입
+	public boolean fileInsert(Connection conn, DataFile dataFile) {
+		PreparedStatement pstmt = null;
+		String query = "insert into board_file_tb values(BD_FILE_NO_SEQ.NEXTVAL,?,?,SYSDATE,?,0,?,?)";
+		int row = 0;
+		boolean result =false;
+		try {
+			pstmt = conn.prepareStatement(query);
+			pstmt.setLong(1, dataFile.getBdFileSize());
+			pstmt.setString(2, dataFile.getBdFileName());
+			pstmt.setString(3, dataFile.getBdFileWriter());
+			pstmt.setString(4, dataFile.getBdFilePath());
+			pstmt.setInt(5, dataFile.getBdFilebdNo());
+			row = pstmt.executeUpdate();
+			if(row>0) {
+				result = true;
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally {
+			JDBCTemplate.close(pstmt);
+		}
+		return result;
+	}
+	// 게시판 정보 가져오기
+	public BoardVo selectBoardOne(Connection conn, int bdNo) {
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		String query = "select * from board_tb where BD_NO=?";
+		
+		BoardVo bv = null;
+		try {
+			pstmt = conn.prepareStatement(query);
+			pstmt.setInt(1, bdNo);
+			rs = pstmt.executeQuery();
+			if(rs.next()) {
+				bv = new BoardVo();
+				bv.setBdNo(rs.getInt("BD_NO"));
+				bv.setBdName(rs.getString("BD_NAME"));
+				bv.setBdCategory(rs.getString("BD_CATEGORY"));
+				bv.setBdContents(rs.getString("BD_CONTENTS"));
+				bv.setBdWriter(rs.getString("BD_WRITER"));
+				bv.setBdWriteDate(rs.getTimestamp("BD_WRITE_DATE"));
+				bv.setBdViewCount(rs.getInt("BD_VIEW_COUNT"));
+				bv.setBdNo(bdNo);
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally {
+			JDBCTemplate.close(rs);
+			JDBCTemplate.close(pstmt);
+		}
+		
+		return bv;
+	}
+	
+	// 게시판에 있는 사진들 가져오기
+	public ArrayList<DataFile> selectBoardFiles(Connection conn, int bdNo) {
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		String query = "select * from board_file_tb where BD_FILE_BD_NO=? order by BD_FILE_NO DESC";
+		
+		ArrayList<DataFile> list = new ArrayList<DataFile>();
+		try {
+			pstmt = conn.prepareStatement(query);
+			pstmt.setInt(1, bdNo);
+			rs = pstmt.executeQuery();
+			while(rs.next()) {
+				DataFile df = new DataFile();
+				df.setBdFileNo(rs.getInt("BD_FILE_NO"));
+				df.setBdFileSize(rs.getLong("BD_FILE_SIZE"));
+				df.setBdFileName(rs.getString("BD_FILE_NAME"));
+				df.setBdFileUptime(rs.getTimestamp("BD_FILE_UPTIME"));
+				df.setBdFileWriter(rs.getString("BD_FILE_WRITER"));
+				df.setBdFileCount(rs.getInt("BD_FILE_COUNT"));
+				df.setBdFilePath(rs.getString("BD_FILE_PATH"));
+				df.setBdFilebdNo(rs.getInt("BD_FILE_BD_NO"));
+				list.add(df);
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally {
+			JDBCTemplate.close(rs);
+			JDBCTemplate.close(pstmt);
+		}
+		
+		return list;
+	}
+
+	public ArrayList<ReservationVo> getReserveCurrentPage(Connection conn, int currentPage, int recordCountPerPage,
+			String searchData, String searchOption) {
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		ArrayList<ReservationVo> list = new ArrayList<ReservationVo>();
+		// 시작 페이지 계산 
+		int start = currentPage*recordCountPerPage - (recordCountPerPage-1);
+					// 만약 요청한 페이지가 1이라면 1		(1*10) - (10-1) = 10-9 =1
+					// 만약 요청한 페이지가 2이라면 11 		(2*10) - 9	= 11
+		
+		// 끝 페이지 계산 
+		int end = currentPage*recordCountPerPage;	// 숫자가딱 맞지 않아도 된다.
+		
+		String query = "SELECT * FROM "
+				+ "(SELECT RESERVATION_TB.* , ROW_NUMBER() OVER(ORDER BY RES_NO DESC) AS NUM FROM RESERVATION_TB WHERE "+searchOption+" LIKE ? ) "
+				+"WHERE NUM BETWEEN ? AND ?";
+		//System.out.println(searchOption +" : " +searchData);
+		try {
+			pstmt = conn.prepareStatement(query);
+			
+			pstmt.setString(1,"%"+searchData+"%");
+			pstmt.setInt(2, start);
+			pstmt.setInt(3, end);
+			rs = pstmt.executeQuery();
+			while(rs.next()) {
+				ReservationVo rv = new ReservationVo();
+				rv.setResNo(rs.getInt("RES_NO"));
+				rv.setResRoomName(rs.getString("RES_ROOM_NAME"));
+				rv.setResId(rs.getString("RES_ID"));
+				rv.setResPersonnel(rs.getInt("RES_PERSONNEL"));
+				rv.setResReservationDate(rs.getTimestamp("RES_RESERVATION_DATE"));
+				rv.setResInDate(rs.getDate("RES_IN_DATE"));
+				rv.setResOutDate(rs.getDate("RES_OUT_DATE"));
+				rv.setResPeriod(rs.getInt("RES_PERIOD"));
+				rv.setResPrice(rs.getInt("RES_PRICE"));
+				rv.setResPaymentDate(rs.getTimestamp("RES_PAYMENT_DATE"));
+				System.out.println(rv.toString());
+				list.add(rv);
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally {
+			JDBCTemplate.close(rs);
+			JDBCTemplate.close(pstmt);
+		}
+		
+		return list;
+	}
+
+	public String getReservePageNavi(Connection conn, int currentPage, int recordCountPerPage, int naviCountPerPage,
+			String searchData, String searchOption) {
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		// 게시물의 total갯수를 구해야 함.
+		//  (total/recordCountPerPage)+1 이 페이지 갯수
+		
+		int recordTotalCount = 0; // 총 게시물 개수 저장 변수 (정보가 없으므로 초기값은 0)
+		
+		String query = "select count(*) as totalCount from reservation_tb where "+searchOption+" like ?";
+
+		try {
+			pstmt = conn.prepareStatement(query);
+			
+			pstmt.setString(1, "%"+searchData+"%");
+			rs = pstmt.executeQuery();
+			if(rs.next()) {
+				recordTotalCount = rs.getInt("totalCount");
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally {
+			JDBCTemplate.close(rs);
+			JDBCTemplate.close(pstmt);
+		}
+		int pageTotalCount = 0;	// navi 토탈 카운트
+		// 페이지당 10개씩 보이게 만들어서 navi list를 만드려면?
+		// 만약 나머지가 0이면 
+		if(recordTotalCount%recordCountPerPage != 0){
+			pageTotalCount = recordTotalCount/recordCountPerPage +1;
+		}else {
+			pageTotalCount = recordTotalCount/recordCountPerPage	;
+		}
+		// 1 페이지 보다 더 아래의 페이지를 요청하거나, 
+		// 전체 페이지보다 큰 페이지를 요청했을 경우를 에러 방지.
+		
+		if(currentPage < 1) {
+			currentPage =1;
+		}
+		if(currentPage > pageTotalCount) {
+			currentPage = pageTotalCount;
+		}
+		
+		int startNavi = ((currentPage-1)/naviCountPerPage)*naviCountPerPage+1;
+		
+		// 끝 navi 구하는 공식 (쉬움)
+		int endNavi = startNavi + naviCountPerPage -1;
+		
+		// 끝 navi를 구할 때 주의해야 할 점 
+		// 마지막 navi 부분은 한줄 추가를 해야 한다.
+		if(endNavi > pageTotalCount) {
+			endNavi = pageTotalCount;
+		}
+	
+		// page navi에서 사용할 '<' 모양과 '>' 모양을 사용하기 위해
+		// 필요한 변수 2개 생성 (시작과 끝은 필요없으므로 !)
+		// if- else 로 쓰지 않는 이유는 게시물의 갯수가 적을 경우 둘다 쓸 수 있기 때문에
+		boolean needPrev = true;
+		boolean needNext = true;
+		if(startNavi ==1) {
+			needPrev = false;
+		}
+		if(endNavi == pageTotalCount) {
+			needNext = false;
+		}
+		// 여기까지가 기본적인 구조 
+		StringBuilder sb = new StringBuilder();
+		if(needPrev) { // 시작이 1페이지가 아니라면
+			sb.append("<a href='/adminReserveManager?searchData="+searchData+"&searchOption="+searchOption+"&currentPage="+1+"'> << </a>");
+			sb.append("<a href='/adminReserveManager?searchData="+searchData+"&searchOption="+searchOption+"&currentPage="+(startNavi-1)+"'> < </a>");
+	
+		}
+		for(int i = startNavi ; i <=endNavi ; i++) {
+			if(i==currentPage) {
+				sb.append("<a href='/adminReserveManager?searchData="+searchData+"&searchOption="+searchOption+"&currentPage="+(i)+"' ><B> "+i+" </B></a>");
+			}else {
+				sb.append("<a href='/adminReserveManager?searchData="+searchData+"&searchOption="+searchOption+"&currentPage="+(i)+"' > "+i+" </a>");
+			}
+		}
+		if(needNext) {
+			sb.append("<a href='/adminReserveManager?searchData="+searchData+"&searchOption="+searchOption+"&currentPage="+(endNavi+1)+"'> > </a>");
+			sb.append("<a href='/adminReserveManager?searchData="+searchData+"&searchOption="+searchOption+"&currentPage="+pageTotalCount+"'> >> </a>");
+		}
+		// 문자열 만들어짐.
+		return sb.toString();
 	}
 	
 }

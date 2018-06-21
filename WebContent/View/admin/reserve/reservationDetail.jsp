@@ -7,8 +7,12 @@
 	<jsp:include page="/View/main/layout/cssjs.jsp"></jsp:include>
 </head>
 <body>
+
   <jsp:include page="/View/admin/layout/sideMenu.jsp"></jsp:include>
+  <!-- 메뉴 끝  -->
+  <!-- 본문 내용 시작 -->
   <div class="ui pusher">
+
   <!-- 헤더 부분  -->
     <div class="ui segment">
       <h3 class="ui header">예약 관리</h3>
@@ -16,13 +20,10 @@
     <!-- 본문 내용 시작-->
 	<div class="ui container">
 	  <!-- 테이블 시작 -->
-    	<h1>예약 리스트</h1>
+    	<h1>예약 정보</h1>
     	   <%
-				ReservePageVo rpv = (ReservePageVo)request.getAttribute("ReservePage");
-				if(rpv != null){
-			 	ArrayList<ReservationVo> rlist = rpv.getList();
-			 	String pageNavi = rpv.getPageNavi();	// navi 리스트 
-			 	String searchData = request.getParameter("searchData");
+				ReservationVo rpv = (ReservationVo)request.getAttribute("reservationInfo");
+				
 			%> 	
     	<table class="ui celled table">
 		  <thead>
@@ -43,47 +44,23 @@
 		  <!--  이 부분에 추가  -->
 		   
   		  <tbody>
-  		  <%if(rlist != null && !rlist.isEmpty()){ %>
-		   	<%for(ReservationVo r : rlist){ %>
+  		  <%	if(rpv != null){	 %>
 		   	<tr>
-		   		<td><%= r.getResNo() %></td>
-		   		<td><%= r.getResRoomName() %></td>
-		   		<td><%= r.getResId() %></td>
-		   		<td><%= r.getResPersonnel() %></td>
-		   		<td><%= r.getResInDate()%></td>
-		   		<td><%= r.getResOutDate() %></td>
-		   		<td><%= r.getResPrice() %></td>
+		   		<td><%= rpv.getResNo() %></td>
+		   		<td><%= rpv.getResRoomName() %></td>
+		   		<td><%= rpv.getResId() %></td>
+		   		<td><%= rpv.getResPersonnel() %></td>
+		   		<td><%= rpv.getResInDate()%></td>
+		   		<td><%= rpv.getResOutDate() %></td>
+		   		<td><%= rpv.getResPrice() %></td>
 		   	</tr>
-		   	<%} %>
-		   <%} %>
 		  </tbody>
-		  <!--  페이지 처리를 하는 부분. -->
-
-		  <tfoot>
-			    <tr>
-			     <th colspan="7">
-			      <div class="ui segment">
-			       <%= pageNavi %>
-			      </div>
-			    </th>
-			  </tr>
-		  </tfoot>
+		  
 		</table>
-		
-		
-		 <form action="/adminReserveManager" method="post" style="display: inline;">
-		 	<select name="searchOption">
-			    <option value="RES_ROOM_NAME">객실이름</option>
-			    <option value="RES_ID">아이디</option>
-			</select>
-			 <input type="text" name="searchData" >
-			 <input type="submit" value="검색">
-		 </form>
-		
-    	<!--  테이블 끝 -->
+
     	<% }else{ %>
     	<hr/>
-    	<h3>회원이 없습니다.</h3>
+    	<h3>예약 정보가 없습니다.</h3>
     	<hr/>
     	<% } %>
     </div>
