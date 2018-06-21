@@ -88,6 +88,13 @@ table {
 				</div>
 			</div>
 		</div>
+
+		<div class="ui red message">
+			<i class="close icon"></i>
+			<div class="header">
+				예약을 계속 하려면 예약기간과 인원을 선택 후 예약하기 버튼을 클릭하세요.
+			</div>
+		</div>
 		
 		<div class="ui center aligned segment">
 
@@ -352,6 +359,16 @@ table {
 	function back() {
 		location.href="/reservationFirstStep";
 	}
+
+	$('.message .close')
+	.on('click', function() {
+		$(this)
+		.closest('.message')
+		.transition('fade')
+		;
+	})
+	;
+
 
 
 </script>
