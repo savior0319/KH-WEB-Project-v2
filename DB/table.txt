@@ -281,7 +281,6 @@ FOREIGN KEY (SALES_RESERVATION_NO) REFERENCES RESERVATION_TB(RES_NO)
 
 -- 메인 사진 테이블
 CREATE TABLE MAIN_PIC_TB(
-MAIN_PIC_COMMENT VARCHAR2(4000) NOT NULL,
 MAIN_PIC_PATH VARCHAR2(500) NOT NULL UNIQUE
 );
 
@@ -335,18 +334,43 @@ CREATE TABLE ANSWER_TB
     FOREIGN KEY (A_Q_NO) REFERENCES QUESTION_TB(Q_NO)
 );
 
-insert into main_pic_tb values('사진1','/Image/main/m01.jpg');
-insert into main_pic_tb values('사진2','/Image/main/m02.jpg');
-insert into main_pic_tb values('사진3','/Image/main/m03.jpg');
-insert into main_pic_tb values('사진4','/Image/main/m04.jpg');
-insert into main_pic_tb values('사진5','/Image/main/m05.jpg');
-insert into main_pic_tb values('사진6','/Image/main/m06.jpg');
-insert into main_pic_tb values('사진7','/Image/main/m07.jpg');
-insert into main_pic_tb values('사진8','/Image/main/m08.jpg');
-insert into main_pic_tb values('사진9','/Image/main/m09.jpg');
-insert into main_pic_tb values('사진10','/Image/main/m10.jpg');
-insert into main_pic_tb values('사진11','/Image/main/m11.jpg');
-insert into main_pic_tb values('사진12','/Image/main/m12.jpg');
+-- 예약 취소 테이블 시퀀스
+CREATE SEQUENCE RC_NO_SEQ
+START WITH 1
+INCREMENT BY 1
+NOCACHE
+NOCYCLE;
+
+-- 예약 취소 테이블
+CREATE TABLE RES_CANCEL_TB (
+    RC_NO NUMBER PRIMARY KEY,
+    RC_RES_NO NUMBER NOT NULL,
+    RC_RES_ROOM_NAME VARCHAR2(50),
+    RC_RES_ID VARCHAR2(50),
+    RC_RES_PERSONNEL NUMBER NOT NULL,
+    RC_RES_RESERVATION_DATE TIMESTAMP NOT NULL,
+    RC_RES_IN_DATE DATE NOT NULL,
+    RC_RES_OUT_DATE DATE NOT NULL,
+    RC_RES_PERIOD NUMBER NOT NULL,
+    RC_RES_PRICE NUMBER NOT NULL,
+    RC_RES_PAYMENT_DATE TIMESTAMP DEFAULT SYSDATE NOT NULL,
+    RC_DATE TIMESTAMP NOT NULL,
+    RC_REFUND_CHECK CHAR(1) NOT NULL CHECK(RC_REFUND_CHECK IN('Y','N')),
+    RC_CANCEL_CHECK CHAR(1) NOT NULL CHECK(RC_CANCEL_CHECK IN('Y','N'))
+);
+
+insert into main_pic_tb values('/Image/main/m01.jpg');
+insert into main_pic_tb values('/Image/main/m02.jpg');
+insert into main_pic_tb values('/Image/main/m03.jpg');
+insert into main_pic_tb values('/Image/main/m04.jpg');
+insert into main_pic_tb values('/Image/main/m05.jpg');
+insert into main_pic_tb values('/Image/main/m06.jpg');
+insert into main_pic_tb values('/Image/main/m07.jpg');
+insert into main_pic_tb values('/Image/main/m08.jpg');
+insert into main_pic_tb values('/Image/main/m09.jpg');
+insert into main_pic_tb values('/Image/main/m10.jpg');
+insert into main_pic_tb values('/Image/main/m11.jpg');
+insert into main_pic_tb values('/Image/main/m12.jpg');
 
 insert into DESCRIPTION_TB(DES_ROOM,DES_IMAGEPATH,DES_PENSION_ABOUT,DES_MAINVIEW) values('석양이 아름다운 음포 해수욕장 바다가 있는곳 태안 더펜션 객실을 소개합니다.','/Image/title/ti02.jpg','펜션 내용이다~~~~~~~~~~~','Lorem ipsum dolor sit amet consectetur adipisicing elit. Corporis tempore voluptatum exercitationem suscipit autem accusantium minus adipisci, eveniet aut earum iste ullam? Dignissimos, minus inventore porro expedita accusamus quam harum modi nihil ipsum nesciunt ducimus ullam animi libero aperiam. Minima nostrum deserunt perferendis dolorum porro beatae eligendi blanditiis modi eius reiciendis vero, ex libero iusto pariatur. Voluptates dignissimos earum eius, nemo nihil sit qui accusantium in adipisci, reprehenderit doloremque? Earum laudantium molestias nam soluta? Corporis alias possimus, officia, blanditiis commodi tenetur deserunt ipsum saepe soluta voluptate vero minus magnam voluptates eum ea ullam doloremque ipsa fuga. Dicta accusantium fugiat ut! Suscipit labore, beatae incidunt libero, temporibus quos error aspernatur amet enim, explicabo culpa alias in. Libero nam veritatis, totam repudiandae ipsum iste commodi? Sint in, culpa sit, officiis omnis, cumque corrupti eos error aliquid sapiente cupiditate corporis quod eveniet maiores quo. Laborum ipsa rerum obcaecati ipsum nemo voluptates repellat facere illum, quas accusantium. Expedita consectetur quaerat minus fugit aliquid aperiam placeat rerum hic velit voluptatibus nemo repudiandae est voluptatum magnam inventore similique quibusdam quidem vel dolore, laboriosam nesciunt reiciendis suscipit. Saepe odio quidem cumque, impedit soluta quia. Nam itaque pariatur dolorem quas ducimus at similique esse commodi, tenetur nobis asperiores, accusantium veritatis assumenda accusamus. Laboriosam necessitatibus quis aspernatur dolorum non impedit expedita. Perspiciatis recusandae hic molestiae qui officia, cupiditate iste. Mollitia aspernatur voluptatem illum, eos accusamus quo temporibus voluptatum possimus in officiis laudantium sapiente quod. Culpa fugiat saepe nulla itaque dolores dicta, minima exercitationem provident recusandae cumque illo laboriosam consequuntur. Reiciendis repellendus adipisci laborum dolores eligendi ut molestiae ab hic quisquam illum! Unde blanditiis tenetur ipsum aut ad? Voluptatem esse neque ex incidunt. Tenetur et, quas sapiente rem repellendus autem nihil, earum accusamus quibusdam doloribus ea totam expedita praesentium commodi deleniti magni pariatur suscipit doloremque sunt ratione. Laborum animi enim nostrum sequi et quibusdam fuga voluptatem. In error, mollitia earum fugit quasi delectus, velit ratione perspiciatis rerum quia, excepturi quidem sequi dignissimos labore nam sed! Natus, labore! Voluptates aliquam quis accusamus, voluptas odio a rem enim excepturi veritatis asperiores ipsam alias amet, in necessitatibus dolorem aspernatur numquam, esse tempore dolor architecto ex tenetur doloribus labore exercitationem. Odio et ipsum ea sed! Unde, beatae laborum, at quia vitae repellat vero modi ipsam dolore similique tenetur non officiis eos placeat. Laudantium, quas ');
 
