@@ -284,6 +284,7 @@ public class AdminService {
 		
 	}
 
+	// 고정사진 업데이트 서비스
 	public int updateImage(String afterPath, String beforeFileName) {
 		Connection conn = null;
 		conn = JDBCTemplate.getConnect(conn);
@@ -294,6 +295,7 @@ public class AdminService {
 		}else {
 		JDBCTemplate.rollBack(conn);	
 		}
+		JDBCTemplate.close(conn);
 		return result;
 	}
 	
@@ -373,5 +375,35 @@ public class AdminService {
 			}
 			JDBCTemplate.close(conn);
 			return rpv;
+		}
+
+		// 메인 사진 업데이트 서비스
+		public int mainUpdateImage(String afterPath, String beforeFileName) {
+			Connection conn = null;
+			conn = JDBCTemplate.getConnect(conn);
+			int result = aDao.mainUpdateImage(conn, afterPath, beforeFileName);
+			if(result>0)
+			{
+				JDBCTemplate.commit(conn);
+			}else {
+			JDBCTemplate.rollBack(conn);	
+			}
+			JDBCTemplate.close(conn);
+			return result;
+		}
+
+		// 메인 사진 삭제 서비스
+		public int mainDeleteImage(String deleteImage) {
+			Connection conn = null;
+			conn = JDBCTemplate.getConnect(conn);
+			int result = aDao.mainDeleteImage(conn,deleteImage);
+			if(result>0)
+			{
+				JDBCTemplate.commit(conn);
+			}else {
+			JDBCTemplate.rollBack(conn);	
+			}
+			JDBCTemplate.close(conn);
+			return result;
 		}
 }
