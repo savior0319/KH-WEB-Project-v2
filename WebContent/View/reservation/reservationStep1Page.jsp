@@ -46,6 +46,16 @@ table {
 }
 </style>
 
+<!-- 로그인 여부  -->
+<c:set value="${sessionScope.member.mbId}" var="id"></c:set>
+<c:if test="${empty id}">
+<script type="text/javascript">
+  $(document).ready(function() {
+    $('#loginCheck').show();
+  });
+</script>
+</c:if>
+
 <body>
 	<!-- 헤더 -->
 	<jsp:include page="/View/main/layout/header.jsp"></jsp:include>
@@ -90,39 +100,40 @@ table {
      <div class="ui small header">※ 예약하시려면 아래에서 예약할 방을 선택해주세요.<br>예약은 오늘 부터 6개월까지만 가능합니다.</div></div>
 
 
-     <div class="ui red message">
+     <div class="ui red message" id="loginCheck" style="display: none">
        <i class="close icon"></i>
-       <div class="ui small header">※ 예약하려면 로그인이 필요합니다.</div></div>
+       <div class="ui small header">※ 예약하려면 로그인이 필요합니다.</div>
+     </div>
 
-       <div class="ui center aligned basic segment">
-         <table class="ui orange table" id="calendar" border="1" align="center">
-           <thead>
-            <tr align="center">
-             <td>
-              <button class="ui inverted orange button" onclick="prevCalendar()">
-               <i class="angle left icon" style="margin: 0;"></i>
-             </button>
-           </td>
-           <td colspan="5" id="calendarYM"></td>
+     <div class="ui center aligned basic segment">
+       <table class="ui orange table" id="calendar" border="1" align="center">
+         <thead>
+          <tr align="center">
            <td>
-            <button class="ui inverted orange button" onclick="nextCalendar()">
-             <i class="angle right icon" style="margin: 0;"></i>
+            <button class="ui inverted orange button" onclick="prevCalendar()">
+             <i class="angle left icon" style="margin: 0;"></i>
            </button>
          </td>
-       </tr>
-       <tr align="center">
-        <th style="border-top: 0px;">일</th>
-        <th style="border-top: 0px;">월</th>
-        <th style="border-top: 0px;">화</th>
-        <th style="border-top: 0px;">수</th>
-        <th style="border-top: 0px;">목</th>
-        <th style="border-top: 0px;">금</th>
-        <th style="border-top: 0px;">토</th>
-      </tr>
-    </thead>
+         <td colspan="5" id="calendarYM"></td>
+         <td>
+          <button class="ui inverted orange button" onclick="nextCalendar()">
+           <i class="angle right icon" style="margin: 0;"></i>
+         </button>
+       </td>
+     </tr>
+     <tr align="center">
+      <th style="border-top: 0px;">일</th>
+      <th style="border-top: 0px;">월</th>
+      <th style="border-top: 0px;">화</th>
+      <th style="border-top: 0px;">수</th>
+      <th style="border-top: 0px;">목</th>
+      <th style="border-top: 0px;">금</th>
+      <th style="border-top: 0px;">토</th>
+    </tr>
+  </thead>
 
 
-  </table>
+</table>
 </div>
 
 </div>
@@ -265,13 +276,13 @@ table {
                     } else { // 예약된 날짜가 월말 ~ 다음달 월초를 걸치는 경우
                        for(var p=i; p <= lastDate.getDate(); p++) { // 1. 월말
                     	   	   //console.log("월말: "+p);
-                             arr[p-1][j] = 1;
-                             if(p==(<%=calOut.get(Calendar.DATE)%>-1)) {
+                            arr[p-1][j] = 1;
+                            if(p==(<%=calOut.get(Calendar.DATE)%>-1)) {
                             	   //console.log("스탑");
                             	   break;
-                               }
-                             }
-                           }
+                              }
+                            }
+                          }
                     continue; // 다음 예약 정보로 넘어가기
                   }
 
@@ -284,18 +295,18 @@ table {
                         console.log("월초: "+p);
                         arr[p-1][j] = 1;
                     	   continue; // 다음 예약 정보로 넘어가기
-                      }
+                       }
 
-                    }
+                     }
 
-                  }
+                   }
 
-                  <% } %>
+                   <% } %>
 
 
 
-                }
-              }
+                 }
+               }
 
        // 지난 날짜인 경우
        for (var i = 1; i <= lastDate.getDate(); i++) {
