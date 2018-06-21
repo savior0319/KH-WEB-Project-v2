@@ -188,61 +188,64 @@ table {
 						<td colspan="5">
 							* 아동 및 유아도 개월 수 상관없이 인원에 포함됩니다. <br>
 							* 예약 시 등록한 인원과 실제 이용인원이 다르면 환불없이 강제 퇴실 조치 되오니 꼭 지켜주세요.
-							</td>
-						</tr>
-						</tbody>
-					</table>
-				</td>
-			</tr>
-			<tr>
-				<td class="center aligned" style="height: 200px; background: #f9fafb;"><div class="ui small header">객실 요금</div></td>
-				<td>
-					<table class="ui center aligned celled table" id="charge" style="display:none;" >
-						<thead>
-						<tr>
-							<th>객실명</th>
-							<th>입실</th>
-							<th>퇴실</th>
-							<th>기간</th>
-							<th>요금</th>
-						</tr>
-						</thead>
-						<tbody>
-						<tr>
-							<td><%=pv.getPsName()%></td>
-							<td><%=dateStr%> 14:00 이후</td>
-							<td id="printOutDate"></td>
-							<td id="printPeriod"></td>
-							<td id="printTotalMoney"></td>
-						</tr>
-						<tr id="chargeInfo" style="display:none;">
-							<td colspan="5">
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</td>
+	</tr>
+	<tr>
+		<td class="center aligned" style="height: 200px; background: #f9fafb;"><div class="ui small header">객실 요금</div></td>
+		<td>
+
+			<div class="ui orange message" id="chkMessage"><div class="ui small header">예약기간 및 인원을 선택해주세요</div></div>
+
+			<table class="ui center aligned celled table" id="charge" style="display:none;" >
+				<thead>
+					<tr>
+						<th>객실명</th>
+						<th>입실</th>
+						<th>퇴실</th>
+						<th>기간</th>
+						<th>요금</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td><%=pv.getPsName()%></td>
+						<td><%=dateStr%> 14:00 이후</td>
+						<td id="printOutDate"></td>
+						<td id="printPeriod"></td>
+						<td id="printTotalMoney"></td>
+					</tr>
+					<tr id="chargeInfo" style="display:none;">
+						<td colspan="5">
 							추가 인원 1인 당 <%=pv.getPsAddtionalPrice()%>원
-							</td>
-						</tr>
-						</tbody>
-						
-					</table>
-				</td>
-			</tr>
-			
-		</table>
-		<form action="/reservationThirdStep" method="get" style="display:inline;"> <!-- 나중에 post로 바꾸기 지금은 확인해야댕 -->
-					<!-- res_no -->
-					<input type="hidden" name="loginId" value="<%=loginId%>" />
-					<input type="hidden" name="res_room_name" value="<%=pv.getPsName()%>" />
-					<input type="hidden" name="res_personnel" id="res_personnel" value="" />
-					<!-- res_reservation_date -->
-					<input type="hidden" name="res_in_date" id="res_in_date" value=""/>
-					<input type="hidden" name="res_out_date" id="res_out_date" value=""/>
-					<input type="hidden" name="res_period" id="res_period" value=""/>
-					<input type="hidden" name="res_price" id="res_price" value=""/>
-					<input type="submit" id="step3Submit" class="ui blue button" value="예약하기" onclick="return submitForm();" style="display:inline;"/>		
-				</form>
-				<input type="button" id="step3Reset" class="ui orange button" value="처음으로" onclick="back();" style="display:inline;"/>
-		</div>
-	</div>
-			
+						</td>
+					</tr>
+				</tbody>
+
+			</table>
+		</td>
+	</tr>
+
+</table>
+<form action="/reservationThirdStep" method="get" style="display:inline;"> <!-- 나중에 post로 바꾸기 지금은 확인해야댕 -->
+	<!-- res_no -->
+	<input type="hidden" name="loginId" value="<%=loginId%>" />
+	<input type="hidden" name="res_room_name" value="<%=pv.getPsName()%>" />
+	<input type="hidden" name="res_personnel" id="res_personnel" value="" />
+	<!-- res_reservation_date -->
+	<input type="hidden" name="res_in_date" id="res_in_date" value=""/>
+	<input type="hidden" name="res_out_date" id="res_out_date" value=""/>
+	<input type="hidden" name="res_period" id="res_period" value=""/>
+	<input type="hidden" name="res_price" id="res_price" value=""/>
+	<input type="submit" id="step3Submit" class="ui blue button" value="예약하기" onclick="return submitForm();" style="display:inline;"/>		
+</form>
+<input type="button" id="step3Reset" class="ui orange button" value="처음으로" onclick="back();" style="display:inline;"/>
+</div>
+</div>
+
 <!-- 푸터 -->
 <jsp:include page="/View/main/layout/footer.jsp"></jsp:include>
 <!-- 푸터 끝 -->
@@ -314,7 +317,7 @@ table {
 		// 퇴실일 포함한 날
 		
 		if(personnelValue==0) { // 인원수 선택이 0(선택)일 때는 요금표를 다시 숨김
-			
+			$('#chkMessage').show();
 			document.getElementById("charge").style="display:none";
 			document.getElementById("chargeInfo").style="display:none";
 
@@ -324,11 +327,13 @@ table {
 			document.getElementById("printOutDate").innerHTML = outDateStr+" 11:00 이전";
 			document.getElementById("printPeriod").innerHTML = periodValue+"박 "+(Number(periodValue)+1)+"일";
 			document.getElementById("printTotalMoney").innerHTML = totalMoney+"원";
+			$('#chkMessage').hide();
 			document.getElementById("charge").style="display:visible";
 
 			
 			if(personnelValue > <%=pv.getPsPersonnel()%>) { // 추가인원 1인당 금액 나오게하기
 				document.getElementById("chargeInfo").style="display:visible";
+				
 			} else {
 				document.getElementById("chargeInfo").style="display:none";
 			}

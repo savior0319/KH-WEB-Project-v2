@@ -63,7 +63,7 @@
 		</div>
 
 		<div class="ui attached segment">
-			<div class="ui medium header">회원 가입 약관 (필수)</div>
+			<div class="ui medium header">회원 가입 약관 <span style="color: red;">(필수)<span></div>
 			<div class="ui form">
 				<div class="field">
 					<label>※ 회원 가입을 하시려면 회원 가입약관에 동의 해주세요</label>
@@ -229,7 +229,7 @@
 
 
 		<div class="ui center align segment">
-			<div class="ui medium header">개인 정보 약관 (필수)</div>
+			<div class="ui medium header">개인 정보 약관 <span style="color: red;">(필수)<span></div>
 			<div class="ui form">
 				<div class="field">
 					<label>※ 회원 가입을 하시려면 개인정보 약관에 동의 해주세요</label>
