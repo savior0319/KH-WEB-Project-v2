@@ -541,4 +541,13 @@ public class AdminService {
 			JDBCTemplate.close(conn);
 			return spv;
 		}
+		
+		// 회원 정보 엑셀 다운로드을 위한 멤버 리스트 출력
+		public ArrayList<MemberVo> memberListDown() {
+			Connection conn = null;
+			conn = JDBCTemplate.getConnect(conn);
+			ArrayList<MemberVo> list = aDao.allMemberList(conn);
+			JDBCTemplate.close(conn);
+			return list;
+		}
 }

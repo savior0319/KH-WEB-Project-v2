@@ -2161,5 +2161,37 @@ public class AdminDao {
 		// 문자열 만들어짐.
 		return sb.toString();
 	}
+
+	public ArrayList<MemberVo> allMemberList(Connection conn) {
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		String query = "select * from member_tb";
+		ArrayList<MemberVo> list = new ArrayList<MemberVo>();
+		try {
+			pstmt = conn.prepareStatement(query);
+			rs = pstmt.executeQuery();
+			while(rs.next()) {
+				MemberVo mv = new MemberVo();
+				mv.setMbId(rs.getString(1));
+				mv.setMbPwd(rs.getString(2));
+				mv.setMbBirth(rs.getDate(3));
+				mv.setMbEmail(rs.getString(4));
+				mv.setMbPhone(rs.getString(5));
+				mv.setMbGender(rs.getString(6));
+				mv.setMbName(rs.getString(7));
+				mv.setMbEntDate(rs.getDate(8));
+				mv.setMbAddress(rs.getString(9));
+				list.add(mv);
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally {
+			JDBCTemplate.close(rs);
+			JDBCTemplate.close(pstmt);
+		}
+		
+		return list;
+	}
 	
 }
