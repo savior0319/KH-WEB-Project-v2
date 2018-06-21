@@ -31,7 +31,7 @@
 </div><br>
 <!-- Main 사진 추가 시작 -->
 <form action="/adminMainInsert" method="post" enctype="Multipart/form-data" style="display:inline;">
-<input type="hidden" name="img" id="upload" multiple /><br>
+<input type="hidden" name="img" id="upload" accept="image/*" multiple /><br>
 <div id='image'>
 
 </div>
@@ -39,7 +39,9 @@
 <input type="hidden" id="upload_submit" value="추가" class="ui button">
 <button type="button" id="upload_reBtn" style="display:none;" onclick="imageCancle('upload');" class="ui button">취소</button>
 </form>
-<!-- Main 사진 추가 끝 -->
+<form action="/adminMainUpdateView" method="get" style="display:inline;">
+<input type="submit" value="수정" class="ui button">
+</form>
 <hr>
     <h2>Main 문구 변경</h2>
     <h5>(최대 1333글자)</h5>
@@ -60,7 +62,7 @@
 <!-- 고정 사진 변경 시작 -->
 <form action="/adminUpdateImage" method="post" enctype="Multipart/form-data" style="display:inline;">
 <input type="hidden" name="desimage_path" value="${requestScope.dTb.desImagePath }">
-<input type="hidden" name="img" id="desupload"/><br>
+<input type="hidden" name="img" id="desupload" accept="image/*"/><br>
 <br>
 <div id="image" style='display:none;'> <img id="desimage" style='width:100px; height:100px;'> </div>
 
