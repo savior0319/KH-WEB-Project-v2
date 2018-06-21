@@ -20,14 +20,14 @@ import jsp.main.model.vo.PensionPicTb;
 @WebServlet(name = "RoomIntroduce", urlPatterns = { "/roomIntroduce" })
 public class RoomIntroduceServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
-    public RoomIntroduceServlet() {
-        super();
-        // TODO Auto-generated constructor stub
-    }
+
+	/**
+	 * @see HttpServlet#HttpServlet()
+	 */
+	public RoomIntroduceServlet() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
@@ -36,16 +36,11 @@ public class RoomIntroduceServlet extends HttpServlet {
 		DescriptionTb dTb = new MainService().introduce();
 		// 방 메인 사진 정보를 가지고 오는 로직
 		ArrayList<PensionPicTb> ppt = new MainService().room();
-		if(dTb!=null && !ppt.isEmpty())
-		{
-			RequestDispatcher view = request.getRequestDispatcher("/View/main/roomIntroduce.jsp");
-			request.setAttribute("dTb", dTb);
-			request.setAttribute("PensionPicTb", ppt);
-			view.forward(request, response);
-		}else
-		{
-			response.sendRedirect("/View/error/error.jsp");
-		}
+
+		RequestDispatcher view = request.getRequestDispatcher("/View/main/roomIntroduce.jsp");
+		request.setAttribute("dTb", dTb);
+		request.setAttribute("PensionPicTb", ppt);
+		view.forward(request, response);
 	}
 
 	/**
