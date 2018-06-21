@@ -242,28 +242,7 @@ table {
 				<input type="button" id="step3Reset" class="ui orange button" value="처음으로" onclick="back();" style="display:inline;"/>
 		</div>
 	</div>
-			</table>
-		</td>
-	</tr>
-
-</table>
-<form action="/reservationThirdStep" method="post" style="display:inline;"> <!-- 나중에 post로 바꾸기 지금은 확인해야댕 -->
-	<!-- res_no -->
-	<input type="hidden" name="loginId" value="<%=loginId%>" />
-	<input type="hidden" name="res_room_name" value="<%=pv.getPsName()%>" />
-	<input type="hidden" name="res_personnel" id="res_personnel" />
-	<!-- res_reservation_date -->
-	<input type="hidden" name="res_in_date" id="res_in_date" />
-	<input type="hidden" name="res_out_date" id="res_out_date" />
-	<input type="hidden" name="res_period" id="res_period" />
-	<input type="hidden" name="res_price" id="res_price" />
-	<input type="submit" id="step3Submit" class="ui blue button" value="예약하기" onclick="return submitForm();" style="display:inline;"/>		
-</form>
-<input type="button" id="step3Reset" class="ui orange button" value="처음으로" onclick="back();" style="display:inline;"/>
-</div>
-</div>
-
-
+			
 <!-- 푸터 -->
 <jsp:include page="/View/main/layout/footer.jsp"></jsp:include>
 <!-- 푸터 끝 -->
