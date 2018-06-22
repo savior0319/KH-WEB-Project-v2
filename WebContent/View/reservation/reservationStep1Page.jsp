@@ -34,7 +34,7 @@ MemberVo m = (MemberVo)session.getAttribute("member");
    gtag('js', new Date());
    gtag('config', 'UA-120156974-1');
  </script>
-
+ <script src='https://www.google.com/recaptcha/api.js'></script>
  <jsp:include page="/View/main/layout/cssjs.jsp"></jsp:include>
 
  <title>step1. 예약 날짜 선택</title>
@@ -61,76 +61,80 @@ table {
 	<jsp:include page="/View/main/layout/header.jsp"></jsp:include>
 	<!-- 헤더 끝 -->
 
-	<br>
-	<div class="ui container">
-		
-		<div class="ui four top attached steps">
-			<div class="active step">
-				<i class="calendar alternate outline icon"></i>
-				<div class="content">
-					<div class="title">예약 날짜 선택</div>
-					<div class="description"></div>
-				</div>
-			</div>
-			<div class="disabled step">
-				<i class="tasks icon"></i>
-				<div class="content">
-					<div class="title">예약 정보 선택</div>
-					<div class="description"></div>
-				</div>
-			</div>
-			<div class="disabled step">
-				<i class="won sign icon"></i>
-				<div class="content">
-					<div class="title">예약 확인 및 결제</div>
-					<div class="description"></div>
-				</div>
-			</div>
-			<div class="disabled step">
-				<i class="calendar check outline icon"></i>
-				<div class="content">
-					<div class="title">예약 완료</div>
-					<div class="description"></div>
-				</div>
-			</div>
-		</div>
+  <br>
+  <div class="ui container">
 
-    <div class="ui green message">
-     <i class="close icon"></i>
-     <div class="ui small header">※ 예약하시려면 아래에서 예약할 방을 선택해주세요.<br>예약은 오늘 부터 6개월까지만 가능합니다.</div></div>
-
-
-     <div class="ui red message" id="loginCheck" style="display: none">
-       <i class="close icon"></i>
-       <div class="ui small header">※ 예약하려면 로그인이 필요합니다.</div>
+    <div class="ui four top attached steps">
+     <div class="active step">
+      <i class="calendar alternate outline icon"></i>
+      <div class="content">
+       <div class="title">예약 날짜 선택</div>
+       <div class="description"></div>
      </div>
+   </div>
+   <div class="disabled step">
+    <i class="tasks icon"></i>
+    <div class="content">
+     <div class="title">예약 정보 선택</div>
+     <div class="description"></div>
+   </div>
+ </div>
+ <div class="disabled step">
+  <i class="won sign icon"></i>
+  <div class="content">
+   <div class="title">예약 확인 및 결제</div>
+   <div class="description"></div>
+ </div>
+</div>
+<div class="disabled step">
+  <i class="calendar check outline icon"></i>
+  <div class="content">
+   <div class="title">예약 완료</div>
+   <div class="description"></div>
+ </div>
+</div>
+</div>
 
-     <div class="ui center aligned basic segment">
-       <table class="ui orange table" id="calendar" border="1" align="center">
-         <thead>
-          <tr align="center">
-           <td>
-            <button class="ui inverted orange button" onclick="prevCalendar()">
-             <i class="angle left icon" style="margin: 0;"></i>
-           </button>
-         </td>
-         <td colspan="5" id="calendarYM"></td>
-         <td>
-          <button class="ui inverted orange button" onclick="nextCalendar()">
-           <i class="angle right icon" style="margin: 0;"></i>
-         </button>
-       </td>
-     </tr>
-     <tr align="center">
-      <th style="border-top: 0px;">일</th>
-      <th style="border-top: 0px;">월</th>
-      <th style="border-top: 0px;">화</th>
-      <th style="border-top: 0px;">수</th>
-      <th style="border-top: 0px;">목</th>
-      <th style="border-top: 0px;">금</th>
-      <th style="border-top: 0px;">토</th>
-    </tr>
-  </thead>
+<div class="ui green message">
+ <i class="close icon"></i>
+ <div class="ui small header">※ 예약하시려면 아래에서 예약할 방을 선택해주세요.<br>예약은 오늘 부터 6개월까지만 가능합니다.<br> 
+  <div style="margin-top: 15px;">
+   <button class="ui blue basic button" style="padding-top: 20px;"></button><span style="color : black"> = 예약가능한방 </span>
+   <button class="ui red basic button" style="padding-top: 20px; margin-left: 15px;"></button><span style="color : black"> = 예약중인방</span>
+ </div>
+</div></div>
+
+<div class="ui red message" id="loginCheck" style="display: none">
+ <i class="close icon"></i>
+ <div class="ui small header">※ 예약하려면 로그인이 필요합니다.</div>
+</div>
+
+<div class="ui center aligned basic segment">
+ <table class="ui orange table" id="calendar" border="1" align="center">
+   <thead>
+    <tr align="center">
+     <td>
+      <button class="ui inverted orange button" onclick="prevCalendar()">
+       <i class="angle left icon" style="margin: 0;"></i>
+     </button>
+   </td>
+   <td colspan="5" id="calendarYM"></td>
+   <td>
+    <button class="ui inverted orange button" onclick="nextCalendar()">
+     <i class="angle right icon" style="margin: 0;"></i>
+   </button>
+ </td>
+</tr>
+<tr align="center">
+  <th style="border-top: 0px;">일</th>
+  <th style="border-top: 0px;">월</th>
+  <th style="border-top: 0px;">화</th>
+  <th style="border-top: 0px;">수</th>
+  <th style="border-top: 0px;">목</th>
+  <th style="border-top: 0px;">금</th>
+  <th style="border-top: 0px;">토</th>
+</tr>
+</thead>
 
 
 </table>
@@ -147,12 +151,48 @@ table {
 
 <!-- 로그인 안했을 경우-->
 <div class="ui mini modal" id="needLogin">
-  <div class="header">로그인 필요</div>
+  <div class="header">로그인</div>
   <div class="content">
-    <p>예약 하시려면 로그인을 해주세요</p>
+    <label style="margin-left: 4px;">아이디</label>
+    <div class="ui input" style="margin-left: 10px;">
+      <input type="text" id="id" placeholder="아이디" maxlength="16">
+    </div>
+    <br><br>
+    <label>비밀번호</label>
+    <div class="ui input">
+      <input type="password" id="pwd" placeholder="비밀번호" maxlength="16">
+    </div>
+    <br><br>
+    <div class="ui centered grid">
+      <div id="recap" class="g-recaptcha" data-sitekey="6Lfrr18UAAAAAGd424fRQMeX4GYy6FjS7Af1V8tJ"></div>
+    </div>
   </div>
   <div class="actions">
-    <div class="ui blue cancel button" id="confirm">확인</div>
+    <div class="ui blue cancel button" id="confirm">로그인</div>
+    <div class="ui orange cancel button">취소</div>
+  </div>
+</div>
+
+<!-- recapcha 확인용-->
+<div class="ui mini modal" id="robot">
+  <div class="header">로그인 실패</div>
+  <div class="content">
+    <p>로봇이 아님을 인증하세요</p>
+  </div>
+  <div class="actions">
+    <div class="ui blue cancel button">확인</div>
+  </div>
+</div>
+
+
+<!-- 아이디 || 비밀번호 공백 일 경우 -->
+<div class="ui mini modal" id="blankModal">
+  <div class="header">로그인 실패</div>
+  <div class="content">
+    <p>아이디와 비밀번호를 모두 입력해주세요</p>
+  </div>
+  <div class="actions">
+    <div class="ui blue cancel button" id="termsModal">확인</div>
   </div>
 </div>
 
@@ -161,7 +201,7 @@ table {
 
  <%
       Calendar cal = Calendar.getInstance(); // 이전 달과 다음 달을 비교하기 위해 생성함
- %>
+      %>
 
    var today = new Date(<%=cal.get(Calendar.YEAR)%>, <%=cal.get(Calendar.MONTH) %>, <%= cal.get(Calendar.DATE)%>); // 달력이 넘어갈 때의 현재 시간
    var standardTime = new Date(<%=cal.get(Calendar.YEAR)%>, <%=cal.get(Calendar.MONTH) %>, <%= cal.get(Calendar.DATE)%>); // 실제 현재 시간
@@ -276,13 +316,13 @@ table {
                     } else { // 예약된 날짜가 월말 ~ 다음달 월초를 걸치는 경우
                        for(var p=i; p <= lastDate.getDate(); p++) { // 1. 월말
                     	   	   //console.log("월말: "+p);
-                            arr[p-1][j] = 1;
-                            if(p==(<%=calOut.get(Calendar.DATE)%>-1)) {
+                             arr[p-1][j] = 1;
+                             if(p==(<%=calOut.get(Calendar.DATE)%>-1)) {
                             	   //console.log("스탑");
                             	   break;
-                              }
-                            }
-                          }
+                               }
+                             }
+                           }
                     continue; // 다음 예약 정보로 넘어가기
                   }
 
@@ -295,19 +335,12 @@ table {
                         console.log("월초: "+p);
                         arr[p-1][j] = 1;
                     	   continue; // 다음 예약 정보로 넘어가기
-                       }
-
-                     }
-
-                   }
-
-                   <% } %>
-
-
-
-                 }
-               }
-
+                      }
+                    }
+                  }
+                  <% } %>
+                }
+              }
        // 지난 날짜인 경우
        for (var i = 1; i <= lastDate.getDate(); i++) {
          for(var j=0; j<<%=pvList.size()%>; j++) {
@@ -316,8 +349,6 @@ table {
           }
         }
       }
-
-
        //console.log(arr);
 
        // 출력
@@ -330,30 +361,28 @@ table {
           for(var j=0; j<<%=pvList.size()%>; j++) { // 객실 정보 테이블의 총 객실 수 만큼 반복(지금은 일단 6개로 지정) -> 수정
 
            if(arr[i-1][j] == 2) {
-            str += "<button class='mini ui red basic button' style='margin-bottom:3px; width:100%; opacity: 0; cursor: default; font-size:13px;'>기간만료</button><br>";
-          } else if(arr[i-1][j] == 1) {
-            str += "<button class='mini ui red basic button' style='margin-bottom:3px; width:100%; font-size:12px;'>"+psNameArr[j]+" X</button><br>";
+             str += "<button class='mini ui red basic button' style='margin-bottom:3px; width:100%; font-size:12px; opacity: 0; cursor: default; data-content='"+psNameArr[j]+"' id='testBtn"+[j]+"'>"+psNameArr[j]+"</button><br>";
+           } else if(arr[i-1][j] == 1) {
+            str += "<button class='mini ui red basic button' style='margin-bottom:3px; width:100%; font-size:12px; data-content='"+psNameArr[j]+"' id='testBtn"+[j]+"'>"+psNameArr[j]+"</button><br>";
           } else {
             	   <% if(m==null) { %> // 로그인 안됐을경우
-                 str += "<button class='mini ui blue basic button' style='margin-bottom:3px; width:100%; font-size:12px;' onclick='loginPlease();'>"+psNameArr[j]+" O</button><br>";
-                 <% } else { %>
-                  str += "<form action='/reservationSecondStep' method='post'>"
-                  + "<input type='hidden' name='year' value="+ today.getFullYear() +">"
-                  + "<input type='hidden' name='month' value="+ (today.getMonth()+1) +">"
-                  + "<input type='hidden' name='day' value="+ i +">"
-                  + "<input type='hidden' name='roomName' value="+psNameArr[j]+">"
-                  + "<input type='submit' class='mini ui blue basic button' value='"+psNameArr[j]+" O' style='margin-bottom:3px; width:100%; font-size:12px;'>"
-                  + "</form>";
-
-                  <% } %>
-                  
+                  str += "<button class='mini ui blue basic button' style='margin-bottom:3px; width:100%; font-size:12px;' onclick='loginPlease();' data-content='"+psNameArr[j]+"' id='testBtn"+[j]+"'>"+psNameArr[j]+"</button><br>";
+                  <% } else { %>
+                    str += "<form action='/reservationSecondStep' method='post'>"
+                    + "<input type='hidden' name='year' value="+ today.getFullYear() +">"
+                    + "<input type='hidden' name='month' value="+ (today.getMonth()+1) +">"
+                    + "<input type='hidden' name='day' value="+ i +">"
+                    + "<input type='hidden' name='roomName' value="+psNameArr[j]+">"
+                    + "<input type='submit' class='mini ui blue basic button' value='"+psNameArr[j]+" O' style='margin-bottom:3px; width:100%; font-size:12px;'>"
+                    + "</form>";
+                    <% } %>
+                  }
+                  $('#testBtn'+[j]).popup();
                 }
 
-              }
+                cell.innerHTML = "<h4>"+i+"</h4>"+str;
 
-              cell.innerHTML = "<h4>"+i+"</h4>"+str;
-
-              cnt = cnt + 1;
+                cnt = cnt + 1;
            if (cnt % 7 == 0) // 1주 = 7일
             row = calendar.insertRow();
         }
@@ -364,9 +393,41 @@ table {
         $('#needLogin').modal('show');
       }
 
+
       $('#confirm').click(function(){
-       location.href="/View/member/login.jsp";
-     });
+
+        var id = $('#id').val();
+        var pwd = $('#pwd').val();
+
+        if (id == "" || pwd == "") {
+          $('#blankModal')
+          .modal('show');
+          return false;
+        } else {
+          var auth = grecaptcha.getResponse();
+          if(auth.length == 0){
+            $('#robot').modal('show');
+            return false;
+          } else {
+            $.ajax({
+              url : '/loginImmediate',
+              type : 'POST',
+              data : {id : id, pwd : pwd},
+              success: function(data){
+                if(data == "1"){
+                  location.reload();
+                } else {
+                  alert('아이디 또는 비밀번호를 확인해주세요')
+                }
+              }, 
+              error : function(){
+                alert('서버 오류 (잠시 후 다시 시도 해주세요');
+              }
+            });
+
+          }
+        }
+      });
 
 
       $('.message .close')
@@ -378,5 +439,9 @@ table {
       })
       ;
       buildCalendar();
+
+
+
+
     </script>
     </html>
