@@ -9,6 +9,7 @@ import java.util.ArrayList;
 
 import jsp.board.model.vo.BoardVo;
 import jsp.board.model.vo.Comment;
+import jsp.board.model.vo.DataFile;
 import jsp.common.JDBCTemplate;
 
 public class BoardDao {
@@ -24,8 +25,8 @@ public class BoardDao {
 		int endTotalBoard = currentPage * listPerCountPage;
 
 		String query = "select * from"
-				   + " (select Board_tb.*, row_number() over(order by bd_no desc) as num from board_tb where BD_CATEGORY='공지') "
-				   + "where num between ? and ?";
+	               + " (select Board_tb.*, row_number() over(order by bd_no desc) as num from board_tb where BD_CATEGORY='공지사항') "
+	               + "where num between ? and ?";
 
 		ArrayList<BoardVo> list = new ArrayList<BoardVo>();
 
@@ -66,7 +67,7 @@ public class BoardDao {
 		PreparedStatement pstmt = null;
 		ResultSet rset = null;
 
-		String query = "select count(*) as TotalCount from board_tb where BD_CATEGORY='공지'";
+		String query = "select count(*) as TotalCount from board_tb where BD_CATEGORY='공지사항'";
 		try {
 			pstmt = conn.prepareStatement(query);
 			rset = pstmt.executeQuery();
@@ -889,5 +890,168 @@ public class BoardDao {
 		}
 		
 		return bv;
+	}
+	
+	public boolean reViewInsert(Connection conn, BoardVo bv) {
+		PreparedStatement pstmt = null;
+		int row = 0 ;
+		String query = "INSERT INTO BOARD_TB VALUES(BD_NO_SEQ.NEXTVAL,?,?,?,SYSDATE,DEFAULT,DEFAULT,?)";
+		boolean result = false;
+		
+		try {
+			pstmt = conn.prepareStatement(query);
+			pstmt.setString(1, bv.getBdName());
+			pstmt.setString(2, bv.getBdContents());
+			pstmt.setString(3, bv.getBdWriter());
+			pstmt.setString(4, bv.getBdCategory());
+			row = pstmt.executeUpdate();
+			if(row>0) {
+				result = true;
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally {
+			JDBCTemplate.close(pstmt);
+		}
+		
+		return result;
+	}
+
+	public BoardVo reViewSelectOne(Connection conn, BoardVo bv) {
+		PreparedStatement pstmt = null;
+		BoardVo newBv = null;
+		ResultSet rset = null;
+		
+		String query = "select * from board_tb where bd_name = ? and bd_contents=? and bd_writer=?";
+		
+			try {
+				pstmt = conn.prepareStatement(query);
+				pstmt.setString(1, bv.getBdName());
+				pstmt.setString(2, bv.getBdContents());
+				pstmt.setString(3, bv.getBdWriter());
+				
+				rset = pstmt.executeQuery();
+				if(rset.next()) {
+					newBv = new BoardVo();
+					newBv.setBdNo(rset.getInt("BD_NO"));
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}finally {
+				JDBCTemplate.close(rset);
+				JDBCTemplate.close(pstmt);
+				
+			}
+			
+		return newBv;
+	}
+
+	public boolean fileInsert(Connection conn, DataFile dataFile) {
+		PreparedStatement pstmt = null;
+		String query = "insert into board_file_tb values(BD_FILE_NO_SEQ.NEXTVAL,?,?,SYSDATE,?,0,?,?)";
+		int row = 0;
+		boolean result = false;
+		
+		try {
+			pstmt = conn.prepareStatement(query);
+			pstmt.setLong(1, dataFile.getBdFileSize());
+			pstmt.setString(2, dataFile.getBdFileName());
+			pstmt.setString(3, dataFile.getBdFileWriter());
+			pstmt.setString(4, dataFile.getBdFilePath());
+			pstmt.setInt(5, dataFile.getBdFilebdNo());
+			row = pstmt.executeUpdate();
+			if(row>0) {
+				result = true;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally {
+			JDBCTemplate.close(pstmt);
+		}
+		return result;
+	}
+
+	public int reviewUpdateImage(Connection conn, long fileSize, String afterPath, String afterFileName, String beforeFileName) {
+		PreparedStatement pstmt = null;
+		String query = "UPDATE BOARD_FILE_TB SET BD_FILE_SIZE=?, BD_FILE_NAME=?, BD_FILE_UPTIME=SYSDATE, BD_FILE_PATH=? WHERE BD_FILE_PATH=?";
+		int result = 0;
+		try {
+			pstmt = conn.prepareStatement(query);
+			pstmt.setLong(1, fileSize);
+			pstmt.setString(2, afterPath);
+			pstmt.setString(3, afterFileName);
+			pstmt.setString(4, beforeFileName);
+			result = pstmt.executeUpdate();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			JDBCTemplate.close(pstmt);
+		}
+		return result;
+	}
+
+	public int reviewDeleteImage(Connection conn, String deleteImage) {
+		PreparedStatement pstmt = null;
+		String query = "DELETE FROM BOARD_FILE_TB WHERE BD_FILE_PATH = ?";
+		int result = 0;
+		try {
+			pstmt = conn.prepareStatement(query);
+			pstmt.setString(1, deleteImage);
+			result = pstmt.executeUpdate();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			JDBCTemplate.close(pstmt);
+		}
+		return result;
+	}
+
+	public int deleteReview(Connection conn, int bdNo) {
+		PreparedStatement pstmt = null;
+		int result = 0;
+
+		String query = "delete from Board_tb where BD_NO=?";
+
+		try {
+			pstmt = conn.prepareStatement(query);
+			pstmt.setInt(1, bdNo);
+			result = pstmt.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			JDBCTemplate.close(pstmt);
+		}
+
+		return result;
+	}
+
+	public ArrayList<DataFile> deleteImageFile(Connection conn, int bdNo) {
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		ArrayList<DataFile> list = new ArrayList<DataFile>();
+		
+		String query = "SELECT * FROM BOARD_FILE_TB WHERE BD_FILE_BD_NO = ?";
+		
+		try {
+			pstmt = conn.prepareStatement(query);
+			pstmt.setInt(1, bdNo);
+			rset = pstmt.executeQuery();
+			while(rset.next())
+			{
+				DataFile df = new DataFile();
+				df.setBdFilePath(rset.getString("BD_FILE_PATH"));
+				list.add(df);
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			JDBCTemplate.close(rset);
+			JDBCTemplate.close(pstmt);
+		}
+		return list;
 	}
 }

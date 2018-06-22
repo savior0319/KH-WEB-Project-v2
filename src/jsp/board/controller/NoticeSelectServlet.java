@@ -10,6 +10,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import jsp.admin.model.service.AdminService;
+import jsp.admin.model.vo.BoardTotalInfoVo;
 import jsp.board.model.service.BoardService;
 import jsp.board.model.vo.BoardVo;
 import jsp.board.model.vo.Comment;
@@ -42,15 +44,15 @@ public class NoticeSelectServlet extends HttpServlet {
 		int hitsResult = new BoardService().hitsCount(bdNo);
 		
 		// 3. 비즈니스 로직(공지사항 내용)
-		BoardVo board = new BoardService().noticeSelect(bdNo);
+		BoardTotalInfoVo btlv = new AdminService().selectBoardOne(bdNo);
 
 		// 3. 비즈니스 로직(댓글 내용)
 		ArrayList<Comment> list = new BoardService().Comment(bdNo);
 		
 		// 4. View에 결과 출력
-		if (board != null && hitsResult>0) {
+		if (btlv != null && hitsResult>0) {
 			RequestDispatcher view = request.getRequestDispatcher("/View/board/noticeSelect.jsp");
-			request.setAttribute("board", board);
+			request.setAttribute("board", btlv);
 			request.setAttribute("comment", list);
 			view.forward(request, response);
 		} else {

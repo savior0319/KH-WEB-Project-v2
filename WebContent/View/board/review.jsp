@@ -127,7 +127,7 @@
 			<%
 			if(m != null) {
 			%>
-			<form action="/View/board/noticeWriteReady.jsp">
+			<form action="/View/board/reviewWriteReady.jsp">
 				<input type="submit" class="ui red button" value="글쓰기"> 
 			</form>
 			
