@@ -19,8 +19,8 @@ public class BoardService {
 	public Page selectAll(int currentPage) {
 		conn = JDBCTemplate.getConnect(conn);
 	
-		int recordCountPerPage = 5;
-		int naviCountPerPage = 4;
+		int recordCountPerPage = 10;
+		int naviCountPerPage = 5;
 		
 
 		ArrayList<BoardVo> list = new BoardDao().getNoticeCurrentPage(conn, currentPage, recordCountPerPage);
@@ -41,8 +41,8 @@ public class BoardService {
 	public Page searchNotice(int currentPage, String search, String searchOption) {
 		conn = JDBCTemplate.getConnect(conn);
 
-		int recordCountPerPage = 5;
-		int naviCountPerPage = 4;
+		int recordCountPerPage = 10;
+		int naviCountPerPage = 5;
 
 		ArrayList<BoardVo> list = new BoardDao().getSearchCurrentPage(conn, currentPage, recordCountPerPage,search,searchOption);
 		String pageCount = new BoardDao().getSearchPageCount(conn,currentPage,recordCountPerPage,naviCountPerPage,search,searchOption);
@@ -64,8 +64,8 @@ public class BoardService {
 	public Page searchReview(int currentPage, String search, String searchOption) {
 		conn = JDBCTemplate.getConnect(conn);
 
-		int recordCountPerPage = 5;
-		int naviCountPerPage = 4;
+		int recordCountPerPage = 10;
+		int naviCountPerPage = 5;
 
 		ArrayList<BoardVo> list = new BoardDao().getSearchReviewCurrentPage(conn, currentPage, recordCountPerPage,search,searchOption);
 		String pageCount = new BoardDao().getSearchReviewpageCount(conn,currentPage,recordCountPerPage,naviCountPerPage,search,searchOption);
@@ -208,8 +208,8 @@ public class BoardService {
 		Connection conn = null;
 		conn = JDBCTemplate.getConnect(conn);
 		
-		int recordCountPerPage = 5;
-		int naviCountPerPage = 4;
+		int recordCountPerPage = 10;
+		int naviCountPerPage = 5;
 		
 		ArrayList<BoardVo> list = new BoardDao().getReviewCurrentPage(conn, currentPage, recordCountPerPage);
 		String pageNavi = new BoardDao().getReviewPageNavi(conn, currentPage, recordCountPerPage, naviCountPerPage);
