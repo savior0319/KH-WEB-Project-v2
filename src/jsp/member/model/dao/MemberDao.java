@@ -51,7 +51,7 @@ public class MemberDao {
 			result = pstmt.executeUpdate();
 
 		} catch (SQLException e) {
-			e.printStackTrace();
+			System.out.println("");
 		} finally {
 			JDBCTemplate.close(pstmt);
 		}
