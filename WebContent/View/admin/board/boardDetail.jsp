@@ -103,7 +103,7 @@ $(document).ready(function(){
 var $imgList = $('#imglist');
 
 $imgList.on("change",function(e) {
-	//console.log(e);
+	
     var files = e.target.files; // FileList 객체
 	for(var i=0; i<files.length; i++){
  	 if(i===0)

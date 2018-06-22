@@ -48,7 +48,7 @@ public class AdminBoardResistServlet extends HttpServlet {
 		boolean isMultipart = ServletFileUpload.isMultipartContent(request);
 		
 		HttpSession session = request.getSession(false);
-		if(session != null && ((MemberVo)session.getAttribute("member")).getMbId().equals("thepension")) {
+		if(session != null &&((MemberVo)session.getAttribute("member"))!=null&& ((MemberVo)session.getAttribute("member")).getMbId().equals("thepension")) {
 
 		if (isMultipart) {  
 
@@ -123,11 +123,9 @@ public class AdminBoardResistServlet extends HttpServlet {
 
 				boolean result = new AdminService().boardInsert(btlv);
 
-				if (result) {
-					response.sendRedirect("/adminBoardList");
-				} else {
-					response.sendRedirect("/View/error/errorPage.jsp");
-				}
+				
+				response.sendRedirect("/adminBoardList");
+				
 				
 			} catch (FileUploadException e) {
 				// TODO Auto-generated catch block
@@ -140,7 +138,7 @@ public class AdminBoardResistServlet extends HttpServlet {
 
 
 		}else{
-			System.out.println("인코딩 타입이 multipart/form-data 가 아님.");
+			//System.out.println("인코딩 타입이 multipart/form-data 가 아님.");
 		}
 		
 		}else {

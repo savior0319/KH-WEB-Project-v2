@@ -49,21 +49,16 @@
 
 
 		<div class="ui center aligned segment">
-			<h3>
-				주소 : 서울 영등포구 선유동2로 57 (이레빌딩)
+			<div class="ui large header">주소 : 서울 영등포구 선유동2로 57 (이레빌딩)</div>
+			<div class="ui medium header">교통안내</div>
+			<div class="ui small header">
+				뛰어오는 고객 : 당산역 12번 출구 뛰어서 5분
 				<br>
-
-			</h3>
-			<h1>교통안내</h1>
-
-			<h3>
-				지하철 이용고객 :
+				걸어오는 고객 : 당산역 12번 출구 걸어서 10분
 				<br>
-				버스 이용고객 :
+				기어오는 고객 : 당산역 12번 출구 기어서 70분
 				<br>
-				승용차 이용고객 :
-				<br>
-			</h3>
+			</div>
 		</div>
 
 	</div>

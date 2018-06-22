@@ -42,8 +42,6 @@
 		<i class="user iternate icon"></i>
 	  	<div class="menu dropdown">
 	  		<a class="ui simple item" href="/adminMemberList">회원 관리</a>
-	  		<!-- todo : 일단은 블랙리스트는 제외 (쓸모를 못 느낀다는 의견이 많다.) -->
-	  		<!-- <a class="ui simple item" href="/View/admin/member/memberBlackList.jsp">블랙 리스트</a> -->
 	  		<a class="ui simple item" href="/adminMemberLog">회원 로그 내역 </a>
 	  	</div>
 	 </div>
@@ -51,8 +49,7 @@
 	 <div class="item">게시판
 		<i class="clipboard iternate icon"></i>
 	  	<div class="menu dropdown">
-	  	
-	  		<a class="ui simple item" href="/View/admin/board/boardManager.jsp">공지사항 관리</a>
+	  		<a class="ui simple item" href="/adminBoardList">공지사항 관리</a>
 	  		<a class="ui simple item" href="/adminQuestionList"> 1 : 1 문의</a>
 	  	</div>
 	 </div>

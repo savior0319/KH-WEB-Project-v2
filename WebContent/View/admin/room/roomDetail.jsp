@@ -78,7 +78,7 @@
 		  <div class="field">
 		  	<label>메인 사진 </label>
 		  	<!--  -->
-		  	<input type="file" name="input_main" onchange="mainImgPreview(this);" accept="image/*" required disabled="disabled" class="ableChange">
+		  	<input type="hidden" name="input_main" onchange="mainImgPreview(this);" accept="image/*" required class="ableChange">
 		  	<img class="ui image" id="main_img" src="<%=list.get(0).getPsPicPath()%>">
 		  </div>
 		  <!--  그 외 사진 설정 -->
@@ -89,7 +89,7 @@
 			<!--  사진 미리보기를 추가할 곳... -->
 			<!--  이 곳은 개선이 필요하다... -->
 				
-			<input type="file" class="ableChange" name="etc_img" onchange="etcImgPreview(this);" disabled="disabled" multiple="multiple"/>
+			<input type="hidden" class="ableChange" name="etc_img" onchange="etcImgPreview(this);" multiple="multiple"/>
 			<div id="etc_inputs" >
 				
 			</div>
@@ -98,18 +98,27 @@
 				  	<a href="javascript:void(0);" onclick="deleteImageAction(<%=i%>);" id="img_id_<%=i%>">
 				  		<img src="<%=list.get(i).getPsPicPath()%>"  class='ui image' ></a>
 				  	<% 
-				  	System.out.println(list.get(i).getPsPicPath());
+				  	
 				  	} %>
 			</div> 
 			
 					  
 		  </div>
 		  <!--  -->
-		 <input   type="submit" class="ui button" value="등록" onclick="return Check();" style="display: none" >
+		  <input   type="submit" class="ui button" value="등록" onclick="return Check();" style="display: none" >
 		  <input  type="reset" class="ui button" value="리셋" style="display: none">
 		</form>
 		<button class="ui button" onclick="goBack();" >뒤로</button>
-		<button class="ui button" onclick="ableChange();" >수정</button>
+		<button class="ui button" onclick="ableChange();" >글 수정</button>
+		<form action="/roomPicUpdateView" method="post" style="display:inline;">
+			<input type="hidden" name="roonNameModi" value="<%=pv.getPsName()%>">
+			<input type="submit" class="ui button" value="사진 수정"/>
+		</form>
+		<form action="/roomPicDeleteView" method="post" style="display:inline;">
+			<input type="hidden" name="roonNameModi" value="<%=pv.getPsName()%>">
+			<input type="submit" class="ui button" value="사진 삭제"/>
+		</form>
+		
     </div>
     <!-- 본문 내용 끝  -->
     <%} %>
@@ -130,20 +139,19 @@ function ableChange(){
 	var $noFile = $('.ableChange').not('[type=file]');
 	var $submit = $('input.button').not('.ableChange');
 
-	//console.log($file);
-	//console.log($noFile);
+	
 	
 	$noFile.each(function(){
-		//console.log(this);
+		
 		$(this).attr("readonly",false);
 	});
 	
 	$file.each(function(){
 		$(this).attr("disable",false);
 	});
-	//console.log($submit);
+	
 	$submit.each(function(){
-		$(this).css();
+		$(this).css('display','');
 	});
 	
 }
@@ -153,8 +161,7 @@ function mainImgPreview(input){
 		  var reader = new FileReader();          
 		  reader.onload = function (e) {        
 		   $('#main_img').attr('src', e.target.result);             
-		   //id = "bImgPreview" 에 img 태그 src를 해당 이미지 url로 변경한다  span안에 img 태그 있을경우!  하지만 위에는 없음..
-			//​$('#bImgPreview').html('<img src="'+e.target.result+'">');  난요런식으로 응용	​
+		  
 		  }                    
 		  reader.readAsDataURL(input.files[0]);
 		 }

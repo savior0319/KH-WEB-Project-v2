@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import jsp.admin.model.service.AdminService;
+import jsp.admin.model.vo.QuestionPageVo;
 import jsp.member.model.vo.QuestionVo;
 
 /**
@@ -32,14 +33,27 @@ public class AdminQuestionListServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		//response.getWriter().append("Served at: ").append(request.getContextPath());
-		request.setCharacterEncoding("utf-8");
 		
-		ArrayList<QuestionVo> list = new AdminService().questionList();
+		request.setCharacterEncoding("utf-8");
+		int currentPage =0;
+		String searchData = request.getParameter("searchData");
+		String searchOption = request.getParameter("searchOption");
+		if(request.getParameter("currentPage") == null) {
+			currentPage = 1;
+		}else {
+			currentPage = Integer.parseInt(request.getParameter("currentPage"));
+		}
+		QuestionPageVo qpv = null;
+		if(searchData != null && searchOption != null) {
+			qpv = new AdminService().questionList(currentPage,searchData,searchOption);
+		}else {
+			qpv = new AdminService().questionList(currentPage);
+		}
+		
+		//ArrayList<QuestionVo> list = new AdminService().questionList();
 		
 		RequestDispatcher view = request.getRequestDispatcher("/View/admin/board/boardQuestion.jsp");
-		request.setAttribute("qList", list);
+		request.setAttribute("qList", qpv);
 		view.forward(request, response);
 	}
 

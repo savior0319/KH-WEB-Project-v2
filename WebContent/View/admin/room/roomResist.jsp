@@ -115,6 +115,7 @@ $(document).ready(function(){
 var index = 0; // 이름을 구분하기 위해서 index 추가 ...
 // 메인 사진 미리보기
 function mainImgPreview(input){
+	$('#main_img').attr('src',"");
 	 if (input.files && input.files[0]) {           //파일존재할시 
 		  var reader = new FileReader();          
 		  reader.onload = function (e) {        
@@ -134,31 +135,12 @@ function addImg(){
 	return false;
 }
 
-// 기타 이미지의 미리보기 제공
-/* function etcImgPreview(input){
-
-	 if (input.files && input.files[0]) {           //파일존재할시 
-		 $("#etc_preview").html("");
-		 var reader = new FileReader();          
-		 reader.onload = function (e) {        
-	     
-	     	
-		     for(var i = 0 ; i < input.files.length;i++){
-		    	 var html = "<a href=\"javascript:void(0);\" onclick=\"deleteImageAction("+i+")\" id=\"img_id_"+i+"\"><img src=\"" + e.target.result + "\"  class='ui image' ></a>";
-			     $("#etc_preview").append(html);
-		     }
-		  }
-		 for(var i = 0 ; i < input.files.length;i++){
-		 		reader.readAsDataURL(input.files[i]);
-		 }
-	}
-} */
 </script>
 <script type="text/javascript">
 	var $etc_img = $('#etc_img');
-	//console.log($etc_img);
+	
 	$etc_img.on("change",function(e) {
-		//console.log(e);
+		$('#etc_preview').html("");
 	    var files = e.target.files; // FileList 객체
 		for(var i=0; i<files.length; i++){
 	 	 if(i===0)

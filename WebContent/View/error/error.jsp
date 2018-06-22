@@ -16,7 +16,7 @@
 	gtag('config', 'UA-120156974-1');
 </script>
 <jsp:include page="/View/main/layout/cssjs.jsp"></jsp:include>
-<title>템플릿</title>
+<title>에러페이지</title>
 </head>
 
 <style>
@@ -29,7 +29,40 @@
 
 	<!-- 본문 시작 -->
 	<div class="ui container">
-		<h1>에러페이지</h1>
+		
+		
+		
+		<br><br>
+		<div class="ui attached form centered">
+			<div class="ui center aligned segment">
+				<br><br><br>
+				<div class="ui icon message" style="width: 80%; margin: 0 auto;">
+					<i class="frown icon"></i>
+					<div class="content">
+						<div class="header">
+							<h1>
+								죄송합니다.
+							</h1>
+						</div>
+					</div>
+				</div>
+				<br>
+				<div class="ui large message" style="width: 80%; margin: 0 auto;">
+					<br>
+					<h2>정상처리되지 못한 페이지입니다.</h2>
+					<h4>메인화면에서 다시 이용 부탁드립니다.</h4>
+					<br>
+				</div>
+				<button type="button" class="ui blue button" style="margin-top: 60px;" id="mainPageGo">메인화면으로</button>
+				<br>
+				<br><br><br><br>
+			</div>
+		</div>
+		
+		
+		
+		
+		
 	</div>
 	<!-- 본문 끝 -->
 
@@ -38,8 +71,10 @@
 	<!-- 푸터 끝 -->
 </body>
 
-<script>
-	
+<script type="text/javascript">
+	$('#mainPageGo').click(function(){
+		location.href="/index.jsp";
+	});
 </script>
 
 </html>

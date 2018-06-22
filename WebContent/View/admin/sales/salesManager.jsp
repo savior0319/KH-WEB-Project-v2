@@ -1,6 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ page import="java.util.*,jsp.admin.model.vo.*,jsp.reservation.model.vo.*" %>
+<%
+	SalesPageVo spv = (SalesPageVo)request.getAttribute("SalesPage");
+	String searchData = request.getParameter("searchData"); 
+	String searchOption = request.getParameter("searchOption");
+%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -28,14 +33,20 @@
     <div class="ui container">
 	  <!-- 테이블 시작 -->
     	<h1>매출 리스트</h1>
-    	   <%
-				SalesPageVo spv = (SalesPageVo)request.getAttribute("SalesPage");
-				if(spv != null){
-			 	ArrayList<SalesVo> slist = spv.getList();
-			 	String pageNavi = spv.getPageNavi();	// navi 리스트 
-			 	String searchData = request.getParameter("searchData");
-			 	
-			%> 	
+    	  <form class="ui segment "action="/adminSalesManager" method="post" style="display: inline;">
+		 	<select name="searchOption">
+		 		<% if(searchOption==null||searchOption.equals("SALES_ID")){ %>
+		 			 <option value="SALES_ID" selected="selected">아이디</option>
+			    	 <option value="SALES_RESERVATION_NO">에약번호</option>
+		 		<%}else{%>
+			     	 <option value="SALES_ID" >아이디</option>
+			    	 <option value="SALES_RESERVATION_NO" selected="selected">에약번호</option>
+			    <% } %>
+			</select>
+			
+			 <input type="text" name="searchData" value=<%=searchData %> >
+			 <input type="submit" value="검색">
+		 </form>
     	<table class="ui celled table">
 		  <thead>
 		    <tr>
@@ -48,8 +59,12 @@
 		  </thead>
 		  <!--  객실 관리   -->
 		  <!--  이 부분에 추가  -->
-		   
+		  <%if(spv != null){
+			 	ArrayList<SalesVo> slist = spv.getList();
+			 	String pageNavi = spv.getPageNavi();	// navi 리스트 
+			%> 
   		  <tbody>
+  		  
   		  <%if(slist != null && !slist.isEmpty()){ %>
 		   	<%for(SalesVo s : slist){ %>
 		   	<tr>
@@ -62,39 +77,17 @@
 		   	<%} %>
 		   <%} %>
 		  </tbody>
-		  <!--  페이지 처리를 하는 부분. -->
-		 
-		  <!-- <tfoot>
-		    <tr>
-		    <th colspan="3">
-		      <div class="ui right floated pagination menu">
-		        <a class="icon item">
-		          <i class="left chevron icon"></i>
-		        </a>
-		        <a class="item">1</a>
-		        <a class="item">2</a>
-		        <a class="item">3</a>
-		        <a class="item">4</a>
-		        <a class="icon item">
-		          <i class="right chevron icon"></i>
-		        </a>
-		      </div>
-		    </th>
-		  </tr>
-		  </tfoot> -->
+		  <tfoot>
+			    <tr>
+			     <th colspan="4">
+			      <div class="ui segment">
+			       <%= pageNavi %>
+			      </div>
+			    </th>
+			  </tr>
+		  </tfoot>
 		</table>
-		<label><%= pageNavi %></label><br>
-		 <!-- <form action="searchNotice" method="post" style="display: inline;">
-		 <input type="text" name="searchData" >
-		 <input type="submit" value="검색">
-		 </form> -->
-		
-    	<!--  테이블 끝 -->
-    	<% }else{ %>
-    	<hr/>
-    	<h3>정보가 없습니다.</h3>
-    	<hr/>
-    	<% } %>
+		<%} %>
     </div>
     <!-- 본문 내용 끝  -->
   </div>

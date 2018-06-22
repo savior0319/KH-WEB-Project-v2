@@ -43,7 +43,7 @@ public class AdminReservationDetailServlet extends HttpServlet {
 		int year = Integer.parseInt(request.getParameter("year"));
 		int month = Integer.parseInt(request.getParameter("month"));
 		int day = Integer.parseInt(request.getParameter("day"))+1;	// 1씩 차이가 난다.
-		System.out.println(year+" : "+month+" : "+day);
+		
 		String roomName = request.getParameter("roomName");
 		
 		String from = year+"-"+month+"-"+day;
@@ -54,8 +54,7 @@ public class AdminReservationDetailServlet extends HttpServlet {
 		try {
 			comDate = (Date)transFormat.parse(from);
 			java.sql.Date sqlDate = new java.sql.Date(comDate.getTime());
-			//System.out.println(comDate);
-			System.out.println(sqlDate);
+			
 			
 			ReservationVo rv = new AdminService().selectOneReservation(roomName, sqlDate);
 			

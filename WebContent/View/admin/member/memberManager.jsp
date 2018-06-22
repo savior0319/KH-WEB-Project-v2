@@ -1,7 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ page import="java.util.*,jsp.admin.model.vo.*,jsp.member.model.vo.*" %>
-
+<%
+	MemberPageVo mpv = (MemberPageVo) request.getAttribute("MemberPage");
+	String searchData = request.getParameter("searchData");
+	String searchOption = request.getParameter("searchOption");
+%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -21,14 +25,33 @@
     <div class="ui container">
     	<!-- 테이블 시작 -->
     	<h1>회원 리스트</h1>
-    	   <%
-				MemberPageVo mpv = (MemberPageVo)request.getAttribute("MemberPage");
-				if(mpv != null){
-			 	ArrayList<MemberVo> mlist = mpv.getList();
-			 	String pageNavi = mpv.getPageNavi();	// navi 리스트 
-			 	String searchData = request.getParameter("searchData");
-			 	
-			%> 	
+    	<div class="ui segment">
+    	<form action="/adminMemberList" method="post" style="display: inline;">
+    		<!--  검색 옵션 -->
+		 	<select name="searchOption">
+		 		<% if(searchOption==null||searchOption.equals("MB_ID")){ %>
+		 			 <option value="MB_ID" selected="selected">아이디</option>
+			    	 <option value="MB_ADDRESS">주소</option>
+			    	 <option value="MB_NAME">이름</option>
+		 		<%}else if(searchOption.equals("MB_ADDRESS")){%>
+		 			 <option value="MB_ID" >아이디</option>
+			    	 <option value="MB_ADDRESS" selected="selected">주소</option>
+			    	 <option value="MB_NAME">이름</option>
+		 		<%}else{%>
+			     	 <option value="MB_ID" selected="selected">아이디</option>
+			    	 <option value="MB_ADDRESS">주소</option>
+			    	 <option value="MB_NAME" selected="selected">이름</option>
+			    <% } %>
+			</select>
+			
+			 <input type="text" name="searchData" value=<%=searchData %> >
+			 <input type="submit" value="검색">
+		 </form>
+		 <!--  엑셀 다운로드 -->
+    	  <form  method="post" action="/memberListDown" style="display:inline" >
+    	  	<input class="ui buton" type="submit" value="다운">
+    	  </form>
+    	  </div> 
     	<table class="ui celled table">
 		  <thead>
 		    <tr>
@@ -46,7 +69,13 @@
 		  </thead>
 		  <!--  객실 관리   -->
 		  <!--  이 부분에 추가  -->
-		   
+
+		<% 
+		  if(mpv != null){
+			 	ArrayList<MemberVo> mlist = mpv.getList();
+			 	String pageNavi = mpv.getPageNavi();	// navi 리스트 
+			 	
+		 %> 	
   		  <tbody>
   		  <%if(mlist != null && !mlist.isEmpty()){ %>
 		   	<%for(MemberVo m : mlist){ %>
@@ -63,40 +92,21 @@
 		   	</tr>
 		   	<%} %>
 		   <%} %>
-		  </tbody>
-		  <!--  페이지 처리를 하는 부분. -->
-		 
-		  <!-- <tfoot>
-		    <tr>
-		    <th colspan="3">
-		      <div class="ui right floated pagination menu">
-		        <a class="icon item">
-		          <i class="left chevron icon"></i>
-		        </a>
-		        <a class="item">1</a>
-		        <a class="item">2</a>
-		        <a class="item">3</a>
-		        <a class="item">4</a>
-		        <a class="icon item">
-		          <i class="right chevron icon"></i>
-		        </a>
-		      </div>
-		    </th>
-		  </tr>
-		  </tfoot> -->
+		   <tfoot>
+			    <tr>
+			     <th colspan="8">
+			      <div class="ui segment">
+			       <%= pageNavi %>
+			      </div>
+			    </th>
+			  </tr>
+		  </tfoot>
 		</table>
-		<label><%= pageNavi %></label><br>
-		 <!-- <form action="searchNotice" method="post" style="display: inline;">
-		 <input type="text" name="searchData" >
-		 <input type="submit" value="검색">
-		 </form> -->
+		<% }%>
 		
-    	<!--  테이블 끝 -->
-    	<% }else{ %>
-    	<hr/>
-    	<h3>회원이 없습니다.</h3>
-    	<hr/>
-    	<% } %>
+		 
+    	
+    	
     </div>
     <!-- 본문 내용 끝  -->
   </div>
