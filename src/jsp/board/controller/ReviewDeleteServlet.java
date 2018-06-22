@@ -44,28 +44,26 @@ public class ReviewDeleteServlet extends HttpServlet {
 		for(int i=0; i<list.size(); i++)
 		{
 			File file = new File(getServletContext().getRealPath("/")+list.get(i).getBdFilePath());
-			 file.delete();
+			file.delete();
 		}
-		if(!list.isEmpty()) {
+		int result = 0; // 게시글 삭제
+		int result1 = new BoardService().deleteCommentNotice(bdNo); // 댓글 삭제
+		if(session.getAttribute("member")!=null) {
 
-			int result = 0; // 게시글 삭제
-			int result1 = new BoardService().deleteCommentNotice(bdNo); // 댓글 삭제
-			if(session.getAttribute("member")!=null) {
-
-				if(result1>-1) { // 댓글 삭제가 성공하면
-					result = new BoardService().deleteReview(bdNo); // 글 삭제 진행
-					if(result>0) { //게시글삭제가 성공하면
-						response.sendRedirect("/review");
-					}else {//게시글 삭제가 실패하면
-						response.sendRedirect("/View/error/error.jsp");
-
-					}
-				} else {
+			if(result1>-1) { // 댓글 삭제가 성공하면
+				result = new BoardService().deleteReview(bdNo); // 글 삭제 진행
+				if(result>0) { //게시글삭제가 성공하면
+					response.sendRedirect("/review");
+				}else {//게시글 삭제가 실패하면
 					response.sendRedirect("/View/error/error.jsp");
-					System.out.println("댓글삭제 실패");
+
 				}
+			} else {
+				response.sendRedirect("/View/error/error.jsp");
+				System.out.println("댓글삭제 실패");
 			}
 		}
+
 	}
 
 	/**
