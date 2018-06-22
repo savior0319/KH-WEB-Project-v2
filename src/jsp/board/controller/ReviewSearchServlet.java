@@ -13,22 +13,31 @@ import jsp.board.model.service.BoardService;
 import jsp.board.model.vo.Page;
 
 /**
- * Servlet implementation class BoardServlet
+ * Servlet implementation class ReviewSearchServlet
  */
-@WebServlet(name = "Search", urlPatterns = { "/search" })
-public class SearchServlet extends HttpServlet {
+@WebServlet(name = "ReviewSearch", urlPatterns = { "/reviewSearch" })
+public class ReviewSearchServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+       
+    /**
+     * @see HttpServlet#HttpServlet()
+     */
+    public ReviewSearchServlet() {
+        super();
+        // TODO Auto-generated constructor stub
+    }
 
-	public SearchServlet() {
-		super();
-	}
-
+	/**
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.setCharacterEncoding("utf-8");
 		String search = request.getParameter("search");
 		String searchOption = request.getParameter("searchOption");
 
-		//System.out.println("searchOption값 : "+searchOption);
+
+		System.out.println("searchOption값 : "+searchOption);
+
 
 		int currentPage;
 		if(request.getParameter("currentPage")==null) {
@@ -37,16 +46,19 @@ public class SearchServlet extends HttpServlet {
 			currentPage = Integer.parseInt(request.getParameter("currentPage"));
 		}
 
-		Page page = new BoardService().searchNotice(currentPage,search,searchOption);
+		Page page = new BoardService().searchReview(currentPage,search,searchOption);
 
-		RequestDispatcher view = request.getRequestDispatcher("/View/board/noticeSearch.jsp");
+
+		RequestDispatcher view = request.getRequestDispatcher("/View/board/reviewSearch.jsp");
 		request.setAttribute("Page", page); 
 		view.forward(request, response);
 	}
 
-
-
+	/**
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// TODO Auto-generated method stub
 		doGet(request, response);
 	}
 

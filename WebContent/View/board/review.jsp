@@ -20,7 +20,7 @@
 		gtag('config', 'UA-120156974-1');
 	</script>
 	<jsp:include page="/View/main/layout/cssjs.jsp"></jsp:include>
-	<title>공지사항</title>
+	<title>고객후기</title>
 </head>
 
 <style>
@@ -41,7 +41,7 @@
 				<div class="content">
 					<div class="header">
 						<h1>
-							공지사항
+							고객후기
 						</h1>
 					</div>
 				</div>
@@ -55,6 +55,7 @@
 							<th width="380">제목</th>
 							<th width="70">작성자</th>
 							<th width="160">작성일</th>
+							<th width="60">추천수</th>
 							<th width="60">조회수</th>
 						</tr>
 					</thead>
@@ -64,7 +65,7 @@
 					%>
 					<tbody> 
 						<tr>
-							<td colspan="5" class="ui center aligned basic segment">등록된 게시물이 없습니다.</td>
+							<td colspan="6" class="ui center aligned basic segment">등록된 게시물이 없습니다.</td>
 						</tr>
 					</tbody>
 					<%
@@ -83,10 +84,11 @@
 						<tr>
 							<td><%=b.getBdNo()%></td>
 							<td>
-								<a href="/reviewSelect?bdNo=<%=b.getBdNo()%>" style="font-weight: 600;">[공지] <%=b.getBdName()%></a>
+								<a href="/reviewSelect?bdNo=<%=b.getBdNo()%>" style="font-weight: 600;">[후기] <%=b.getBdName()%></a>
 							</td>
 							<td><%=b.getBdWriter()%></td>
 							<td><%=date%></td>
+							<td><%=b.getBdRecommendCount() %></td>
 							<td><%=b.getBdViewCount()%></td>
 						</tr>
 					</tbody>
@@ -95,7 +97,7 @@
 						}
 					%>
 					<tfoot>
-   						<tr><th colspan="5">
+   						<tr><th colspan="6">
       					<div class="ui right floated pagination menu">
 					        <%=getPageCount%>
 					    </div>
@@ -108,7 +110,7 @@
 					
 			</table>
 			
-			<form action="/search" method="get" style="display:inline;">
+			<form action="/reviewSearch" method="get" style="display:inline;">
 				<select name="searchOption" style="width:80px;">
                		<option value="title" selected>제목</option>
                		<option value="contents">내용</option>

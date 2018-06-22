@@ -45,7 +45,7 @@ public class CommentDeleteServlet extends HttpServlet {
 			int result = new BoardService().deleteComment(CM_NO);
 			// 4.view를 통하여 출력
 			if (result > 0) {// 삭제가 성공할경우
-				response.sendRedirect("/noticeSelect?bdNo=" + CM_BD_NO);
+				response.sendRedirect("/reviewSelect?bdNo=" + CM_BD_NO);
 			} else { // 삭제 실패한경우
 				response.sendRedirect("/View/error/error.jsp");
 			}

@@ -15,7 +15,7 @@ public class BoardDao {
 	public BoardDao() {
 	}
 
-	public ArrayList<BoardVo> getCurrentPage(Connection conn, int currentPage, int listPerCountPage) {
+	public ArrayList<BoardVo> getNoticeCurrentPage(Connection conn, int currentPage, int listPerCountPage) {
 		PreparedStatement pstmt = null;
 		ResultSet rset = null;
 
@@ -24,8 +24,8 @@ public class BoardDao {
 		int endTotalBoard = currentPage * listPerCountPage;
 
 		String query = "select * from"
-				+ " (select Board_tb.*, row_number() over(order by bd_no desc) as num from board_tb) "
-				+ "where num between ? and ?";
+				   + " (select Board_tb.*, row_number() over(order by bd_no desc) as num from board_tb where BD_CATEGORY='공지') "
+				   + "where num between ? and ?";
 
 		ArrayList<BoardVo> list = new ArrayList<BoardVo>();
 
@@ -34,17 +34,22 @@ public class BoardDao {
 			pstmt.setInt(1, startTotalBoard);
 			pstmt.setInt(2, endTotalBoard);
 			rset = pstmt.executeQuery();
-
+			
 			while (rset.next()) {
-				BoardVo board = new BoardVo();
-				board.setBdNo(rset.getInt("BD_NO"));
-				board.setBdName(rset.getString("BD_NAME"));
-				board.setBdCategory(rset.getString("BD_CATEGORY"));
-				board.setBdContents(rset.getString("BD_CONTENTS"));
-				board.setBdWriter(rset.getString("BD_WRITER"));
-				board.setBdWriteDate(rset.getTimestamp("BD_WRITE_DATE"));
-				board.setBdViewCount(rset.getInt("BD_VIEW_COUNT"));
-				list.add(board);
+				BoardVo bv = new BoardVo();
+				
+				bv.setBdNo(rset.getInt("BD_NO"));
+				bv.setBdName(rset.getString("BD_NAME"));
+				bv.setBdContents(rset.getString("BD_CONTENTS"));
+				bv.setBdWriter(rset.getString("BD_WRITER"));
+				bv.setBdWriteDate(rset.getTimestamp("BD_WRITE_DATE"));
+				bv.setBdViewCount(rset.getInt("BD_VIEW_COUNT"));
+				bv.setBdRecommendCount(rset.getInt("BD_RECOMMEND_COUNT"));
+				bv.setBdCategory(rset.getString("BD_CATEGORY"));
+				
+				
+				
+				list.add(bv);
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -55,13 +60,13 @@ public class BoardDao {
 		return list;
 	}
 
-	public String getPageCount(Connection conn, int currentPage, int listPerCountPage, int countPerPage) {
+	public String getNoticePageCount(Connection conn, int currentPage, int listPerCountPage, int countPerPage) {
 		// 게시물 총개수
 		int TotalCount = 0;
 		PreparedStatement pstmt = null;
 		ResultSet rset = null;
 
-		String query = "select count(*) as TotalCount from board_tb";
+		String query = "select count(*) as TotalCount from board_tb where BD_CATEGORY='공지'";
 		try {
 			pstmt = conn.prepareStatement(query);
 			rset = pstmt.executeQuery();
@@ -106,39 +111,191 @@ public class BoardDao {
 		}
 
 		StringBuilder sb = new StringBuilder();
+		
+		if(gotoPrev) { // 시작이 1페이지가 아니라면
+			sb.append("<a class='item' href='/board?currentPage=" + (startCount - 1) + "'><i class='left chevron icon'></i></a>");
+		}
+		
+		for(int i=startCount; i<=endCount; i++) {
+			if(i == currentPage) {
+				sb.append("<a class='item' href='/board?currentPage=" + i + "'><b> " + i + " </b></a>");
+			}
+			else {
+				sb.append("<a class='item' href='/board?currentPage=" + i + "'> " + i + " </a>");
+			}
+		}
+		
+		if(gotoNext) { // 끝 페이지가 아니라면
+			sb.append("<a class='item' href='/board?currentPage=" + (endCount + 1) + "'><i class='right chevron icon'></i></a>"); 
+		}
+		
+		return sb.toString();
+	}
+
+	public ArrayList<BoardVo> getSearchCurrentPage(Connection conn, int currentPage, int listPerCountPage,
+			String search, String searchOption) {
+		 //PreparedStatement pstmt =null;
+		   Statement stmt = null;
+		   ResultSet rset = null;
+		   String option = null;
+		   // 시작 ,끝 게시물
+		   int startTotalBoard = currentPage * listPerCountPage - (listPerCountPage-1);
+		   int endTotalBoard = currentPage*listPerCountPage;
+		   
+		   if(searchOption.equals("title")) {
+		      option = "BD_NAME";
+		   }else if (searchOption.equals("contents")) {
+		      option = "BD_CONTENTS";
+		   }else if (searchOption.equals("writer")) {
+		      option = "BD_WRITER";
+		   }
+		   
+		   //System.out.println("option값:"+option);
+		   
+		   
+		   String query = "select * from"
+		   + " (select Board_tb.*, row_number() over(order by bd_no desc) as num from board_tb where "+option+" like '%" + search + "%') "
+		   + "where num between " + startTotalBoard +" and " + endTotalBoard +" and BD_CATEGORY='공지'";
+
+		   System.out.println(query);
+		   
+		ArrayList<BoardVo> list = new ArrayList<BoardVo>();
+
+		try {
+			stmt = conn.prepareStatement(query);
+			rset = stmt.executeQuery(query);
+
+			while (rset.next()) {
+				BoardVo board = new BoardVo();
+				board.setBdNo(rset.getInt("BD_NO"));
+				board.setBdName(rset.getString("BD_NAME"));
+				board.setBdCategory(rset.getString("BD_CATEGORY"));
+				board.setBdContents(rset.getString("BD_CONTENTS"));
+				board.setBdWriter(rset.getString("BD_WRITER"));
+				board.setBdWriteDate(rset.getTimestamp("BD_WRITE_DATE"));
+				board.setBdViewCount(rset.getInt("BD_VIEW_COUNT"));
+				list.add(board);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			JDBCTemplate.close(rset);
+			JDBCTemplate.close(stmt);
+			
+			System.out.println(list);
+			
+		}
+		return list;
+	}
+
+	public String getSearchPageCount(Connection conn, int currentPage, int listPerCountPage, int countPerPage,
+			String search, String searchOption) {
+		int TotalCount = 0; //게시물
+		   
+		   ResultSet rset = null;
+		   Statement stmt = null;
+		   String option = null;
+		   //System.out.println("dao : " +searchOption);
+		   if(searchOption.equals("title")) {
+		      option = "BD_NAME";
+		   }else if(searchOption.equals("contents")){
+		      option = "BD_CONTENTS";
+		   }else if(searchOption.equals("writer")) {
+		      option = "BD_WRITER";
+		   }
+		   
+		   String query = "select count(*) as totalCount from Board_TB where "+ option +" like '%" +search + "%' and BD_CATEGORY='공지'";
+		   //System.out.println(query);
+		   try {
+		      stmt = conn.createStatement();
+		      rset = stmt.executeQuery(query);
+
+			if (rset.next()) {
+				TotalCount = rset.getInt("totalCount");
+			}
+		} catch (SQLException e) {
+
+			e.printStackTrace();
+		} finally {
+			JDBCTemplate.close(rset);
+			JDBCTemplate.close(stmt);
+		}
+		int pageTotalCount = 0;
+
+		if (TotalCount % listPerCountPage != 0) {
+			pageTotalCount = TotalCount / listPerCountPage + 1;
+		} else {
+			pageTotalCount = TotalCount / listPerCountPage;
+		}
+
+		if (currentPage < 1) {
+			currentPage = 1;
+		} else if (currentPage > pageTotalCount) {
+			currentPage = pageTotalCount;
+		}
+
+		int startCount = ((currentPage - 1) / countPerPage) * countPerPage + 1;
+		int endCount = startCount + countPerPage - 1;
+
+		if (endCount > pageTotalCount) {
+			endCount = pageTotalCount;
+		}
+
+		boolean gotoPrev = true;
+		boolean gotoNext = true;
+		if (startCount == 1) {
+			gotoPrev = false;
+		}
+		if (endCount == pageTotalCount) {
+			gotoNext = false;
+		}
+
+		StringBuilder sb = new StringBuilder();
+
 		if (gotoPrev) {
-			sb.append("<a href='/board?currentPage=" + (startCount - 1) + "'> ◀ </a>'");
+			sb.append("<a class='item' href='/search?searchOption="+searchOption+"&search=" + search + "&currentPage=" + (startCount - 1) + "'><i class='left chevron icon'></i></a>");
 
 		}
 
 		for (int i = startCount; i <= endCount; i++) {
 			if (i == currentPage) {
-				sb.append("<a href='/board?currentPage=" + i + "'><b> " + i + " </b></a>");
+				sb.append("<a class='item' href='/search?searchOption="+searchOption+"&search=" + search + "&currentPage=" + i + "'><b>" + i + "</b></a>");
 
 			} else {
-				sb.append("<a href='/board?currentPage=" + i + "'> " + i + " </a>");
+				sb.append("<a class='item' href='/search?searchOption="+searchOption+"&search="+search+"&currentPage=" + i + "'>" + i + "</a>");
 			}
 		}
 		if (gotoNext) {
-			sb.append("<a href='/board?currentPage=" + (endCount + 1) + "'> ▶ </a>'");
+			sb.append("<a class='item' href='/search?searchOption="+searchOption+"&search=" + search + "&currentPage=" + (endCount + 1) + "'><i class='right chevron icon'></i></a>");
 		}
 
 		return sb.toString();
 	}
-
-	public ArrayList<BoardVo> getSearchCurrentPage(Connection conn, int currentPage, int listPerCountPage,
-			String search) {
-		// PreparedStatement pstmt =null;
-		Statement stmt = null;
-		ResultSet rset = null;
-
-		// 시작 ,끝 게시물
-		int startTotalBoard = currentPage * listPerCountPage - (listPerCountPage - 1);
-		int endTotalBoard = currentPage * listPerCountPage;
-
-		String query = "select * from"
-				+ " (select Board_tb.*, row_number() over(order by bd_no desc) as num from board_tb where BD_NAME like '%"
-				+ search + "%') " + "where num between " + startTotalBoard + " and " + endTotalBoard + "";
+	
+	public ArrayList<BoardVo> getSearchReviewCurrentPage(Connection conn, int currentPage, int listPerCountPage,
+			String search, String searchOption) {
+		 //PreparedStatement pstmt =null;
+		   Statement stmt = null;
+		   ResultSet rset = null;
+		   String option = null;
+		   // 시작 ,끝 게시물
+		   int startTotalBoard = currentPage * listPerCountPage - (listPerCountPage-1);
+		   int endTotalBoard = currentPage*listPerCountPage;
+		   
+		   if(searchOption.equals("title")) {
+		      option = "BD_NAME";
+		   }else if (searchOption.equals("contents")) {
+		      option = "BD_CONTENTS";
+		   }else if (searchOption.equals("writer")) {
+		      option = "BD_WRITER";
+		   }
+		   
+		   System.out.println("option값:"+option);
+		   
+		   
+		   String query = "select * from"
+		   + " (select Board_tb.*, row_number() over(order by bd_no desc) as num from board_tb where "+option+" like '%" + search + "%') "
+		   + "where num between " + startTotalBoard +" and " + endTotalBoard +"and BD_CATEGORY='후기'";
 
 		ArrayList<BoardVo> list = new ArrayList<BoardVo>();
 
@@ -166,18 +323,27 @@ public class BoardDao {
 		return list;
 	}
 
-	public String getSearchpageCount(Connection conn, int currentPage, int listPerCountPage, int countPerPage,
-			String search) {
-		int TotalCount = 0; // 게시물
-
-		ResultSet rset = null;
-		Statement stmt = null;
-
-		String query = "select count(*) as totalCount from Board_TB where BD_NAME like '%" + search + "%'";
-
-		try {
-			stmt = conn.createStatement();
-			rset = stmt.executeQuery(query);
+	public String getSearchReviewpageCount(Connection conn, int currentPage, int listPerCountPage, int countPerPage,
+			String search, String searchOption) {
+		int TotalCount = 0; //게시물
+		   
+		   ResultSet rset = null;
+		   Statement stmt = null;
+		   String option = null;
+		   //System.out.println("dao : " +searchOption);
+		   if(searchOption.equals("title")) {
+		      option = "BD_NAME";
+		   }else if(searchOption.equals("contents")){
+		      option = "BD_CONTENTS";
+		   }else if(searchOption.equals("writer")) {
+		      option = "BD_WRITER";
+		   }
+		   
+		   String query = "select count(*) as totalCount from Board_TB where "+ option +" like '%" +search + "%' and BD_CATEGORY='후기'";
+		   System.out.println(query);
+		   try {
+		      stmt = conn.createStatement();
+		      rset = stmt.executeQuery(query);
 
 			if (rset.next()) {
 				TotalCount = rset.getInt("totalCount");
@@ -221,24 +387,25 @@ public class BoardDao {
 
 		StringBuilder sb = new StringBuilder();
 		if (gotoPrev) {
-			sb.append("<a href='/search?search=" + search + "&currentPage=" + (startCount - 1) + "'> ◀  </a>");
+			sb.append("<a class='item' href='/reviewSearch?searchOption="+searchOption+"&search=" + search + "&currentPage=" + (startCount - 1) + "'><i class='left chevron icon'></i></a>");
 
 		}
 
 		for (int i = startCount; i <= endCount; i++) {
 			if (i == currentPage) {
-				sb.append("<a href='/search?search=" + search + "&currentPage=" + i + "'><b>" + i + "</b></a>");
+				sb.append("<a class='item' href='/reviewSearch?searchOption="+searchOption+"&search=" + search + "&currentPage=" + i + "'><b>" + i + "</b></a>");
 
 			} else {
-				sb.append("<a href='/search?search=" + search + "&currentPage=" + (endCount + 1) + "'> ▶ </a>");
+				sb.append("<a class='item' href='/reviewSearch?searchOption="+searchOption+"&search="+search+"&currentPage=" + i + "'>" + i + "</a>");
 			}
 		}
 		if (gotoNext) {
-			sb.append("<a href='/search?search=" + search + "&currentPage=" + (endCount + 1) + "'> ▶ </a>");
+			sb.append("<a class='item' href='/reviewSearch?searchOption="+searchOption+"&search=" + search + "&currentPage=" + (endCount + 1) + "'><i class='right chevron icon'></i></a>");
 		}
 
 		return sb.toString();
 	}
+	
 
 	public BoardVo noticeSelect(Connection conn, int bdNo) {
 		PreparedStatement pstmt = null;
@@ -303,14 +470,13 @@ public class BoardDao {
 	public int insertComment(Connection conn, Comment c) {
 		int result = 0;
 		PreparedStatement pstmt = null;
-		String query = "insert into comment_tb values (CM_NO_SEQ.nextval,?,?,?,sysdate,?)";
+		String query = "insert into comment_tb values (CM_NO_SEQ.nextval,?,?,?,sysdate,default)";
 
 		try {
 			pstmt = conn.prepareStatement(query);
 			pstmt.setInt(1, c.getCmBdNo());
 			pstmt.setString(2, c.getCmWriter());
 			pstmt.setString(3, c.getCmContents());
-			pstmt.setInt(4, c.getCmRecCount());
 			result = pstmt.executeUpdate();
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -362,7 +528,7 @@ public class BoardDao {
 		PreparedStatement pstmt = null;
 		int result = 0;
 
-		String query = "insert into Board_TB values(BD_NO_SEQ.NEXTVAL,?,?,?,sysdate,0,0,'공지사항')";
+		String query = "insert into Board_TB values(BD_NO_SEQ.NEXTVAL,?,?,?,sysdate,0,0,'후기')";
 
 		try {
 			pstmt = conn.prepareStatement(query);
@@ -458,5 +624,270 @@ public class BoardDao {
 		
 		return result;
 	}
+	
+	// 고객 후기 페이징 처리
+	public ArrayList<BoardVo> getReviewCurrentPage(Connection conn, int currentPage, int recordCountPerPage) {
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		
+		int start = currentPage * recordCountPerPage - (recordCountPerPage-1);
+	
+		int end = currentPage * recordCountPerPage;
+	
+		
+		String query = "select * from " + 
+				"(select board_tb.*, row_number() over(order by bd_no desc) as num from board_tb where BD_CATEGORY='후기') " + 
+				"where num between ? and ?";
+		
+		ArrayList<BoardVo> list = new ArrayList<BoardVo>();
+		
+		try {
+			pstmt = conn.prepareStatement(query);
+			pstmt.setInt(1, start);
+			pstmt.setInt(2, end);
+			rset = pstmt.executeQuery();
 
+			
+			while(rset.next()) {
+				BoardVo bv = new BoardVo();
+				
+				bv.setBdNo(rset.getInt("BD_NO"));
+				bv.setBdName(rset.getString("BD_NAME"));
+				bv.setBdContents(rset.getString("BD_CONTENTS"));
+				bv.setBdWriter(rset.getString("BD_WRITER"));
+				bv.setBdWriteDate(rset.getTimestamp("BD_WRITE_DATE"));
+				bv.setBdViewCount(rset.getInt("BD_VIEW_COUNT"));
+				bv.setBdRecommendCount(rset.getInt("BD_RECOMMEND_COUNT"));
+				bv.setBdCategory(rset.getString("BD_CATEGORY"));
+				
+				list.add(bv);
+			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			JDBCTemplate.close(rset);
+			JDBCTemplate.close(pstmt);
+		}
+		
+		return list;
+	}
+
+	public String getReviewPageNavi(Connection conn, int currentPage, int recordCountPerPage, int naviCountPerPage) {
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		
+		
+		int recordTotalCount = 0;
+	
+		String query = "select count(*) as totalCount from board_tb where bd_category='후기'";
+		
+		try {
+			pstmt = conn.prepareStatement(query);
+			rset = pstmt.executeQuery();
+			if(rset.next()) {
+				recordTotalCount = rset.getInt("totalCount");
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			JDBCTemplate.close(rset);
+			JDBCTemplate.close(pstmt);
+		}
+		
+		int pageTotalCount = 0; // navi 토탈 카운트
+		
+		
+		if(recordTotalCount%recordCountPerPage != 0) {
+			pageTotalCount = recordTotalCount / recordCountPerPage +1;
+		}
+		else {
+			pageTotalCount = recordTotalCount / recordCountPerPage;
+		}
+		
+		if(currentPage < 1) currentPage = 1;
+		else if(currentPage > pageTotalCount) currentPage = pageTotalCount;
+		
+	
+		int startNavi = ((currentPage-1)/naviCountPerPage)*naviCountPerPage+1;
+		
+		
+		int endNavi = startNavi + naviCountPerPage-1;
+		
+	
+		if(endNavi>pageTotalCount) {
+			endNavi = pageTotalCount;
+		}
+		
+		
+		boolean needPrev = true;
+		boolean needNext = true;
+		
+		if(startNavi == 1) {
+			needPrev = false;
+		}
+		
+		if(endNavi == pageTotalCount){
+			needNext = false;
+		}
+		
+		
+		StringBuilder sb = new StringBuilder(); 
+		
+		if(needPrev) { // 시작이 1페이지가 아니라면
+			sb.append("<a class='item' href='/review?currentPage=" + (startNavi - 1) + "'><i class='left chevron icon'></i></a>");
+		}
+		
+		for(int i=startNavi; i<=endNavi; i++) {
+			if(i == currentPage) {
+				sb.append("<a class='item' href='/review?currentPage=" + i + "'><b> " + i + " </b></a>");
+			}
+			else {
+				sb.append("<a class='item' href='/review?currentPage=" + i + "'> " + i + " </a>");
+			}
+		}
+		
+		if(needNext) { // 끝 페이지가 아니라면
+			sb.append("<a class='item' href='/review?currentPage=" + (endNavi + 1) + "'><i class='right chevron icon'></i></a>"); 
+		}
+		
+		
+		
+		return sb.toString();
+	}
+
+	public BoardVo selectReview(Connection conn, int bdNo) {
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		BoardVo bv = null;
+		
+		String query = "select * from BOARD_TB where BD_NO=?";
+		
+		try {
+			pstmt = conn.prepareStatement(query);
+			pstmt.setInt(1, bdNo);
+			rset = pstmt.executeQuery();
+			
+			if(rset.next()) {
+				bv = new BoardVo();
+				
+				bv.setBdNo(rset.getInt("BD_NO"));
+				bv.setBdName(rset.getString("BD_NAME"));
+				bv.setBdContents(rset.getString("BD_CONTENTS"));
+				bv.setBdWriter(rset.getString("BD_WRITER"));
+				bv.setBdWriteDate(rset.getTimestamp("BD_WRITE_DATE"));
+				bv.setBdViewCount(rset.getInt("BD_VIEW_COUNT"));
+				bv.setBdRecommendCount(rset.getInt("BD_RECOMMEND_COUNT"));
+				bv.setBdCategory(rset.getString("BD_CATEGORY"));
+			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			JDBCTemplate.close(rset);
+			JDBCTemplate.close(pstmt);
+		}
+		
+		return bv;
+	}
+	
+	public int recommendAdd(Connection conn, int bdNo) {
+		PreparedStatement pstmt = null;
+		int result = 0;
+		
+		String query = "update BOARD_TB set BD_RECOMMEND_COUNT = BD_RECOMMEND_COUNT+1 where BD_NO=?";
+		
+		try {
+			pstmt = conn.prepareStatement(query);
+			pstmt.setInt(1, bdNo);
+			result = pstmt.executeUpdate();
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			JDBCTemplate.close(pstmt);
+		}
+		
+		return result;
+	}
+
+	public boolean recommendInquiry(Connection conn, int bdNo, String recommendId) {
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		boolean result = false;
+		
+		String query = "select * from RECOMMEND_BOARD_TB where MB_ID=? and BD_NO=?";
+		
+		try {
+			pstmt = conn.prepareStatement(query);
+			pstmt.setString(1, recommendId);
+			pstmt.setInt(2, bdNo);
+			rset = pstmt.executeQuery();
+			
+			if(rset.next()) {
+				result = true;
+			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			JDBCTemplate.close(pstmt);
+		}
+		
+		return result;
+	}
+
+	public int recommendInsert(Connection conn, int bdNo, String recommendId) {
+		PreparedStatement pstmt = null;
+		int result = 0;
+		
+		String query = "insert into RECOMMEND_BOARD_TB values (RECOMMEND_BOARD_SEQ.NEXTVAL,?,?)";
+		
+		try {
+			pstmt = conn.prepareStatement(query);
+			pstmt.setString(1, recommendId);
+			pstmt.setInt(2, bdNo);
+			result = pstmt.executeUpdate();
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			JDBCTemplate.close(pstmt);
+		}
+		
+		return result;
+	}
+
+	public BoardVo boardBdNo(Connection conn, int bdNo) {
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		BoardVo bv = null;
+		
+		String query = "select * from BOARD_TB where BD_NO=?";
+		
+		try {
+			pstmt = conn.prepareStatement(query);
+			pstmt.setInt(1, bdNo);
+			rset = pstmt.executeQuery();
+			
+			if(rset.next()) {
+				bv = new BoardVo();
+				bv.setBdNo(rset.getInt("BD_NO"));
+				bv.setBdName(rset.getString("BD_NAME"));
+				bv.setBdContents(rset.getString("BD_CONTENTS"));
+				bv.setBdWriter(rset.getString("BD_WRITER"));
+				bv.setBdWriteDate(rset.getTimestamp("BD_WRITE_DATE"));
+				bv.setBdViewCount(rset.getInt("BD_VIEW_COUNT"));
+				bv.setBdRecommendCount(rset.getInt("BD_RECOMMEND_COUNT"));
+				bv.setBdCategory(rset.getString("BD_CATEGORY"));
+			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			JDBCTemplate.close(pstmt);
+		}
+		
+		return bv;
+	}
 }

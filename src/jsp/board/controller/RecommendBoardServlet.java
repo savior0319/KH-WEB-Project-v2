@@ -1,27 +1,28 @@
 package jsp.board.controller;
 
 import java.io.IOException;
+import java.io.PrintWriter;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import jsp.board.model.service.BoardService;
 import jsp.board.model.vo.BoardVo;
 
 /**
- * Servlet implementation class NoticeUpdateServlet
+ * Servlet implementation class RecommentBoardServlet
  */
-@WebServlet(name = "NoticeUpdate", urlPatterns = { "/noticeUpdate" })
-public class NoticeUpdateServlet extends HttpServlet {
+@WebServlet(name = "RecommendBoard", urlPatterns = { "/recommendBoard" })
+public class RecommendBoardServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public NoticeUpdateServlet() {
+    public RecommendBoardServlet() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -30,33 +31,23 @@ public class NoticeUpdateServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-	//1.인코딩
-		request.setCharacterEncoding("UTF-8");
-		
-	//2.view에서 값 받아서 변수 지정
 		int bdNo = Integer.parseInt(request.getParameter("bdNo"));
-		String bdName = request.getParameter("bdName");
-		String bdContents = request.getParameter("bdContents");
+		String recommendId = request.getParameter("recommendId");
 		
+		// false 이면 해당 게시글에 로그인한 계정이 추천을 누른적이 없는 경우, true이면 해당 게시글에 로그인한 계정이 추천을 누른적이 있는 경우
+		boolean recommendInquiry = new BoardService().recommendInquiry(bdNo, recommendId);
 		
-		BoardVo board = new BoardVo();
-		board.setBdNo(bdNo);
-		board.setBdName(bdName);
-		board.setBdContents(bdContents);
-		
-		HttpSession session=request.getSession(false);
-		
-		if(session.getAttribute("member")!=null) {
-			int result = new BoardService().updateNotice(board);
+		if(recommendInquiry == false) {
+			int recommendAdd = new BoardService().recommendAdd(bdNo);
+			int recommendInsert = new BoardService().recommendInsert(bdNo, recommendId);
+		}	
 			
-			if(result>0) {//값이 들어오면
-				response.sendRedirect("/reviewSelect?bdNo=" + bdNo + "");
-			}else {//값이 안들어오면
-				response.sendRedirect("/View/error/error.jsp");
-			}
-		}else {//세션값을 받아오지 못하면
-			response.sendRedirect("/View/error/error.jsp");
-		}
+		BoardVo bv = new BoardService().boardBdNo(bdNo);
+				
+		response.setCharacterEncoding("UTF-8");
+		response.getWriter().print(bv.getBdRecommendCount());
+		response.getWriter().close();
+		
 	}
 
 	/**
