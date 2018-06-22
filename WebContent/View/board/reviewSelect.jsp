@@ -79,7 +79,7 @@ Date date = new Date(writeDay.getTime());
 				</div>
 				<br>
 				
-				<h3 class="ui dividing header">Comments</h3>
+				<h3 class="ui dividing header">댓글</h3>
 				<%
 				if(list.isEmpty()) {
 				%>
@@ -109,7 +109,7 @@ Date date = new Date(writeDay.getTime());
       						<div id="<%=c.getCmNo()%>_input_show" class="text"><%=c.getCmContents()%></div>
       						<br>
       						<%
-								if (m != null && m.getMbId().equals(c.getCmWriter())) {
+								if (m != null && (m.getMbId().equals(c.getCmWriter()) || m.getMbId().equals("thepension"))) {
 								%>
 								<form action="/commentUpdate" method="post" style="display: inline;">
 									<div class="ui input">
@@ -148,7 +148,7 @@ Date date = new Date(writeDay.getTime());
 				
 				
 				<%
-					if (m != null && m.getMbId().equals(board.getBdWriter())) {
+					if (m != null && (m.getMbId().equals(board.getBdWriter()) || m.getMbId().equals("thepension"))) {
 				%>
 				<form action="/noticeComment" class="ui reply form" method="get">
 				<div class="field">
