@@ -19,7 +19,7 @@
 	gtag('config', 'UA-120156974-1');
 </script>
 <jsp:include page="/View/main/layout/cssjs.jsp"></jsp:include>
-<title>템플릿</title>
+<title>The Pension</title>
 </head>
 
 <style>
