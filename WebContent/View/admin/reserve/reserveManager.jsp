@@ -78,7 +78,7 @@
 		   		<td><%= r.getResInDate()%></td>
 		   		<td><%= r.getResOutDate() %></td>
 		   		<td><%= r.getResPrice() %></td>
-		   		<td><form action="/delete"></form></td>
+		   		<td><button class="ui button" value="<%=r.getResNo()%>">예약취소</button></td>
 		   	</tr>
 		   	<%} %>
 		   <%} %>
@@ -87,7 +87,7 @@
 
 		  <tfoot>
 			    <tr>
-			     <th colspan="7">
+			     <th colspan="8">
 			      <div class="ui segment">
 			       <%= pageNavi %>
 			      </div>
@@ -108,7 +108,25 @@ $(document).ready(function(){
 	    context: '.visible.example .bottom.segment'
 	  })
 	  .sidebar('hide');
-});
+})
+
+$('td>button').click(function() {
+							
+							 	var resNo = $(this).attr('value');
+							 
+								$.ajax({
+								 	url : '/reservationCancelCall',
+								 	data : { res_no : resNo },
+								 	type : 'get',
+								 	success : function() {
+									 	alert("예약 취소가 접수되었습니다.");
+									 	window.location.reload();
+								 	},
+								 	error : function() {
+									 	console.log("cancelCall:실패");
+								 	}
+								});
+							})
 </script>
 </body>
 </html>

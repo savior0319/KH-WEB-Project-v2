@@ -2327,4 +2327,52 @@ public class AdminDao {
 		}		
 		return list;
 	}
+
+	public int boardCompleteDel(Connection conn, int bdNo) {
+		PreparedStatement pstmt = null;
+		int row = 0;
+		String query = "delete from board_tb where bd_no=?";
+		try {
+			pstmt = conn.prepareStatement(query);
+			pstmt.setInt(1, bdNo);
+			row = pstmt.executeUpdate();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally {
+			JDBCTemplate.close(pstmt);
+		}
+		return row;
+	}
+	// 게시판의 파일 목록  가져오기
+	public ArrayList<DataFile> boardFileList(Connection conn, int bdNo) {
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		ArrayList<DataFile> list = new ArrayList<DataFile>();
+		String query = "select * from board_File_tb where bd_file_bd_no=?";
+		try {
+			pstmt = conn.prepareStatement(query);
+			pstmt.setInt(1, bdNo);
+			rs = pstmt.executeQuery();
+			while(rs.next()) {
+				DataFile df = new DataFile();
+				df.setBdFileNo(rs.getInt("BD_FILE_NO"));
+				df.setBdFileSize(rs.getLong("BD_FILE_SIZE"));
+				df.setBdFileName(rs.getString("BD_FILE_NAME"));
+				df.setBdFileUptime(rs.getTimestamp("BD_FILE_UPTIME"));
+				df.setBdFileWriter(rs.getString("BD_FILE_WRITER"));
+				df.setBdFileCount(rs.getInt("BD_FILE_COUNT"));
+				df.setBdFilePath(rs.getString("BD_FILE_PATH"));
+				df.setBdFilebdNo(rs.getInt("BD_FILE_BD_NO"));
+				list.add(df);
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally {
+			JDBCTemplate.close(rs);
+			JDBCTemplate.close(pstmt);
+		}
+		return list;
+	}
 }

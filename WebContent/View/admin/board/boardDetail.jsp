@@ -85,6 +85,11 @@
     	<div class="ui button">
 			<a href="/adminBoardList">목록으로</a>
 		</div>
+		<button class="ui button" onclick="ableModi();" >수정</button>
+		<form  method="post" action="/adminBoardDelete"  style="display:inline;">
+			<input type="hidden" name="bdNo" value="<%= btlv.getBv().getBdNo()%>" >
+			<input type="submit" class="ui button" value="전체 삭제">
+		</form>
     </div>
     <!-- 본문 내용 끝  -->
   </div>

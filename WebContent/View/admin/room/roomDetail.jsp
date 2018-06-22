@@ -121,7 +121,10 @@
 		</div>
 		<!--  사진 수정 및 삭제 부분 끝  -->
 			<button class="ui button" onclick="goBack();" >뒤로</button>
-			
+			<form action="/adminRoomDelete" style="display: inline">
+				<input type="hidden" name="roomName" value="<%= pv.getPsName()%>">
+				<input class="ui button" type="submit" value="삭제"> 
+			</form>
 		
 		
     </div>

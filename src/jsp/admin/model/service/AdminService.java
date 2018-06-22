@@ -610,5 +610,33 @@ public class AdminService {
 			JDBCTemplate.close(conn);
 			return list;
 		}
+		// 사진 경로 가져오기
+		
+		// 
+		
+		//
+		public boolean boardCompleteDel(int bdNo) {
+			Connection conn = null;
+			conn = JDBCTemplate.getConnect(conn);
+			int totalResult = aDao.boardCompleteDel(conn,bdNo);
+			boolean result = false;
+			if(totalResult>0) {
+				JDBCTemplate.commit(conn);
+				result = true;
+			}else {
+				JDBCTemplate.rollBack(conn);
+			}
+			JDBCTemplate.close(conn);
+			return result;
+		}
+		// 파일 목록 가져오기
+		public ArrayList<DataFile> boardFileList(int bdNo) {
+			Connection conn = null;
+			conn = JDBCTemplate.getConnect(conn);
+			
+			ArrayList<DataFile> list = aDao.boardFileList(conn, bdNo);
+			JDBCTemplate.close(conn);
+			return list;
+		}
 		
 }
