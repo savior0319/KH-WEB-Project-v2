@@ -25,9 +25,9 @@ public class BoardDao {
 		int endTotalBoard = currentPage * listPerCountPage;
 
 		String query = "select * from"
-	               + " (select Board_tb.*, row_number() over(order by bd_no desc) as num from board_tb where BD_CATEGORY='공지사항') "
-	               + "where num between ? and ?";
-
+      + " (select Board_tb.*, row_number() over(order by bd_no desc) as num from board_tb where BD_CATEGORY='공지사항') "
+	    + "where num between ? and ?";
+    
 		ArrayList<BoardVo> list = new ArrayList<BoardVo>();
 
 		try {
@@ -156,7 +156,7 @@ public class BoardDao {
 		   
 		   String query = "select * from"
 		   + " (select Board_tb.*, row_number() over(order by bd_no desc) as num from board_tb where "+option+" like '%" + search + "%') "
-		   + "where num between " + startTotalBoard +" and " + endTotalBoard +" and BD_CATEGORY='공지'";
+		   + "where num between " + startTotalBoard +" and " + endTotalBoard +" and BD_CATEGORY='공지사항'";
 
 		   System.out.println(query);
 		   
@@ -205,7 +205,7 @@ public class BoardDao {
 		      option = "BD_WRITER";
 		   }
 		   
-		   String query = "select count(*) as totalCount from Board_TB where "+ option +" like '%" +search + "%' and BD_CATEGORY='공지'";
+		   String query = "select count(*) as totalCount from Board_TB where "+ option +" like '%" +search + "%' and BD_CATEGORY='공지사항'";
 		   //System.out.println(query);
 		   try {
 		      stmt = conn.createStatement();

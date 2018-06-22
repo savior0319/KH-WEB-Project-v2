@@ -124,16 +124,7 @@
 			
 			<br><br>
 			
-			<%
-			if(m != null) {
-			%>
-			<form action="/View/board/noticeWriteReady.jsp">
-				<input type="submit" class="ui red button" value="글쓰기"> 
-			</form>
 			
-			<%
-			}
-			%>
 			
 			<%-- 공지사항 글쓰기 관리자 페이지로 이동 --%>
 				<!--  -->
