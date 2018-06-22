@@ -101,9 +101,7 @@ $(document).ready(function(){
 
    function nextCalendar() { // 다음 달력
        today = new Date(today.getFullYear(), today.getMonth() + 1, today.getDate());
-       //console.log("현재 기준 : " + test.getFullYear()+"-"+(test.getMonth()+1)+"-"+test.getDate());
-       //console.log("해당 월 변수 : " + today.getFullYear()+"-"+(today.getMonth()+1)+"-"+today.getDate());
-         
+      
        // 현재 월의 6개월 후까지만 보여짐
          
        // 6개월 차이나는 계산식
@@ -194,7 +192,7 @@ $(document).ready(function(){
                     	   	   //console.log("월말: "+p);
                                arr[p-1][j] = 1;
                                if(p==(<%=calOut.get(Calendar.DATE)%>-1)) {
-                            	   //console.log("스탑");
+                            	   
                             	   break;
                                }
                          }

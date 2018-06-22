@@ -18,42 +18,41 @@ import jsp.admin.model.vo.MemberPageVo;
 @WebServlet(name = "AdminMemberList", urlPatterns = { "/adminMemberList" })
 public class AdminMemberListServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
-    public AdminMemberListServlet() {
-        super();
-        // TODO Auto-generated constructor stub
-    }
+
+	/**
+	 * @see HttpServlet#HttpServlet()
+	 */
+	public AdminMemberListServlet() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
 		request.setCharacterEncoding("utf-8");
-		// page정보, pageper정보 없으면 1로 줄까?
 		int currentPage =0;
+		String searchData = request.getParameter("searchData");
+		String searchOption = request.getParameter("searchOption");
 		
-		//String searchData = request.getParameter("searchData");
 		if(request.getParameter("currentPage") == null) {
 			currentPage = 1;
 		}else {
 			currentPage = Integer.parseInt(request.getParameter("currentPage"));
 		}
 		
-		//ArrayList<MemberVo> list = new AdminService().memberList(currentPage,searchData);
-		MemberPageVo mpv = new AdminService().memberList(currentPage);
-		// 
-		if(mpv != null) {
-			RequestDispatcher view = request.getRequestDispatcher("/View/admin/member/memberManager.jsp");
-			request.setAttribute("MemberPage",mpv );
-			view.forward(request, response);
+		MemberPageVo mpv = null;
+
+		if(searchData != null && searchOption != null) {
+			mpv = new AdminService().memberList(currentPage,searchData,searchOption);
 		}else {
-			response.sendRedirect("/View/error/errorPage.jsp");
+			mpv = new AdminService().memberList(currentPage);
 		}
-		
+		RequestDispatcher view = request.getRequestDispatcher("/View/admin/member/memberManager.jsp");
+		request.setAttribute("MemberPage",mpv );
+		view.forward(request, response);
+
 	}
 
 	/**

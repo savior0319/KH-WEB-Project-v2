@@ -18,14 +18,14 @@ import jsp.admin.model.vo.SalesPageVo;
 @WebServlet(name = "AdminSalesManager", urlPatterns = { "/adminSalesManager" })
 public class AdminSalesManagerServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
-    public AdminSalesManagerServlet() {
-        super();
-        // TODO Auto-generated constructor stub
-    }
+
+	/**
+	 * @see HttpServlet#HttpServlet()
+	 */
+	public AdminSalesManagerServlet() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
@@ -35,19 +35,25 @@ public class AdminSalesManagerServlet extends HttpServlet {
 		request.setCharacterEncoding("utf-8");
 		// page정보, pageper정보 없으면 1로 줄까?
 		int currentPage =0;
-		
+		String searchData = request.getParameter("searchData");
+		String searchOption = request.getParameter("searchOption");
+
 		if(request.getParameter("currentPage") == null) {
 			currentPage = 1;
 		}else {
 			currentPage = Integer.parseInt(request.getParameter("currentPage"));
 		}
-		
-		SalesPageVo mpv = new AdminService().salesList(currentPage);
-		// 
-		
-			RequestDispatcher view = request.getRequestDispatcher("/View/admin/sales/salesManager.jsp");
-			request.setAttribute("SalesPage",mpv );
-			view.forward(request, response);
+
+		SalesPageVo spv = null;
+		if(searchData != null && searchOption != null) {
+			spv = new AdminService().salesList(currentPage,searchData,searchOption);
+		}else {
+			spv = new AdminService().salesList(currentPage);
+		}
+
+		RequestDispatcher view = request.getRequestDispatcher("/View/admin/sales/salesManager.jsp");
+		request.setAttribute("SalesPage",spv );
+		view.forward(request, response);
 	}
 
 	/**

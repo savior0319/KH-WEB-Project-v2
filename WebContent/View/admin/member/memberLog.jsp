@@ -1,7 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<%@ page import="java.util.*,jsp.admin.model.vo.*" %>
+<%@ page import="java.util.*,jsp.admin.model.vo.*"%>
+<%
+	LoginLogPageVo llpv = (LoginLogPageVo) request.getAttribute("allMemberLog");
+	String searchData = request.getParameter("searchData");
+	String searchOption = request.getParameter("searchOption");
+%>
 <!DOCTYPE html>
 <html>
 
@@ -26,85 +31,86 @@
 
 <body>
 	<!-- 메뉴 바 -->
-  <jsp:include page="/View/admin/layout/sideMenu.jsp"></jsp:include>
-  <!-- 이 부분이 본문 -->
-  <div class="ui pusher">
-  <!-- 헤더 부분  -->
-    <div class="ui segment">
-      <h3 class="ui header">회원 로그인 내역</h3>
-    </div>
-    <!-- 본문 내용 시작-->
-    <div class="ui container">
-    	<!-- 테이블 시작 -->
-    	<h1>로그인 내역</h1>
-    	   <%
-    	   ArrayList<MemberLoginLogVo> list = ( ArrayList<MemberLoginLogVo>)request.getAttribute("allMemberLog");			 	
-			%> 	
-    	<table class="ui celled table">
-		  <thead>
-		    <tr>
-			    <th>회원 아아디</th>
-			    <th>로그인 시간</th>
-			    <th>접속 브라우저</th>
-			    <th>접속 아이피</th>
-			    <th>접속 지역 </th>
-		  	</tr>
-		  </thead>
-		  <!--  객실 관리   -->
-		  <!--  이 부분에 추가  -->
-		   
-  		  <tbody>
-  		  <%if( list != null && !list.isEmpty()){ %>
-		   	<%for(MemberLoginLogVo mllv : list){ %>
-		   	<tr>
-		   		<td><%= mllv.getMbLogId() %></td>
-		   		<td><%= mllv.getMbLogTime() %></td>
-		   		<td><%= mllv.getMbLogBrowser() %></td>
-		   		<td><%= mllv.getMbLogIp() %></td>
-		   		<td><%= mllv.getMbLogLocale() %></td>
-		   		<!--  성별을 남여로  -->
-		   	</tr>
-		   	<%} %>
-		 
-		  </tbody>
-		  <!--  페이지 처리를 하는 부분. -->
-		 
-		  <!-- <tfoot>
-		    <tr>
-		    <th colspan="3">
-		      <div class="ui right floated pagination menu">
-		        <a class="icon item">
-		          <i class="left chevron icon"></i>
-		        </a>
-		        <a class="item">1</a>
-		        <a class="item">2</a>
-		        <a class="item">3</a>
-		        <a class="item">4</a>
-		        <a class="icon item">
-		          <i class="right chevron icon"></i>
-		        </a>
-		      </div>
-		    </th>
-		  </tr>
-		  </tfoot> -->
-		</table>
-		<%-- <label><%= pageNavi %></label><br> --%>
-		 <!-- <form action="searchNotice" method="post" style="display: inline;">
-		 <input type="text" name="searchData" >
-		 <input type="submit" value="검색">
-		 </form> -->
-		
-    	<!--  테이블 끝 -->
-    	<% }else{ %>
-    	<hr/>
-    	<h3>기록이 없습니다.</h3>
-    	<hr/>
-    	<% } %>
-    </div>
-    <!-- 본문 내용 끝  -->
-  </div>
+	<jsp:include page="/View/admin/layout/sideMenu.jsp"></jsp:include>
+	<!-- 이 부분이 본문 -->
+	<div class="ui pusher">
+		<!-- 헤더 부분  -->
+		<div class="ui segment">
+			<h3 class="ui header">회원 로그인 내역</h3>
+		</div>
+		<!-- 본문 내용 시작-->
+		<div class="ui container">
+			<!-- 테이블 시작 -->
+			<h1>로그인 내역</h1>
 
-<script>
+
+			<form class="ui segment " action="/adminMemberLog" method="post"
+				style="display: inline;">
+				<select name="searchOption">
+					<% if(searchOption==null||searchOption.equals("MB_LOG_ID")){ %>
+					<option value="MB_LOG_ID" selected="selected">아이디</option>
+					<option value="MB_LOG_IP" >주소</option>			
+					<%}else{%>
+					<option value="MB_LOG_ID" >아이디</option>
+					<option value="MB_LOG_IP" selected="selected">주소</option>	
+					<% } %>
+				</select> 
+				<input type="text" name="searchData" value="<%=searchData %>" >
+				<input type="submit" value="검색">
+			</form>
+			<table class="ui celled table">
+				<thead>
+					<tr>
+						<th>회원 아아디</th>
+						<th>로그인 시간</th>
+						<th>접속 브라우저</th>
+						<th>접속 아이피</th>
+						<th>접속 지역</th>
+					</tr>
+				</thead>
+				<!--  객실 관리   -->
+				<!--  이 부분에 추가  -->
+				<% if(llpv != null){
+			 	ArrayList<MemberLoginLogVo> mlist = llpv.getList();
+			 	String pageNavi = llpv.getPageNavi();	// navi 리스트 
+			 	
+		 		%>
+
+				<tbody>
+					<%if( mlist != null && !mlist.isEmpty()){ %>
+					<%for(MemberLoginLogVo mllv : mlist){ %>
+					<tr>
+						<td><%= mllv.getMbLogId() %></td>
+						<td><%= mllv.getMbLogTime() %></td>
+						<td><%= mllv.getMbLogBrowser() %></td>
+						<td><%= mllv.getMbLogIp() %></td>
+						<td><%= mllv.getMbLogLocale() %></td>
+						<!--  성별을 남여로  -->
+					</tr>
+					<%} %>
+
+				</tbody>
+				<tfoot>
+					    <tr>
+					     <th colspan="5">
+					      <div class="ui segment">
+					       <%= pageNavi %>
+					      </div>
+					    </th>
+					  </tr>
+				  </tfoot>
+			</table>
+
+			<% }else{ %>
+			<hr />
+			<h3>기록이 없습니다.</h3>
+			<hr />
+			<% } %>
+		<% } %>
+		</div>
+		<!-- 본문 내용 끝  -->
+	</div>
+
+	<script>
 </script>
-
 </html>
