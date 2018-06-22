@@ -3,6 +3,7 @@ package jsp.member.model.dao;
 import java.io.FileReader;
 import java.io.IOException;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -533,19 +534,19 @@ public class MemberDao {
 		return av;
 
 	}
-	
+
 	// 지은 추가
 	public MemberVo loginIdInfo(Connection conn, String loginId) {
-		
+
 		MemberVo mv = null;
 		String query = prop.getProperty("loginIdInfo");
-		
+
 		try {
 			pstmt = conn.prepareStatement(query);
 			pstmt.setString(1, loginId);
-			
+
 			rs = pstmt.executeQuery();
-			if(rs.next()) {
+			if (rs.next()) {
 				mv = new MemberVo();
 				mv.setMbId(rs.getString(1));
 				mv.setMbPwd(rs.getString(2));
@@ -557,15 +558,38 @@ public class MemberDao {
 				mv.setMbEntDate(rs.getDate(8));
 				mv.setMbAddress(rs.getString(9));
 			}
-			
+
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}  finally {
+		} finally {
 			JDBCTemplate.close(rs);
 			JDBCTemplate.close(pstmt);
 		}
 		return mv;
 	}
 
+	public int memberDel(Connection conn, String delId, String delEmail, Date delEntDate, String delName,
+			Date delBirth) {
+
+		int result = 0;
+
+		String query = prop.getProperty("memberDel");
+
+		try {
+			pstmt = conn.prepareStatement(query);
+			pstmt.setString(1, delId);
+			pstmt.setString(2, delEmail);
+			pstmt.setDate(3, delEntDate);
+			pstmt.setString(4, delName);
+			pstmt.setDate(5, delBirth);
+
+			result = pstmt.executeUpdate();
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			JDBCTemplate.close(pstmt);
+		}
+		return result;
+	}
 }

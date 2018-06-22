@@ -25,7 +25,6 @@ public class LoginServlet extends HttpServlet {
 			throws ServletException, IOException {
 
 		request.setCharacterEncoding("utf-8");
-
 		String id = request.getParameter("id");
 		String pwd = new SHA256Hash().enctyptSHA256(request.getParameter("pwd"));
 

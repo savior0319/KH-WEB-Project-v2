@@ -2193,5 +2193,41 @@ public class AdminDao {
 		
 		return list;
 	}
-	
+  
+  // 메인사진 변경
+  public int mainUpdateImage(Connection conn, String afterPath, String beforeFileName) {
+		PreparedStatement pstmt = null;
+		String query = prop.getProperty("mainImageUpdate");
+		int result = 0;
+		try {
+			pstmt = conn.prepareStatement(query);
+			pstmt.setString(1, afterPath);
+			pstmt.setString(2, beforeFileName);
+			result = pstmt.executeUpdate();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			JDBCTemplate.close(pstmt);
+		}
+		return result;
+	}
+  
+  // 메인사진 삭제
+	public int mainDeleteImage(Connection conn, String deleteImage) {
+		PreparedStatement pstmt = null;
+		String query = prop.getProperty("mainImageDelete");
+		int result = 0;
+		try {
+			pstmt = conn.prepareStatement(query);
+			pstmt.setString(1, deleteImage);
+			result = pstmt.executeUpdate();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			JDBCTemplate.close(pstmt);
+		}
+		return result;
+	}
 }

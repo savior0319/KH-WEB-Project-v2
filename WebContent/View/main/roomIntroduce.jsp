@@ -109,28 +109,38 @@
 	<!-- 사진 시작 -->
 	<%
 		int pageIndex = 0;
+		int row = 0;
+		int count=0;
 		if (list.size() % 3 > 0) {
 			pageIndex = list.size() / 3 + 1;
-		} else {
+		}
+		else {
 			pageIndex = list.size() / 3;
 		}
 		for (int i = 0; i < pageIndex; i++) {
+			if(list.size()-count>=3)
+			{
+				row = 3;
+			}else{
+				row = (list.size()-count) % 3;
+			}
 	%>
 	<div class="ui three column grid">
 		<%
-			for (int j = 0; j < 3; j++) {
+			for (int j = 0; j < row; j++) {
 		%>
 		<div class="column">
 			<div class="ui segment">
-				<a href="/roomInfo?roomName=<%=list.get((3 * i) + j).getpsPicName()%>">
-					<img src="<%=list.get((3 * i) + j).getPsPicPath()%>" style="width: 100%;">
-					<center>
-						<span><%=list.get((3 * i) + j).getpsPicName()%></span>
-					</center>
+				<a href="/roomInfo?roomName=<%=list.get(count).getpsPicName()%>">
+					<img src="<%=list.get(count).getPsPicPath()%>" style="width: 100%;">
+					<div style="text-align: center;">
+						<span><%=list.get(count).getpsPicName()%></span>
+					</div>
 				</a>
 			</div>
 		</div>
 		<%
+		count++;
 			}
 		%>
 	</div>

@@ -258,6 +258,7 @@ public class BoardDao {
 				board.setBdContents(rset.getString("BD_CONTENTS"));
 				board.setBdWriter(rset.getString("BD_WRITER"));
 				board.setBdWriteDate(rset.getTimestamp("BD_WRITE_DATE"));
+				board.setBdViewCount(rset.getInt("BD_VIEW_COUNT"));
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -436,6 +437,26 @@ public class BoardDao {
 		}
 
 		return result1;
+	}
+
+	public int hitsCount(Connection conn, int bdNo) {
+		PreparedStatement pstmt = null;
+		int result = 0;
+		
+		String query = "update BOARD_TB set BD_VIEW_COUNT = BD_VIEW_COUNT+1 where BD_NO=?";
+		
+		try {
+			pstmt = conn.prepareStatement(query);
+			pstmt.setInt(1, bdNo);
+			result = pstmt.executeUpdate();
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			JDBCTemplate.close(pstmt);
+		}
+		
+		return result;
 	}
 
 }

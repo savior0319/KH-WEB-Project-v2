@@ -17,7 +17,7 @@
 	gtag('config', 'UA-120156974-1');
 </script>
 <jsp:include page="/View/main/layout/cssjs.jsp"></jsp:include>
-<title>Main 수정</title>
+<title>Main 삭제</title>
 </head>
 
 <style>
@@ -30,7 +30,7 @@
   <div class="ui pusher">
   <!-- 헤더 부분  -->
     <div class="ui segment">
-      <h3 class="ui header">Main 사진 변경</h3>
+      <h3 class="ui header">Main 사진 삭제</h3>
     </div>
 	<!-- 헤더 끝 -->
 
@@ -41,19 +41,15 @@
 		    <div class="ui grid">
 <c:forEach begin="0" items="${requestScope.MainPicTb}" var="list" varStatus="i">
 <div class="four wide column">
-	 <form action="/adminMainUpdate" method="post" enctype="Multipart/form-data" style="display:inline;">
+	 <form action="/adminMainDelete" method="post" style="display:inline;">
 	<div id='image${i.count }'>
 	<img src="${list.mainPicPath }" style="width:100%;">
 	</div>
 	<input type="hidden" name="image_path" value="${list.mainPicPath }">
-	<%-- <div id="update${i.count }_div" style='display:none;'> 
-	<img id="update${i.count }_preview" style='width:100px; height:100px;'> 
-	</div> --%>
-	<input type="hidden" name="img" id="update${i.count }" accept="image/*" required/><br>
 	<br>
-	<input type="hidden" id="update${i.count }_submit" value="수정" class="ui button">
-	<button type="button" id="update${i.count }_btn" onclick="update('update${i.count }');" class="ui button">수정</button>
-	<button type="button" id="update${i.count }_reBtn" style="display:none;" onclick="imageCancle('update${i.count }');" class="ui button">취소</button>
+	<input type="hidden" id="deleteimage${i.count }_submit" value="삭제" class="ui button">
+	<button type="button" id="deleteimage${i.count }_btn" onclick="deleteimage('deleteimage${i.count }');" class="ui button">삭제</button>
+	<button type="button" id="deleteimage${i.count }_reBtn" style="display:none;" onclick="imageCancle('deleteimage${i.count }');" class="ui button">취소</button>
 	</form>
  </div>
 </c:forEach>
@@ -79,31 +75,17 @@ $(document).ready(function(){
 function back() {
 	location.href="/adminTemplateManager";
 }
-function update(id){
-	document.getElementById(id).type="file";
+function deleteimage(id){
 	document.getElementById(id+"_btn").style="display:none";
 	document.getElementById(id+"_submit").type="submit";
 	document.getElementById(id+"_reBtn").style="display:inline";
 }
 function imageCancle(id) {
-	document.getElementById(id).type="hidden";
-	/* document.getElementById(id+'_preview').innerHTML=""; */
 	document.getElementById(id+"_btn").style="display:inline";
 	document.getElementById(id+"_submit").type="hidden";
 	document.getElementById(id+"_reBtn").style="display:none";
 }
-/* function check(id){
-var desfile = document.getElementById(id);
-desfile.onchange = function(e) {
-	  var fileReader = new FileReader();
-	  fileReader.readAsDataURL(e.target.files[0]);
-	  fileReader.onload = function(e) { 
-		  document.getElementById(id+'_div').style = "display:inline";
-		  document.getElementById(id+'_preview').src = e.target.result;
-	 }
-}
 
-} */ 
 </script>
 
 </html>
