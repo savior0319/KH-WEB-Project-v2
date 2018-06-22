@@ -26,7 +26,7 @@
 
 <jsp:include page="/View/main/layout/cssjs.jsp"></jsp:include>
 
-<title>title</title>
+<title>관리자</title>
 </head>
 
 <body>
@@ -44,7 +44,7 @@
 			<h1>로그인 내역</h1>
 
 
-			<form class="ui segment " action="/adminMemberLog" method="post"
+			<form  action="/adminMemberLog" method="post"
 				style="display: inline;">
 				<select name="searchOption">
 					<% if(searchOption==null||searchOption.equals("MB_LOG_ID")){ %>
@@ -55,9 +55,15 @@
 					<option value="MB_LOG_IP" selected="selected">주소</option>	
 					<% } %>
 				</select> 
-				<input type="text" name="searchData" value="<%=searchData %>" >
-				<input type="submit" value="검색">
+				<input type="text" name="searchData" 
+			 	<%if(searchData != null){ %>
+			 	 value=<%=searchData %>
+			 	<% }%> >
+			 <input type="submit" value="검색">
 			</form>
+			<form  method="post" action="/memberLogListDown" style="display:inline" >
+    	  		<input class="ui buton" type="submit" value="다운">
+    	 	</form>
 			<table class="ui celled table">
 				<thead>
 					<tr>

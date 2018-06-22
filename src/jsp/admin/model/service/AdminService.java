@@ -580,4 +580,35 @@ public class AdminService {
 			JDBCTemplate.close(conn);
 			return result;
 		}
+
+		public boolean updateRoomText(PensionVo pv) {
+			Connection conn = null;
+			conn = JDBCTemplate.getConnect(conn);
+			boolean result = false;
+			result = aDao.updateRoomText(conn,pv);
+			if(result) {
+				JDBCTemplate.commit(conn);
+			}else {
+				JDBCTemplate.rollBack(conn);
+			}
+			JDBCTemplate.close(conn);
+			return result;
+		}
+		// 로그인 기록 엑셀 다운
+		public ArrayList<MemberLoginLogVo> memberLogListDown() {
+			Connection conn = null;
+			conn = JDBCTemplate.getConnect(conn);
+			ArrayList<MemberLoginLogVo> list = aDao.memberLogListDown(conn);
+			JDBCTemplate.close(conn);
+			return list;
+		}
+		// 예약 정보 엑셀 다운 
+		public ArrayList<ReservationVo> reservationListDown() {
+			Connection conn = null;
+			conn = JDBCTemplate.getConnect(conn);
+			ArrayList<ReservationVo> list = aDao.reservationListDown(conn);
+			JDBCTemplate.close(conn);
+			return list;
+		}
+		
 }

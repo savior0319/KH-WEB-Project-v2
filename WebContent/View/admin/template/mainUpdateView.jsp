@@ -45,7 +45,7 @@
 	<div id='image${i.count }'>
 	<img src="${list.mainPicPath }" style="width:100%;">
 	</div>
-	<input type="hidden" name="image_path" value="${list.mainPicPath }">
+	<input type="hidden" name="image_path" value="${list.mainPicPath }" required />
 	<%-- <div id="update${i.count }_div" style='display:none;'> 
 	<img id="update${i.count }_preview" style='width:100px; height:100px;'> 
 	</div> --%>

@@ -10,7 +10,7 @@
 		border-collapse: collapse;
 	}
 	</style>
-	
+	<title>관리자</title>
 </head>
 <body>
 <%
@@ -242,15 +242,15 @@ $(document).ready(function(){
           for(var j=0; j<<%=pvList.size()%>; j++) { // 객실 정보 테이블의 총 객실 수 만큼 반복(지금은 일단 6개로 지정) -> 수정
           
              if(arr[i-1][j] == 2) {
-                 /* str += "<button class='ui black basic button' style='margin-bottom:3px; width:100%;'>기간만료</button><br>"; */
+                 str += "<button class='ui black basic button' style='margin-bottom:3px; width:100%;opacity:0;cursor:default;'>기간만료</button><br>";
             	 // 이 부분을 클릭하면 예약한 정보를 보는 페이지로 넘어가게 하자. (detail 페이지로...)
-                 str += "<form action='/adminReservationDetail' method='post'>"
+                /* str += "<form action='/adminReservationDetail' method='post' >"
 	                  + "<input type='hidden' name='year' value="+ today.getFullYear() +">"
 	                  + "<input type='hidden' name='month' value="+ (today.getMonth()+1) +">"
 	                  + "<input type='hidden' name='day' value="+ i +">"
 	                  + "<input type='hidden' name='roomName' value="+psNameArr[j]+">"
 	                  + "<input type='submit' class='ui black basic button' value='"+psNameArr[j]+" O' style='margin-bottom:3px; width:100%;'>"
-         		+ "</form>";
+         		+ "</form>";  */
                } else if(arr[i-1][j] == 1) {
             	   /* str += "<button class='ui black basic button' style='margin-bottom:3px; width:100%;'>기간만료</button><br>"; */
               	 // 이 부분을 클릭하면 예약한 정보를 보는 페이지로 넘어가게 하자. (detail 페이지로...)

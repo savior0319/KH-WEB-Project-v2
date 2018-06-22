@@ -70,7 +70,7 @@ public class AdminBoardResistServlet extends HttpServlet {
 			
 			BoardTotalInfoVo btlv = null;
 			bv.setBdWriter(((MemberVo)session.getAttribute("member")).getMbId());
-			bv.setBdCategory("공지사항");
+			bv.setBdCategory("공지");
 			
 			try {
 				items = (ArrayList<FileItem>) upload.parseRequest(request);

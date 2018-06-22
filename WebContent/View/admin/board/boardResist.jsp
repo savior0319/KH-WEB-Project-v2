@@ -21,7 +21,7 @@
 
 <jsp:include page="/View/main/layout/cssjs.jsp"></jsp:include>
 
-<title>공지사항 등록</title>
+<title>관리자</title>
 </head>
 
 <style>

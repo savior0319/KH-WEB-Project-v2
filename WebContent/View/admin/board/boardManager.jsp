@@ -11,6 +11,7 @@
 <html>
 <head>
 <jsp:include page="/View/main/layout/cssjs.jsp"></jsp:include>
+<title>관리자</title>
 </head>
 <body>
 
@@ -25,27 +26,21 @@
 		<div class="ui container">
 			<!-- 테이블 시작 -->
 			<h1>공지사항</h1>
-			<form class="ui segment " action="/adminBoardDetail" method="post"
+ 
+			<form action="/adminBoardList" method="post"
 				style="display: inline;">
-<%-- 				<select name="searchOption">
-					<% if(searchOption==null||searchOption.equals("BD_NAME")){ %>
-					<option value="BD_NAME" selected="selected">아이디</option>
-					<option value="MB_ADDRESS">주소</option>
-					<option value="MB_NAME">이름</option>
-					<%}else if(searchOption.equals("MB_ADDRESS")){%>
-					<option value="BD_NAME">아이디</option>
-					<option value="MB_ADDRESS" selected="selected">주소</option>
-					<option value="MB_NAME">이름</option>
-					<%}else{%>
-					<option value="MB_ID" selected="selected">아이디</option>
-					<option value="MB_ADDRESS">주소</option>
-					<option value="MB_NAME" selected="selected">이름</option>
-					<% } %>
-				</select>  --%>
-				<input type="text" name="searchData" value=<%=searchData %>>
+				<input type="hidden" name="searchOption" value="<%=searchOption %>">
+				<input type="text" name="searchData" 
+					<%if(searchData != null){ %>
+					value=<%=searchData %> 
+					<% }%>
+				> 
 				<input type="submit" value="검색">
 			</form>
-
+			<!--  글 등록  -->
+			<button>
+				<a href="/View/admin/board/boardResist.jsp">공지 등록</a>
+			</button>
 			<table class="ui celled table">
 
 				<thead>
@@ -103,11 +98,7 @@
 			<% } %>
 			<!--  테이블 끝 -->
 
-			<div class="ui segment">
 
-				<a class="ui button" href="/View/admin/board/boardResist.jsp">공지
-					등록</a>
-			</div>
 		</div>
 		<!-- 본문 내용 끝  -->
 	</div>

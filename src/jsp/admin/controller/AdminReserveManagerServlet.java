@@ -52,14 +52,9 @@ public class AdminReserveManagerServlet extends HttpServlet {
 		}else {
 			mpv = new AdminService().reserveList(currentPage);
 		}
-		
-		
 			RequestDispatcher view = request.getRequestDispatcher("/View/admin/reserve/reserveManager.jsp");
 			request.setAttribute("ReservePage",mpv );
 			view.forward(request, response);
-		
-			
-		
 	}
 
 	/**

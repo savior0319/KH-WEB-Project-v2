@@ -35,11 +35,12 @@ public class MemberListDownServlet extends HttpServlet {
 		request.setCharacterEncoding("utf-8");
 		
 		ArrayList<MemberVo> list = new AdminService().memberListDown();
-		
-		boolean result = new PensionExcelWriter().memberListWriter(list);
+		String path = getServletContext().getRealPath("/")+"pansionMember.xlsx";
+		boolean result = new PensionExcelWriter().memberListWriter(list,path);
 		System.out.println(request.getRequestURL().toString());
 		if(result) {
 			response.sendRedirect("/adminMemberList");
+			// 성공 메시지를 띄워야 한다.
 		}else {
 			response.sendRedirect("/View/error/errorPage.jsp");
 

@@ -18,7 +18,7 @@
 	gtag('config', 'UA-120156974-1');
 </script>
 <jsp:include page="/View/main/layout/cssjs.jsp"></jsp:include>
-<title>펜션 방 사진 삭제</title>
+<title>관리자</title>
 </head>
 
 <style>
