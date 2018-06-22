@@ -526,6 +526,49 @@ public class ReservationDao {
 		return list;
 	}
 
+	public int refundReservation(Connection conn, int rcNo) {
+		
+		int result = 0;
+		String query = prop.getProperty("refundReservation");
+		
+		try {
+			pstmt = conn.prepareStatement(query);
+			pstmt.setInt(1, rcNo);
+			
+			result = pstmt.executeUpdate();
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			JDBCTemplate.close(pstmt);
+		}
+		
+		return result;
+		
+	}
+
+	public int cancelReservation(Connection conn, int rcNo) {
+		
+		int result = 0;
+		String query = prop.getProperty("cancelReservation");
+		
+		try {
+			pstmt = conn.prepareStatement(query);
+			pstmt.setInt(1, rcNo);
+			
+			result = pstmt.executeUpdate();
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			JDBCTemplate.close(pstmt);
+		}
+		
+		return result;
+	}
+
 
 
 }

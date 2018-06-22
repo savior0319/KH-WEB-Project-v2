@@ -169,4 +169,28 @@ public class ReservationService {
 		JDBCTemplate.close(conn);
 		return list;
 	}
+
+	public int refundReservation(int rcNo) {
+		Connection conn = null;
+		conn = JDBCTemplate.getConnect(conn);
+		int result = new ReservationDao().refundReservation(conn, rcNo);
+		if (result > 0)
+			JDBCTemplate.commit(conn);
+		else
+			JDBCTemplate.rollBack(conn);
+		JDBCTemplate.close(conn);
+		return result;
+	}
+
+	public int cancelReservation(int rcNo) {
+		Connection conn = null;
+		conn = JDBCTemplate.getConnect(conn);
+		int result = new ReservationDao().cancelReservation(conn, rcNo);
+		if (result > 0)
+			JDBCTemplate.commit(conn);
+		else
+			JDBCTemplate.rollBack(conn);
+		JDBCTemplate.close(conn);
+		return result;
+	}
 }

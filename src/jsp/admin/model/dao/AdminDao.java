@@ -20,6 +20,8 @@ import jsp.main.model.vo.PensionPicTb;
 import jsp.member.model.vo.MemberVo;
 import jsp.member.model.vo.QuestionVo;
 import jsp.reservation.model.vo.PensionVo;
+import jsp.reservation.model.vo.ReservationCancelVo;
+import jsp.reservation.model.vo.ReservationHistoryVo;
 import jsp.reservation.model.vo.ReservationVo;
 import jsp.reservation.model.vo.SalesVo;
 
@@ -2230,4 +2232,543 @@ public class AdminDao {
 		}
 		return result;
 	}
+
+	
+	
+	//////////////////////////////////////////////////////////////////////////////////////////////////////// 지은 추가
+	
+	// searchOption 있음
+	public ArrayList<ReservationCancelVo> getReserveCancelCurrentPage(Connection conn, int currentPage,
+			int recordCountPerPage, String searchData, String searchOption) {
+		
+		
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		ArrayList<ReservationCancelVo> list = new ArrayList<ReservationCancelVo>();
+
+		int start = currentPage*recordCountPerPage - (recordCountPerPage-1);
+		int end = currentPage*recordCountPerPage;
+		
+		String query = "SELECT * FROM "
+				+ "(SELECT RES_CANCEL_TB.* , ROW_NUMBER() OVER(ORDER BY RC_NO DESC) AS NUM FROM RES_CANCEL_TB WHERE "+searchOption+" LIKE ? ) "
+				+"WHERE NUM BETWEEN ? AND ? ORDER BY RC_DATE DESC";
+		
+		try {
+			
+			pstmt = conn.prepareStatement(query);
+			
+			pstmt.setString(1,"%"+searchData+"%");
+			pstmt.setInt(2, start);
+			pstmt.setInt(3, end);
+			
+			rset = pstmt.executeQuery();
+			while(rset.next()) {
+				
+				ReservationCancelVo rcv = new ReservationCancelVo();
+				rcv.setRcNo(rset.getInt("rc_no"));
+				rcv.setRcResNo(rset.getInt("rc_res_no"));
+				rcv.setRcResRoomName(rset.getString("rc_res_room_name"));
+				rcv.setRcResId(rset.getString("rc_res_id"));
+				rcv.setRcResPersonnel(rset.getInt("rc_res_personnel"));
+				rcv.setRcResReservationDate(rset.getTimestamp("rc_res_reservation_date"));
+				rcv.setRcResInDate(rset.getDate("rc_res_in_date"));
+				rcv.setRcResOutDate(rset.getDate("rc_res_out_date"));
+				rcv.setRcResPeriod(rset.getInt("rc_res_period"));
+				rcv.setRcResPrice(rset.getInt("rc_res_price"));
+				rcv.setRcResPaymentDate(rset.getTimestamp("rc_res_payment_date"));
+				rcv.setRcDate(rset.getTimestamp("rc_date"));
+				rcv.setRcRefundCheck(rset.getString("rc_refund_check"));
+				rcv.setRcCancelCheck(rset.getString("rc_cancel_check"));
+
+				list.add(rcv);
+
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally {
+			JDBCTemplate.close(rset);
+			JDBCTemplate.close(pstmt);
+		}
+		
+		return list;
+	}
+
+	public String getReserveCancelPageNavi(Connection conn, int currentPage, int recordCountPerPage,
+			int naviCountPerPage, String searchData, String searchOption) {
+
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+
+		int recordTotalCount = 0; 
+		
+		String query = "select count(*) as totalCount from res_cancel_tb where "+searchOption+" like ?";
+
+		try {
+			pstmt = conn.prepareStatement(query);
+			
+			pstmt.setString(1, "%"+searchData+"%");
+			rset = pstmt.executeQuery();
+			if(rset.next()) {
+				recordTotalCount = rset.getInt("totalCount");
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally {
+			JDBCTemplate.close(rset);
+			JDBCTemplate.close(pstmt);
+		}
+		int pageTotalCount = 0;	
+		
+		if(recordTotalCount%recordCountPerPage != 0){
+			pageTotalCount = recordTotalCount/recordCountPerPage +1;
+		}else {
+			pageTotalCount = recordTotalCount/recordCountPerPage	;
+		}
+		
+		if(currentPage < 1) {
+			currentPage =1;
+		}
+		if(currentPage > pageTotalCount) {
+			currentPage = pageTotalCount;
+		}
+		
+		int startNavi = ((currentPage-1)/naviCountPerPage)*naviCountPerPage+1;
+
+		int endNavi = startNavi + naviCountPerPage -1;
+		
+
+		if(endNavi > pageTotalCount) {
+			endNavi = pageTotalCount;
+		}
+	
+		boolean needPrev = true;
+		boolean needNext = true;
+		if(startNavi ==1) {
+			needPrev = false;
+		}
+		if(endNavi == pageTotalCount) {
+			needNext = false;
+		}
+		
+		StringBuilder sb = new StringBuilder();
+		if(needPrev) { 
+			sb.append("<a href='/adminReserveCancel?searchData="+searchData+"&searchOption="+searchOption+"&currentPage="+1+"'> << </a>");
+			sb.append("<a href='/adminReserveCancel?searchData="+searchData+"&searchOption="+searchOption+"&currentPage="+(startNavi-1)+"'> < </a>");
+	
+		}
+		for(int i = startNavi ; i <=endNavi ; i++) {
+			if(i==currentPage) {
+				sb.append("<a href='/adminReserveCancel?searchData="+searchData+"&searchOption="+searchOption+"&currentPage="+(i)+"' ><B> "+i+" </B></a>");
+			}else {
+				sb.append("<a href='/adminReserveCancel?searchData="+searchData+"&searchOption="+searchOption+"&currentPage="+(i)+"' > "+i+" </a>");
+			}
+		}
+		if(needNext) {
+			sb.append("<a href='/adminReserveCancel?searchData="+searchData+"&searchOption="+searchOption+"&currentPage="+(endNavi+1)+"'> > </a>");
+			sb.append("<a href='/adminReserveCancel?searchData="+searchData+"&searchOption="+searchOption+"&currentPage="+pageTotalCount+"'> >> </a>");
+		}
+
+		return sb.toString();
+	}
+
+	
+	
+	
+	// searchOption 없음
+	public ArrayList<ReservationCancelVo> getReserveCancelCurrentPage(Connection conn, int currentPage,
+			int recordCountPerPage) {
+		
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		ArrayList<ReservationCancelVo> list = new ArrayList<ReservationCancelVo>();
+
+		int start = currentPage*recordCountPerPage - (recordCountPerPage-1);
+
+		int end = currentPage*recordCountPerPage;	
+		
+		String query = "select * from "
+				+ "(select res_cancel_tb.* , row_number() over(order by rc_no desc) as num from res_cancel_tb) "
+				+"where num between ? and ? ORDER BY RC_DATE DESC";
+		
+		try {
+			pstmt = conn.prepareStatement(query);
+			pstmt.setInt(1, start);
+			pstmt.setInt(2, end);
+			rset = pstmt.executeQuery();
+			while(rset.next()) {
+				
+				ReservationCancelVo rcv = new ReservationCancelVo();
+				rcv.setRcNo(rset.getInt("rc_no"));
+				rcv.setRcResNo(rset.getInt("rc_res_no"));
+				rcv.setRcResRoomName(rset.getString("rc_res_room_name"));
+				rcv.setRcResId(rset.getString("rc_res_id"));
+				rcv.setRcResPersonnel(rset.getInt("rc_res_personnel"));
+				rcv.setRcResReservationDate(rset.getTimestamp("rc_res_reservation_date"));
+				rcv.setRcResInDate(rset.getDate("rc_res_in_date"));
+				rcv.setRcResOutDate(rset.getDate("rc_res_out_date"));
+				rcv.setRcResPeriod(rset.getInt("rc_res_period"));
+				rcv.setRcResPrice(rset.getInt("rc_res_price"));
+				rcv.setRcResPaymentDate(rset.getTimestamp("rc_res_payment_date"));
+				rcv.setRcDate(rset.getTimestamp("rc_date"));
+				rcv.setRcRefundCheck(rset.getString("rc_refund_check"));
+				rcv.setRcCancelCheck(rset.getString("rc_cancel_check"));
+
+				list.add(rcv);
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally {
+			JDBCTemplate.close(rset);
+			JDBCTemplate.close(pstmt);
+		}
+		
+		return list;
+	}
+
+	public String getReserveCancelPageNavi(Connection conn, int currentPage, int recordCountPerPage,
+			int naviCountPerPage) {
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		
+		int recordTotalCount = 0; 
+		String query = "select count(*) as totalCount from res_cancel_tb";
+		try {
+			pstmt = conn.prepareStatement(query);
+			rset = pstmt.executeQuery();
+			if(rset.next()) {
+				recordTotalCount = rset.getInt("totalCount");
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally {
+			JDBCTemplate.close(rset);
+			JDBCTemplate.close(pstmt);
+		}
+		int pageTotalCount = 0;	
+		
+		if(recordTotalCount%recordCountPerPage != 0){
+			pageTotalCount = recordTotalCount/recordCountPerPage +1;
+		}else {
+			pageTotalCount = recordTotalCount/recordCountPerPage	;
+		}
+
+		if(currentPage < 1) {
+			currentPage =1;
+		}
+		if(currentPage > pageTotalCount) {
+			currentPage = pageTotalCount;
+		}
+
+		int startNavi = ((currentPage-1)/naviCountPerPage)*naviCountPerPage+1;
+
+		int endNavi = startNavi + naviCountPerPage -1;
+		
+		if(endNavi > pageTotalCount) {
+			endNavi = pageTotalCount;
+		}
+	
+		boolean needPrev = true;
+		boolean needNext = true;
+		if(startNavi ==1) {
+			needPrev = false;
+		}
+		if(endNavi == pageTotalCount) {
+			needNext = false;
+		}
+
+		StringBuilder sb = new StringBuilder();
+		if(needPrev) {
+			sb.append("<a href='/adminReserveCancel?currentPage="+1+"'> << </a>");
+			sb.append("<a href='/adminReserveCancel?currentPage="+(startNavi-1)+"'> < </a>");
+		}
+		
+		for(int i = startNavi ; i <=endNavi ; i++) {
+			if(i==currentPage) {
+				sb.append("<a href='/adminReserveCancel?currentPage="+(i)+"' ><B> "+i+" </B></a>");
+			}else {
+				sb.append("<a href='/adminReserveCancel?currentPage="+(i)+"' > "+i+" </a>");
+			}
+		}
+		
+		if(needNext) {
+			sb.append("<a href='/adminReserveCancel?currentPage="+(endNavi+1)+"'> > </a>");
+			sb.append("<a href='/adminReserveCancel?currentPage="+pageTotalCount+"'> >> </a>");
+		}
+
+		return sb.toString();
+	}
+
+	
+	// searchOption 있음
+	public ArrayList<ReservationHistoryVo> getReserveHistoryCurrentPage(Connection conn, int currentPage,
+			int recordCountPerPage, String searchData, String searchOption) {
+		
+
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		ArrayList<ReservationHistoryVo> list = new ArrayList<ReservationHistoryVo>();
+
+		int start = currentPage*recordCountPerPage - (recordCountPerPage-1);
+		int end = currentPage*recordCountPerPage;
+		
+		String query = "SELECT * FROM "
+				+ "(SELECT RESERVATION_HISTORY_TB.* , ROW_NUMBER() OVER(ORDER BY RES_HIS_NO DESC) AS NUM FROM RESERVATION_HISTORY_TB WHERE "+searchOption+" LIKE ? ) "
+				+"WHERE NUM BETWEEN ? AND ?";
+		
+		try {
+			
+			pstmt = conn.prepareStatement(query);
+			
+			pstmt.setString(1,"%"+searchData+"%");
+			pstmt.setInt(2, start);
+			pstmt.setInt(3, end);
+			
+			rset = pstmt.executeQuery();
+			while(rset.next()) {
+				
+				ReservationHistoryVo rhv = new ReservationHistoryVo();
+				rhv.setResHisNo(rset.getInt("RES_HIS_NO"));
+				rhv.setResHisResNo(rset.getInt("RES_HIS_RES_NO"));
+				rhv.setResHisRoomName(rset.getString("RES_HIS_ROOM_NAME"));
+				rhv.setResHisId(rset.getString("RES_HIS_ID"));
+				rhv.setResHisPersonnel(rset.getInt("RES_HIS_PERSONNEL"));
+				rhv.setResHisReservationDate(rset.getTimestamp("RES_HIS_RESERVATION_DATE"));
+				rhv.setResHisInDate(rset.getDate("RES_HIS_IN_DATE"));
+				rhv.setResHisOutDate(rset.getDate("RES_HIS_OUT_DATE"));
+				rhv.setResHisPeriod(rset.getInt("RES_HIS_PERIOD"));
+				rhv.setResHisPrice(rset.getInt("RES_HIS_PRICE"));
+				rhv.setResHisPaymentDate(rset.getTimestamp("RES_HIS_PAYMENT_DATE"));
+				
+				list.add(rhv);
+
+
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally {
+			JDBCTemplate.close(rset);
+			JDBCTemplate.close(pstmt);
+		}
+		
+		return list;
+		
+		
+		
+	}
+
+	public String getReserveHistoryPageNavi(Connection conn, int currentPage, int recordCountPerPage,
+			int naviCountPerPage, String searchData, String searchOption) {
+		
+
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+
+		int recordTotalCount = 0; 
+		
+		String query = "select count(*) as totalCount from reservation_history_tb where "+searchOption+" like ?";
+
+		try {
+			pstmt = conn.prepareStatement(query);
+			
+			pstmt.setString(1, "%"+searchData+"%");
+			rset = pstmt.executeQuery();
+			if(rset.next()) {
+				recordTotalCount = rset.getInt("totalCount");
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally {
+			JDBCTemplate.close(rset);
+			JDBCTemplate.close(pstmt);
+		}
+		int pageTotalCount = 0;	
+		
+		if(recordTotalCount%recordCountPerPage != 0){
+			pageTotalCount = recordTotalCount/recordCountPerPage +1;
+		}else {
+			pageTotalCount = recordTotalCount/recordCountPerPage	;
+		}
+		
+		if(currentPage < 1) {
+			currentPage =1;
+		}
+		if(currentPage > pageTotalCount) {
+			currentPage = pageTotalCount;
+		}
+		
+		int startNavi = ((currentPage-1)/naviCountPerPage)*naviCountPerPage+1;
+
+		int endNavi = startNavi + naviCountPerPage -1;
+		
+
+		if(endNavi > pageTotalCount) {
+			endNavi = pageTotalCount;
+		}
+	
+		boolean needPrev = true;
+		boolean needNext = true;
+		if(startNavi ==1) {
+			needPrev = false;
+		}
+		if(endNavi == pageTotalCount) {
+			needNext = false;
+		}
+		
+		StringBuilder sb = new StringBuilder();
+		if(needPrev) { 
+			sb.append("<a href='/adminReserveHistory?searchData="+searchData+"&searchOption="+searchOption+"&currentPage="+1+"'> << </a>");
+			sb.append("<a href='/adminReserveHistory?searchData="+searchData+"&searchOption="+searchOption+"&currentPage="+(startNavi-1)+"'> < </a>");
+	
+		}
+		for(int i = startNavi ; i <=endNavi ; i++) {
+			if(i==currentPage) {
+				sb.append("<a href='/adminReserveHistory?searchData="+searchData+"&searchOption="+searchOption+"&currentPage="+(i)+"' ><B> "+i+" </B></a>");
+			}else {
+				sb.append("<a href='/adminReserveHistory?searchData="+searchData+"&searchOption="+searchOption+"&currentPage="+(i)+"' > "+i+" </a>");
+			}
+		}
+		if(needNext) {
+			sb.append("<a href='/adminReserveHistory?searchData="+searchData+"&searchOption="+searchOption+"&currentPage="+(endNavi+1)+"'> > </a>");
+			sb.append("<a href='/adminReserveHistory?searchData="+searchData+"&searchOption="+searchOption+"&currentPage="+pageTotalCount+"'> >> </a>");
+		}
+
+		return sb.toString();
+		
+		
+		
+	}
+
+	// searchOption 없음
+	public ArrayList<ReservationHistoryVo> getReserveHistoryCurrentPage(Connection conn, int currentPage,
+			int recordCountPerPage) {
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		ArrayList<ReservationHistoryVo> list = new ArrayList<ReservationHistoryVo>();
+
+		int start = currentPage*recordCountPerPage - (recordCountPerPage-1);
+
+		int end = currentPage*recordCountPerPage;	
+		
+		String query = "select * from "
+				+ "(select reservation_history_tb.* , row_number() over(order by res_his_no desc) as num from reservation_history_tb) "
+				+"where num between ? and ?";
+		
+		try {
+			pstmt = conn.prepareStatement(query);
+			pstmt.setInt(1, start);
+			pstmt.setInt(2, end);
+			rset = pstmt.executeQuery();
+			
+			while(rset.next()) {
+				
+				ReservationHistoryVo rhv = new ReservationHistoryVo();
+				rhv.setResHisNo(rset.getInt("RES_HIS_NO"));
+				rhv.setResHisResNo(rset.getInt("RES_HIS_RES_NO"));
+				rhv.setResHisRoomName(rset.getString("RES_HIS_ROOM_NAME"));
+				rhv.setResHisId(rset.getString("RES_HIS_ID"));
+				rhv.setResHisPersonnel(rset.getInt("RES_HIS_PERSONNEL"));
+				rhv.setResHisReservationDate(rset.getTimestamp("RES_HIS_RESERVATION_DATE"));
+				rhv.setResHisInDate(rset.getDate("RES_HIS_IN_DATE"));
+				rhv.setResHisOutDate(rset.getDate("RES_HIS_OUT_DATE"));
+				rhv.setResHisPeriod(rset.getInt("RES_HIS_PERIOD"));
+				rhv.setResHisPrice(rset.getInt("RES_HIS_PRICE"));
+				rhv.setResHisPaymentDate(rset.getTimestamp("RES_HIS_PAYMENT_DATE"));
+				
+				list.add(rhv);
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally {
+			JDBCTemplate.close(rset);
+			JDBCTemplate.close(pstmt);
+		}
+		
+		return list;
+	}
+
+	public String getReserveHistoryPageNavi(Connection conn, int currentPage, int recordCountPerPage,
+			int naviCountPerPage) {
+
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		
+		int recordTotalCount = 0; 
+		String query = "select count(*) as totalCount from reservation_history_tb";
+		try {
+			pstmt = conn.prepareStatement(query);
+			rset = pstmt.executeQuery();
+			if(rset.next()) {
+				recordTotalCount = rset.getInt("totalCount");
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally {
+			JDBCTemplate.close(rset);
+			JDBCTemplate.close(pstmt);
+		}
+		int pageTotalCount = 0;	
+		
+		if(recordTotalCount%recordCountPerPage != 0){
+			pageTotalCount = recordTotalCount/recordCountPerPage +1;
+		}else {
+			pageTotalCount = recordTotalCount/recordCountPerPage	;
+		}
+
+		if(currentPage < 1) {
+			currentPage =1;
+		}
+		if(currentPage > pageTotalCount) {
+			currentPage = pageTotalCount;
+		}
+
+		int startNavi = ((currentPage-1)/naviCountPerPage)*naviCountPerPage+1;
+
+		int endNavi = startNavi + naviCountPerPage -1;
+		
+		if(endNavi > pageTotalCount) {
+			endNavi = pageTotalCount;
+		}
+	
+		boolean needPrev = true;
+		boolean needNext = true;
+		if(startNavi ==1) {
+			needPrev = false;
+		}
+		if(endNavi == pageTotalCount) {
+			needNext = false;
+		}
+
+		StringBuilder sb = new StringBuilder();
+		if(needPrev) {
+			sb.append("<a href='/adminReserveHistory?currentPage="+1+"'> << </a>");
+			sb.append("<a href='/adminReserveHistory?currentPage="+(startNavi-1)+"'> < </a>");
+		}
+		
+		for(int i = startNavi ; i <=endNavi ; i++) {
+			if(i==currentPage) {
+				sb.append("<a href='/adminReserveHistory?currentPage="+(i)+"' ><B> "+i+" </B></a>");
+			}else {
+				sb.append("<a href='/adminReserveHistory?currentPage="+(i)+"' > "+i+" </a>");
+			}
+		}
+		
+		if(needNext) {
+			sb.append("<a href='/adminReserveHistory?currentPage="+(endNavi+1)+"'> > </a>");
+			sb.append("<a href='/adminReserveHistory?currentPage="+pageTotalCount+"'> >> </a>");
+		}
+
+		return sb.toString();
+		
+		
+	}
+	
+	
 }
