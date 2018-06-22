@@ -12,6 +12,7 @@ import java.util.Properties;
 import jsp.common.JDBCTemplate;
 import jsp.reservation.model.vo.PensionVo;
 import jsp.reservation.model.vo.ReservationCancelVo;
+import jsp.reservation.model.vo.ReservationHistoryVo;
 import jsp.reservation.model.vo.ReservationVo;
 
 public class ReservationDao {
@@ -481,6 +482,48 @@ public class ReservationDao {
 		}
 		
 		return result;
+	}
+
+	public ArrayList<ReservationHistoryVo> loginIdHistoryList(Connection conn, String loginId) {
+		
+		ArrayList<ReservationHistoryVo> list = null;
+		String query = prop.getProperty("loginIdHistoryList");
+
+		try {
+			pstmt = conn.prepareStatement(query);
+			pstmt.setString(1, loginId);
+			rset = pstmt.executeQuery();
+
+			list = new ArrayList<ReservationHistoryVo>();
+
+			while (rset.next()) {
+				
+				ReservationHistoryVo rhv = new ReservationHistoryVo();
+				rhv.setResHisNo(rset.getInt("RES_HIS_NO"));
+				rhv.setResHisResNo(rset.getInt("RES_HIS_RES_NO"));
+				rhv.setResHisRoomName(rset.getString("RES_HIS_ROOM_NAME"));
+				rhv.setResHisId(rset.getString("RES_HIS_ID"));
+				rhv.setResHisPersonnel(rset.getInt("RES_HIS_PERSONNEL"));
+				rhv.setResHisReservationDate(rset.getTimestamp("RES_HIS_RESERVATION_DATE"));
+				rhv.setResHisInDate(rset.getDate("RES_HIS_IN_DATE"));
+				rhv.setResHisOutDate(rset.getDate("RES_HIS_OUT_DATE"));
+				rhv.setResHisPeriod(rset.getInt("RES_HIS_PERIOD"));
+				rhv.setResHisPrice(rset.getInt("RES_HIS_PRICE"));
+				rhv.setResHisPaymentDate(rset.getTimestamp("RES_HIS_PAYMENT_DATE"));
+				
+				list.add(rhv);
+				
+			}
+
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			JDBCTemplate.close(rset);
+			JDBCTemplate.close(pstmt);
+		}
+
+		return list;
 	}
 
 

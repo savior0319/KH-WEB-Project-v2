@@ -7,6 +7,7 @@ import jsp.common.JDBCTemplate;
 import jsp.reservation.model.dao.ReservationDao;
 import jsp.reservation.model.vo.PensionVo;
 import jsp.reservation.model.vo.ReservationCancelVo;
+import jsp.reservation.model.vo.ReservationHistoryVo;
 import jsp.reservation.model.vo.ReservationVo;
 
 public class ReservationService {
@@ -159,5 +160,13 @@ public class ReservationService {
 			JDBCTemplate.rollBack(conn);
 		JDBCTemplate.close(conn);
 		return result;
+	}
+
+	public ArrayList<ReservationHistoryVo> loginIdHistoryList(String loginId) {
+		Connection conn = null;
+		conn = JDBCTemplate.getConnect(conn);
+		ArrayList<ReservationHistoryVo> list = new ReservationDao().loginIdHistoryList(conn, loginId);
+		JDBCTemplate.close(conn);
+		return list;
 	}
 }
