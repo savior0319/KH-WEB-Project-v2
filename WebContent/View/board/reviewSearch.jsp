@@ -65,7 +65,7 @@
 					%>
 					<tbody> 
 						<tr>
-							<td colspan="6" class="ui center aligned basic segment">등록된 게시물이 없습니다.</td>
+							<td colspan="6" class="ui center aligned basic segment">검색된 게시물이 없습니다.</td>
 						</tr>
 					</tbody>
 					<%
