@@ -6,23 +6,22 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import jsp.board.model.service.BoardService;
+import jsp.board.model.service.CommentService;
 import jsp.board.model.vo.Comment;
-import jsp.member.model.vo.MemberVo;
 
 /**
- * Servlet implementation class NoticeCommentServlet
+ * Servlet implementation class RecommendCommentServlet
  */
-@WebServlet(name = "NoticeComment", urlPatterns = { "/noticeComment" })
-public class NoticeCommentServlet extends HttpServlet {
+@WebServlet(name = "RecommendComment", urlPatterns = { "/recommendComment" })
+public class RecommendCommentServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public NoticeCommentServlet() {
+    public RecommendCommentServlet() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -31,31 +30,26 @@ public class NoticeCommentServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		//1.인코딩
 		request.setCharacterEncoding("utf-8");
 		
-		//2. 변수값 저장(내용, 게시물 번호)
-		String CM_CONTENTS = request.getParameter("CM_CONTENTS");
-		int BD_NO = Integer.parseInt(request.getParameter("bdNo"));
-		HttpSession session = request.getSession(false);
+		int cmNo = Integer.parseInt(request.getParameter("cmNo"));
 		
+		String recommendId = request.getParameter("recommendId");
 		
-		if(session.getAttribute("member")!=null) { //로그인이 된 상태라면
-			Comment c = new Comment();
-			c.setCmBdNo(BD_NO);
-			c.setCmContents(CM_CONTENTS);
-			c.setCmWriter(((MemberVo)session.getAttribute("member")).getMbId());
+		// false 이면 해당 게시글에 로그인한 계정이 추천을 누른적이 없는 경우, true이면 해당 게시글에 로그인한 계정이 추천을 누른적이 있는 경우
+		boolean recommendInquiry = new CommentService().recommendInquiry(cmNo, recommendId);
+				
+		if(recommendInquiry == false) {
+			int recommendAdd = new CommentService().recommendAdd(cmNo);
+			int recommendInsert = new CommentService().recommendInsert(cmNo, recommendId);
+		}	
 		
-			int result = new BoardService().insertComment(c);
-			
-			if(result>0) {//댓글내용이 들어오면
-				response.sendRedirect("/reviewSelect?bdNo="+BD_NO);
-			}else {//내용이 안들어오면
-				response.sendRedirect("/View/error/error.jsp");
-			}
-		}else {
-			response.sendRedirect("/View/error/error.jsp");
-		}
+		Comment c = new CommentService().commentCmNo(cmNo);
+		
+		response.setCharacterEncoding("UTF-8");
+		response.getWriter().print(c.getCmRecCount());
+		response.getWriter().close();
+		
 	}
 
 	/**

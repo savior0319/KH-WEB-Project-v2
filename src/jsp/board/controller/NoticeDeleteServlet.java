@@ -44,7 +44,7 @@ public class NoticeDeleteServlet extends HttpServlet {
 		if(result1>-1) { // 댓글 삭제가 성공하면
 			result = new BoardService().deleteNotice(bdNo); // 글 삭제 진행
 			if(result>0) { //게시글삭제가 성공하면
-				response.sendRedirect("/board");
+				response.sendRedirect("/review");
 			}else {//게시글 삭제가 실패하면
 				response.sendRedirect("/View/error/error.jsp");
 				
