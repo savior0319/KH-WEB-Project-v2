@@ -10,6 +10,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import jsp.admin.model.service.AdminService;
+import jsp.admin.model.vo.BoardTotalInfoVo;
 import jsp.board.model.service.BoardService;
 import jsp.board.model.service.CommentService;
 import jsp.board.model.vo.BoardVo;
@@ -37,7 +39,8 @@ public class ReviewSelectServlet extends HttpServlet {
 		int bdNo = Integer.parseInt(request.getParameter("bdNo"));
 		
 		// 선택한 후기 불러오기
-		BoardVo bv = new BoardService().selectReview(bdNo);
+		
+		BoardTotalInfoVo btlv = new AdminService().selectBoardOne(bdNo);
 		
 		// 선택한 후기에 대한 댓글 불러오기
 		ArrayList<Comment> list = new CommentService().selectComment(bdNo);
@@ -45,11 +48,13 @@ public class ReviewSelectServlet extends HttpServlet {
 		// 조회수 카운트
 		int inquiryResult = new BoardService().hitsCount(bdNo);
 		
+		// 사진 불러오기
 		
-		if(bv != null) {
+		
+		if(btlv != null) {
 			if(inquiryResult > 0) {
 				RequestDispatcher view = request.getRequestDispatcher("/View/board/reviewSelect.jsp");
-				request.setAttribute("review", bv); // 후기 객체
+				request.setAttribute("review", btlv); // 후기 객체
 				request.setAttribute("comment", list); // 댓글 객체 리스트
 				view.forward(request, response);
 			}

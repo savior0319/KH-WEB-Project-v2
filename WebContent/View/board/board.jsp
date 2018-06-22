@@ -20,7 +20,7 @@
 		gtag('config', 'UA-120156974-1');
 	</script>
 	<jsp:include page="/View/main/layout/cssjs.jsp"></jsp:include>
-	<title>공지사항</title>
+	<title>The Pension</title>
 </head>
 
 <style>

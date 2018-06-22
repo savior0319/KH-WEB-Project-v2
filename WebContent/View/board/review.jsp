@@ -27,7 +27,6 @@
 <jsp:include page="/View/main/layout/cssjs.jsp"></jsp:include>
 <title>고객후기</title>
 </head>
-
 <style>
 </style>
 
@@ -111,41 +110,36 @@
 					<%
 						}
 					%>
-				</table>
-				
+					
+			</table>
+			
+			<form action="/reviewSearch" method="get" style="display:inline;">
+				<select name="searchOption" style="width:80px;">
+               		<option value="title" selected>제목</option>
+               		<option value="contents">내용</option>
+               		<option value="writer">작성자</option>
+                </select> 
+				<div class="ui input" style="margin-top: 15px;">
+					<input type="text" name="search" placeholder="검색" style="margin-right: 5px;" id="searchVal">
+					<input class="ui blue button" type="submit" value="검색" style="margin-left: 5px;" onclick="return blankCheck();">
+				</div>
+			</form>
+			
+			<br><br>
+			
+			<%
+			if(m != null) {
+			%>
+			<form action="/View/board/reviewWriteReady.jsp">
+				<input type="submit" class="ui red button" value="글쓰기"> 
+			</form>
+			
+			<%
+			}
+			%>
+			
+			<%-- 공지사항 글쓰기 관리자 페이지로 이동 --%>
 
-				<form action="/reviewSearch" method="get" style="display: inline;">
-					<select name="searchOption" style="width: 80px;">
-						<option value="title" selected>제목</option>
-						<option value="contents">내용</option>
-						<option value="writer">작성자</option>
-					</select>
-					<div class="ui input" style="margin-top: 15px;">
-						<input type="text" name="search" placeholder="검색"
-							style="margin-right: 5px;" id="searchVal"> <input
-							class="ui blue button" type="submit" value="검색"
-							style="margin-left: 5px;" onclick="return blankCheck();">
-					</div>
-				</form>
-
-				<br><br>
-				
-				<%
-					if (m != null) {
-				%>
-				<form action="/View/board/noticeWriteReady.jsp">
-					<input type="submit" class="ui red button" value="글쓰기">
-				</form>
-
-				<%
-					} else {
-				%>
-				<button class="ui button" onclick="loginPlease();">글쓰기</button>
-				<%
-					}
-				%>
-
-				<%-- 공지사항 글쓰기 관리자 페이지로 이동 --%>
 				<!--  -->
 			</div>
 		</div>
