@@ -52,7 +52,9 @@
 							<i class="lock icon"></i>
 							<div class="content">
 								<div class="header">
-									개인정보 보호를 위해 비밀번호를 입력해주세요
+									※ 개인정보 보호를 위해 비밀번호를 입력해주세요<br>
+									<br>(네이버로 로그인한 회원은 생일을 입력해주세요<br>
+									ex. 생년월일이 900101일 경우 0101 입력)
 								</div>
 							</div>
 						</div>
