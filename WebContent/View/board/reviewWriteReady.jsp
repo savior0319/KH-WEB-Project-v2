@@ -38,7 +38,7 @@
 
 		<form action="/reViewWrite" method="post" enctype="Multipart/form-data" style="display:inline;">
 			<br> 글제목:<input
-				type="text" size=90 name="bd_Name" /><br>
+				type="text" size=90 name="bd_Name" required/><br>
 			<textarea rows="20" cols="100" name="bd_Contents"
 				style="resize: none;"></textarea>
 			<br> <input type="file" name="img" id="img" accept="image/*" multiple><br><br>

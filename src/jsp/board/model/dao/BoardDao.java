@@ -923,13 +923,12 @@ public class BoardDao {
 		BoardVo newBv = null;
 		ResultSet rset = null;
 		
-		String query = "select * from board_tb where bd_name = ? and bd_contents=? and bd_writer=?";
+		String query = "select * from board_tb where bd_name = ? and bd_writer=?";
 		
 			try {
 				pstmt = conn.prepareStatement(query);
 				pstmt.setString(1, bv.getBdName());
-				pstmt.setString(2, bv.getBdContents());
-				pstmt.setString(3, bv.getBdWriter());
+				pstmt.setString(2, bv.getBdWriter());
 				
 				rset = pstmt.executeQuery();
 				if(rset.next()) {
