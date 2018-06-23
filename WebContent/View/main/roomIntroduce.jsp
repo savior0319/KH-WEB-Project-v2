@@ -48,7 +48,7 @@ ArrayList<PensionPicTb> list = (ArrayList<PensionPicTb>) request.getAttribute("P
 	<div>
 		<div>
 			<div style="border: 0px; padding: 0px; margin: 0px;">
-				<img src="${requestScope.dTb.desImagePath }" class="swiperImg">
+				<img src="${requestScope.dTb.desImagePath }" class="swiperImg" style="opacity: 0.8;">
 			</div>
 			<div style="background: url('/Image/title/pattern01a.png'); border: 0px; padding: 0px; margin: 0px;">
 				<div class="ui center aligned basic segment" style="letter-spacing: 5px;">바다여행의 아름다운 추억을 더 펜션에서 만들어 가세요.</div>
