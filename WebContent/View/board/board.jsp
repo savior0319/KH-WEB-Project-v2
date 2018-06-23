@@ -1,14 +1,10 @@
+<%@page import="jsp.member.model.vo.MemberVo"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@page import="java.sql.Timestamp"%>
 <%@page import="java.sql.Date"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<%@ page errorPage="/View/error/error.jsp"%>
 <%@ page import="jsp.board.model.vo.*" import="java.util.*"%>
-<%
-Page pagev = (Page) request.getAttribute("Page");
-ArrayList<BoardVo> list = pagev.getList();
-String getPageCount = pagev.getPageCount();
-%>
+<% MemberVo m = (MemberVo)session.getAttribute("member");%>
 <!DOCTYPE html>
 <html>
 
@@ -24,7 +20,7 @@ String getPageCount = pagev.getPageCount();
 		gtag('config', 'UA-120156974-1');
 	</script>
 	<jsp:include page="/View/main/layout/cssjs.jsp"></jsp:include>
-	<title>공지사항</title>
+	<title>The Pension</title>
 </head>
 
 <style>
@@ -59,19 +55,31 @@ String getPageCount = pagev.getPageCount();
 							<th width="380">제목</th>
 							<th width="70">작성자</th>
 							<th width="160">작성일</th>
+							<th width="60">추천수</th>
 							<th width="60">조회수</th>
 						</tr>
 					</thead>
+					
 					<%
-					for (BoardVo b : list) {
+					if(request.getAttribute("Page") == null) {
 					%>
-
+					<tbody> 
+						<tr>
+							<td colspan="6" class="ui center aligned basic segment">등록된 게시물이 없습니다.</td>
+						</tr>
+					</tbody>
 					<%
-					Timestamp writeDay = b.getBdWriteDate();
-					Timestamp stamp = new Timestamp(Calendar.getInstance().getTimeInMillis());
-					Date date = new Date(writeDay.getTime());
-					%>
+					} else {
+						Page pagev = (Page) request.getAttribute("Page");
+						ArrayList<BoardVo> list = pagev.getList();
+						String getPageCount = pagev.getPageCount();
 
+						for (BoardVo b : list) {
+		
+						Timestamp writeDay = b.getBdWriteDate();
+						Timestamp stamp = new Timestamp(Calendar.getInstance().getTimeInMillis());
+						Date date = new Date(writeDay.getTime());
+					%>
 					<tbody> 
 						<tr>
 							<td><%=b.getBdNo()%></td>
@@ -80,24 +88,46 @@ String getPageCount = pagev.getPageCount();
 							</td>
 							<td><%=b.getBdWriter()%></td>
 							<td><%=date%></td>
+							<td><%=b.getBdRecommendCount() %></td>
 							<td><%=b.getBdViewCount()%></td>
 						</tr>
 					</tbody>
+					
 					<%
-				}
-				%>
+						}
+					%>
+					<tfoot>
+   						<tr><th colspan="6">
+      					<div class="ui right floated pagination menu">
+					        <%=getPageCount%>
+					    </div>
+			    		</th>
+			 			 </tr>
+			 		</tfoot>
+					<%
+					}
+					%>
+					
 			</table>
-			<label><%=getPageCount%></label>
-			<form action="/search" method="get">
+			
+			<form action="/search" method="get" style="display:inline;">
+				<select name="searchOption" style="width:80px;">
+               		<option value="title" selected>제목</option>
+               		<option value="contents">내용</option>
+               		<option value="writer">작성자</option>
+                </select> 
 				<div class="ui input" style="margin-top: 15px;">
 					<input type="text" name="search" placeholder="검색" style="margin-right: 5px;" id="searchVal">
 					<input class="ui blue button" type="submit" value="검색" style="margin-left: 5px;" onclick="return blankCheck();">
 				</div>
 			</form>
+			
+			<br><br>
+			
+			
+			
 			<%-- 공지사항 글쓰기 관리자 페이지로 이동 --%>
-				<!-- <form action="/View/board/noticeWriteReady.jsp">
-		<input type="submit" value="글쓰기"> 
-	</form> -->
+				<!--  -->
 </div>
 </div>
 

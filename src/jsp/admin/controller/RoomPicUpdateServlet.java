@@ -14,7 +14,7 @@ import com.oreilly.servlet.MultipartRequest;
 
 import jsp.admin.model.service.AdminService;
 import jsp.common.MyFileRenamePolicy;
-
+@SuppressWarnings("all")
 /**
  * Servlet implementation class RoomPicUpdateServlet
  */

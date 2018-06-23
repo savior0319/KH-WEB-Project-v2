@@ -131,7 +131,12 @@ body {
 		<!-- 지은 : 예약안내 주소 추가 -->
 		<a class="item" href="/reservationFirstStep">실시간 예약</a>
 		<br>
-		<a class="item" href="/board">공지사항</a> <a class="item" href="#">자주 묻는 질문</a> <a class="item" href="#">후기 게시판</a> <a class="item" href="/View/member/question.jsp">1:1 문의</a>
+
+		<a class="item" href="/board">공지사항</a>
+		<a class="item" href="/View/board/boardQuestion.jsp">자주 묻는 질문</a>
+		<a class="item" href="/review">후기 게시판</a>
+		<a class="item" href="/View/member/question.jsp">1:1 문의</a>
+
 		<br>
 		<a class="item" href="/View/location/loc.jsp">오시는 길</a>
 		<br>
@@ -163,7 +168,10 @@ body {
 				<div class="ui dropdown item">
 					고객센터 <i class="dropdown icon"></i>
 					<div class="menu">
-						<a class="item" href="/board">공지사항</a> <a class="item">자주 묻는 질문</a> <a class="item" href="/View/member/question.jsp">1:1 문의</a> <a class="item">후기 게시판</a>
+						<a class="item" href="/board">공지사항</a>
+						<a class="item" href="/View/board/boardQuestion.jsp">자주 묻는 질문</a>
+						<a class="item" href="/View/member/question.jsp">1:1 문의</a>
+						<a class="item" href="/review">후기 게시판</a>
 					</div>
 				</div>
 				<!-- 고객센터 메뉴 끝-->

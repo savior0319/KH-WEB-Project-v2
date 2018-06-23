@@ -34,14 +34,11 @@ public class BoardServlet extends HttpServlet {
 		}
 
 		Page page = new BoardService().selectAll(currentPage);
-		if (page != null) {
 
-			RequestDispatcher view = request.getRequestDispatcher("/View/board/board.jsp");
-			request.setAttribute("Page", page);
-			view.forward(request, response);
-		} else {
-			response.sendRedirect("/View/error/nullList.jsp");
-		}
+		RequestDispatcher view = request.getRequestDispatcher("/View/board/board.jsp");
+		request.setAttribute("Page", page);
+		view.forward(request, response);
+
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)

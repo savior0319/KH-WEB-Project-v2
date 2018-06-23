@@ -53,7 +53,7 @@ public class NoticeWriteServlet extends HttpServlet {
 			int result = new BoardService().insertNotice(board);
 
 			if (result > 0) {// 글쓰기가 정상작동 할경우
-				response.sendRedirect("/board");
+				response.sendRedirect("/review");
 			} else {// 작동이 안될경우
 				response.sendRedirect("/View/error/error.jsp");
 			}

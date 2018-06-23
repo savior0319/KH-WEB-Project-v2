@@ -39,6 +39,7 @@ public class NoticeCommentServlet extends HttpServlet {
 		int BD_NO = Integer.parseInt(request.getParameter("bdNo"));
 		HttpSession session = request.getSession(false);
 		
+		
 		if(session.getAttribute("member")!=null) { //로그인이 된 상태라면
 			Comment c = new Comment();
 			c.setCmBdNo(BD_NO);
@@ -48,7 +49,7 @@ public class NoticeCommentServlet extends HttpServlet {
 			int result = new BoardService().insertComment(c);
 			
 			if(result>0) {//댓글내용이 들어오면
-				response.sendRedirect("/noticeSelect?bdNo="+BD_NO);
+				response.sendRedirect("/reviewSelect?bdNo="+BD_NO);
 			}else {//내용이 안들어오면
 				response.sendRedirect("/View/error/error.jsp");
 			}

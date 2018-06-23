@@ -23,7 +23,7 @@ import jsp.board.model.vo.BoardVo;
 import jsp.board.model.vo.DataFile;
 import jsp.common.MyFileRenamePolicy;
 import jsp.member.model.vo.MemberVo;
-
+@SuppressWarnings("all")
 /**
  * Servlet implementation class AdminBoardResistServlet
  */
@@ -70,7 +70,7 @@ public class AdminBoardResistServlet extends HttpServlet {
 			
 			BoardTotalInfoVo btlv = null;
 			bv.setBdWriter(((MemberVo)session.getAttribute("member")).getMbId());
-			bv.setBdCategory("공지");
+			bv.setBdCategory("공지사항");
 			
 			try {
 				items = (ArrayList<FileItem>) upload.parseRequest(request);

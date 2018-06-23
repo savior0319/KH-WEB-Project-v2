@@ -34,6 +34,8 @@
 	  	<div class="menu dropdown">
 	  		<a class="ui simple item" href="/adminReserveManager">예약 관리</a>
 	  		<a class="ui simple item" href="/adminReserveCalendar">달력으로 보기</a>
+	  		<a class="ui simple item" href="/adminReserveCancel">예약 취소 요청</a> <!-- 지은 추가 -->
+	  		<a class="ui simple item" href="/adminReserveHistory">지난 예약 보기</a> <!-- 지은 추가 -->
 	  	</div>
 	 </div>
     <!-- 4. 회원 관리 메뉴바  -->

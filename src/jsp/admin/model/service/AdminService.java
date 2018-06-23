@@ -13,6 +13,8 @@ import jsp.admin.model.vo.MemberLoginLogVo;
 import jsp.admin.model.vo.MemberPageVo;
 import jsp.admin.model.vo.QnAVo;
 import jsp.admin.model.vo.QuestionPageVo;
+import jsp.admin.model.vo.ReserveCancelPageVo;
+import jsp.admin.model.vo.ReserveHistoryPageVo;
 import jsp.admin.model.vo.ReservePageVo;
 import jsp.admin.model.vo.RoomTotalInfoVo;
 import jsp.admin.model.vo.SalesPageVo;
@@ -25,9 +27,11 @@ import jsp.main.model.vo.PensionPicTb;
 import jsp.member.model.vo.MemberVo;
 import jsp.member.model.vo.QuestionVo;
 import jsp.reservation.model.vo.PensionVo;
+import jsp.reservation.model.vo.ReservationCancelVo;
+import jsp.reservation.model.vo.ReservationHistoryVo;
 import jsp.reservation.model.vo.ReservationVo;
 import jsp.reservation.model.vo.SalesVo;
-
+@SuppressWarnings("all")
 public class AdminService {
 	public AdminService() {
 	}
@@ -610,11 +614,7 @@ public class AdminService {
 			JDBCTemplate.close(conn);
 			return list;
 		}
-		// 사진 경로 가져오기
-		
-		// 
-		
-		//
+		// 게시판 삭제
 		public boolean boardCompleteDel(int bdNo) {
 			Connection conn = null;
 			conn = JDBCTemplate.getConnect(conn);
@@ -639,4 +639,86 @@ public class AdminService {
 			return list;
 		}
 		
+		// 지은 추가
+		public ReserveCancelPageVo reserveCancelList(int currentPage, String searchData, String searchOption) {
+			
+			Connection conn = null;
+			conn = JDBCTemplate.getConnect(conn);
+			
+			int recordCountPerPage = 10;
+			int naviCountPerPage = 10;
+			
+			ArrayList<ReservationCancelVo> list = new AdminDao().getReserveCancelCurrentPage(conn, currentPage, recordCountPerPage,searchData, searchOption);
+
+			String pageNavi = new AdminDao().getReserveCancelPageNavi(conn, currentPage, recordCountPerPage, naviCountPerPage,  searchData,  searchOption);
+
+			ReserveCancelPageVo rcpv = null;
+			if (!list.isEmpty() && !pageNavi.isEmpty()) {
+				rcpv = new ReserveCancelPageVo(list, pageNavi);
+			}
+			JDBCTemplate.close(conn);
+			return rcpv;
+			
+		}
+
+		public ReserveCancelPageVo reserveCancelList(int currentPage) {
+			
+			Connection conn = null;
+			conn = JDBCTemplate.getConnect(conn);
+
+			int recordCountPerPage = 10;
+			int naviCountPerPage = 10; 
+
+			ArrayList<ReservationCancelVo> list = new AdminDao().getReserveCancelCurrentPage(conn, currentPage, recordCountPerPage);
+
+			String pageNavi = new AdminDao().getReserveCancelPageNavi(conn, currentPage, recordCountPerPage, naviCountPerPage);
+
+			ReserveCancelPageVo rcpv = null;
+			if (!list.isEmpty() && !pageNavi.isEmpty()) {
+				rcpv = new ReserveCancelPageVo(list, pageNavi);
+			}
+			JDBCTemplate.close(conn);
+			return rcpv;
+		}
+
+		public ReserveHistoryPageVo reserveHistoryList(int currentPage, String searchData, String searchOption) {
+			Connection conn = null;
+			conn = JDBCTemplate.getConnect(conn);
+			
+			int recordCountPerPage = 10; 
+			int naviCountPerPage = 10; 
+
+
+			ArrayList<ReservationHistoryVo> list = new AdminDao().getReserveHistoryCurrentPage(conn, currentPage, recordCountPerPage,searchData, searchOption);
+
+			String pageNavi = new AdminDao().getReserveHistoryPageNavi(conn, currentPage, recordCountPerPage, naviCountPerPage,  searchData,  searchOption);
+
+			ReserveHistoryPageVo rhpv = null;
+			if (!list.isEmpty() && !pageNavi.isEmpty()) {
+				rhpv = new ReserveHistoryPageVo(list, pageNavi);
+			}
+			JDBCTemplate.close(conn);
+			return rhpv;
+		}
+
+		public ReserveHistoryPageVo reserveHistoryList(int currentPage) {
+			
+			Connection conn = null;
+			conn = JDBCTemplate.getConnect(conn);
+
+			int recordCountPerPage = 10; 
+			int naviCountPerPage = 10; 
+
+
+			ArrayList<ReservationHistoryVo> list = new AdminDao().getReserveHistoryCurrentPage(conn, currentPage, recordCountPerPage);
+
+			String pageNavi = new AdminDao().getReserveHistoryPageNavi(conn, currentPage, recordCountPerPage, naviCountPerPage);
+
+			ReserveHistoryPageVo rhpv = null;
+			if (!list.isEmpty() && !pageNavi.isEmpty()) {
+				rhpv = new ReserveHistoryPageVo(list, pageNavi);
+			}
+			JDBCTemplate.close(conn);
+			return rhpv;
+		}
 }

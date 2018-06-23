@@ -23,30 +23,30 @@ public class SearchServlet extends HttpServlet {
 		super();
 	}
 
-	protected void doGet(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.setCharacterEncoding("utf-8");
 		String search = request.getParameter("search");
+		String searchOption = request.getParameter("searchOption");
+
+		//System.out.println("searchOption값 : "+searchOption);
+
 		int currentPage;
-		if (request.getParameter("currentPage") == null) {
-			currentPage = 1;
-		} else {
+		if(request.getParameter("currentPage")==null) {
+			currentPage=1;
+		}else{
 			currentPage = Integer.parseInt(request.getParameter("currentPage"));
 		}
 
-		Page page = new BoardService().searchNotice(currentPage, search);
-		if (page != null) {
+		Page page = new BoardService().searchNotice(currentPage,search,searchOption);
 
-			RequestDispatcher view = request.getRequestDispatcher("/View/board/board.jsp");
-			request.setAttribute("Page", page);
-			view.forward(request, response);
-		} else {
-			response.sendRedirect("/View/error/searchError.jsp");
-		}
+		RequestDispatcher view = request.getRequestDispatcher("/View/board/noticeSearch.jsp");
+		request.setAttribute("Page", page); 
+		view.forward(request, response);
 	}
 
-	protected void doPost(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
+
+
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		doGet(request, response);
 	}
 

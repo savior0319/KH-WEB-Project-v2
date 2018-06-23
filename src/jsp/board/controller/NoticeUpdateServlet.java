@@ -50,7 +50,7 @@ public class NoticeUpdateServlet extends HttpServlet {
 			int result = new BoardService().updateNotice(board);
 			
 			if(result>0) {//값이 들어오면
-				response.sendRedirect("/noticeSelect?bdNo=" + bdNo + "");
+				response.sendRedirect("/reviewSelect?bdNo=" + bdNo + "");
 			}else {//값이 안들어오면
 				response.sendRedirect("/View/error/error.jsp");
 			}

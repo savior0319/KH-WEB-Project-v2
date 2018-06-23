@@ -39,7 +39,7 @@ public class CommentUpdateServlet extends HttpServlet {
 		//3.비즈니스 로직
 		int result = new BoardService().updateComment(CM_CONTENTS,CM_NO);
 		if(result>0) {//값이 들어오면
-			response.sendRedirect("/noticeSelect?bdNo=" + CM_BD_NO);
+			response.sendRedirect("/reviewSelect?bdNo=" + CM_BD_NO);
 		}else { //값이 안들어오면
 			response.sendRedirect("/View/Error/Error.jsp");
 		}
