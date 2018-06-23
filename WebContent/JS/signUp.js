@@ -283,8 +283,6 @@ $(document).ready(function() {
 				success : function(authNum) {
 					$('#modal1')
 					.modal('show').modal('setting', 'closable', false);
-					console.log(authNum);
-
 					$('#mailAuthChk').click(function() {
 						console.log($('#inputAuthNum').val());
 						if (Number(authNum) == $('#inputAuthNum').val()) {

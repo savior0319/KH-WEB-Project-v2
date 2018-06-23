@@ -1,31 +1,32 @@
 <%@page import="jsp.member.model.vo.MemberVo"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+pageEncoding="UTF-8"%>
 <%@page import="java.sql.Timestamp"%>
 <%@page import="java.sql.Date"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ page import="jsp.board.model.vo.*" import="java.util.*"%>
 <%
-	MemberVo m = (MemberVo) session.getAttribute("member");
+MemberVo m = (MemberVo) session.getAttribute("member");
 %>
 <!DOCTYPE html>
 <html>
 
 <head>
-<!-- Global site tag (gtag.js) - Google Analytics -->
-<script async
+	<!-- Global site tag (gtag.js) - Google Analytics -->
+	<script async
 	src="https://www.googletagmanager.com/gtag/js?id=UA-120156974-1"></script>
-<script>
-	window.dataLayer = window.dataLayer || [];
-	function gtag() {
-		dataLayer.push(arguments);
-	}
-	gtag('js', new Date());
-	gtag('config', 'UA-120156974-1');
-</script>
-<script src='https://www.google.com/recaptcha/api.js'></script>
-<jsp:include page="/View/main/layout/cssjs.jsp"></jsp:include>
-<title>고객후기</title>
+	<script>
+		window.dataLayer = window.dataLayer || [];
+		function gtag() {
+			dataLayer.push(arguments);
+		}
+		gtag('js', new Date());
+		gtag('config', 'UA-120156974-1');
+	</script>
+	<script src='https://www.google.com/recaptcha/api.js'></script>
+	<jsp:include page="/View/main/layout/cssjs.jsp"></jsp:include>
+	<script type="text/javascript" src="https://static.nid.naver.com/js/naverLogin_implicit-1.0.3.js" charset="utf-8"></script>
+	<title>고객후기</title>
 </head>
 <style>
 </style>
@@ -48,47 +49,53 @@
 					</div>
 				</div>
 			</div>
-			<div id="board" style="width: 100%;">
+
+			<div class="ui right aligned basic segment" style="margin: 0px; padding-top: 0px; padding-bottom: 8px;">
+				<form action="/View/board/reviewWriteReady.jsp">
+					<input type="submit" class="ui orange tiny button" id="loginPlease" value="글쓰기"> 
+				</form>
+			</div>
+			<div id="board" style="width: 100%; height: 500px;">
 				<table class="ui table" width="100%" cellpadding="0" cellspacing="0"
-					border="0">
+				border="0">
 
-					<thead>
-						<tr>
-							<th width="70">번호</th>
-							<th width="380">제목</th>
-							<th width="70">작성자</th>
-							<th width="160">작성일</th>
-							<th width="60">추천수</th>
-							<th width="60">조회수</th>
-						</tr>
-					</thead>
+				<thead>
+					<tr>
+						<th width="70">번호</th>
+						<th width="380">제목</th>
+						<th width="70">작성자</th>
+						<th width="160">작성일</th>
+						<th width="60">추천수</th>
+						<th width="60">조회수</th>
+					</tr>
+				</thead>
 
-					<%
-						if (request.getAttribute("Page") == null) {
-					%>
-					<tbody>
-						<tr>
-							<td colspan="6" class="ui center aligned basic segment">등록된
-								게시물이 없습니다.</td>
-						</tr>
-					</tbody>
-					<%
-						} else {
-							Page pagev = (Page) request.getAttribute("Page");
-							ArrayList<BoardVo> list = pagev.getList();
-							String getPageCount = pagev.getPageCount();
+				<%
+				if (request.getAttribute("Page") == null) {
+				%>
+				<tbody>
+					<tr>
+						<td colspan="6" class="ui center aligned basic segment">등록된
+						게시물이 없습니다.</td>
+					</tr>
+				</tbody>
+				<%
+			} else {
+			Page pagev = (Page) request.getAttribute("Page");
+			ArrayList<BoardVo> list = pagev.getList();
+				String getPageCount = pagev.getPageCount();
 
-							for (BoardVo b : list) {
+				for (BoardVo b : list) {
 
-								Timestamp writeDay = b.getBdWriteDate();
-								Timestamp stamp = new Timestamp(Calendar.getInstance().getTimeInMillis());
-								Date date = new Date(writeDay.getTime());
-					%>
-					<tbody>
-						<tr>
-							<td><%=b.getBdNo()%></td>
-							<td><a href="/reviewSelect?bdNo=<%=b.getBdNo()%>"
-								style="font-weight: 600;">[후기] <%=b.getBdName()%></a></td>
+				Timestamp writeDay = b.getBdWriteDate();
+				Timestamp stamp = new Timestamp(Calendar.getInstance().getTimeInMillis());
+				Date date = new Date(writeDay.getTime());
+				%>
+				<tbody>
+					<tr>
+						<td><%=b.getBdNo()%></td>
+						<td><a href="/reviewSelect?bdNo=<%=b.getBdNo()%>"
+							style="font-weight: 600;">[후기] <%=b.getBdName()%></a></td>
 							<td><%=b.getBdWriter()%></td>
 							<td><%=date%></td>
 							<td><%=b.getBdRecommendCount()%></td>
@@ -96,60 +103,47 @@
 						</tr>
 					</tbody>
 					<%
-						}
-					%>
-					<tfoot>
-						<tr>
-							<th colspan="6">
-								<div class="ui right floated pagination menu">
-									<%=getPageCount%>
-								</div>
-							</th>
-						</tr>
-					</tfoot>
-					<%
-						}
-					%>
-					
-			</table>
-			
-			<form action="/reviewSearch" method="get" style="display:inline;">
-				<select name="searchOption" style="width:80px;">
-               		<option value="title" selected>제목</option>
-               		<option value="contents">내용</option>
-               		<option value="writer">작성자</option>
-                </select> 
-				<div class="ui input" style="margin-top: 15px;">
-					<input type="text" name="search" placeholder="검색" style="margin-right: 5px;" id="searchVal">
-					<input class="ui blue button" type="submit" value="검색" style="margin-left: 5px;" onclick="return blankCheck();">
-				</div>
-			</form>
-			
-			<br><br>
-			
-			<%
-			if(m != null) {
-			%>
-			<form action="/View/board/reviewWriteReady.jsp">
-				<input type="submit" class="ui red button" value="글쓰기"> 
-			</form>
-			
-			<%
+				}
+				%>
+				<tfoot>
+					<tr>
+						<th colspan="6">
+							<div class="ui right floated pagination menu">
+								<%=getPageCount%>
+							</div>
+						</th>
+					</tr>
+				</tfoot>
+				<%
 			}
 			%>
-			
-			<%-- 공지사항 글쓰기 관리자 페이지로 이동 --%>
 
-				<!--  -->
+		</table>
+		<form action="/reviewSearch" method="get" style="display:inline;">
+			<select name="searchOption" style="width:80px;">
+				<option value="title" selected>제목</option>
+				<option value="contents">내용</option>
+				<option value="writer">작성자</option>
+			</select> 
+			<div class="ui input" style="margin-top: 15px;">
+				<input type="text" name="search" placeholder="검색" style="margin-right: 5px;" id="searchVal">
+				<input class="ui blue button" type="submit" value="검색" style="margin-left: 5px;" onclick="return blankCheck();">
 			</div>
-		</div>
+		</form>
+		<br><br>
 
+		<%-- 공지사항 글쓰기 관리자 페이지로 이동 --%>
+
+		<!--  -->
 	</div>
-	<!-- 본문 끝 -->
+</div>
 
-	<!-- 푸터 시작  -->
-	<jsp:include page="/View/main/layout/footer.jsp"></jsp:include>
-	<!-- 푸터 끝 -->
+</div>
+<!-- 본문 끝 -->
+
+<!-- 푸터 시작  -->
+<jsp:include page="/View/main/layout/footer.jsp"></jsp:include>
+<!-- 푸터 끝 -->
 
 </body>
 
@@ -161,14 +155,17 @@
 		<div class="ui input" style="margin-left: 10px;">
 			<input type="text" id="id" placeholder="아이디" maxlength="16">
 		</div>
-		<br> <br> <label>비밀번호</label>
+		<br><br>
+		<label>비밀번호</label>
 		<div class="ui input">
 			<input type="password" id="pwd" placeholder="비밀번호" maxlength="16">
 		</div>
-		<br> <br>
+		<br><br>
 		<div class="ui centered grid">
-			<div id="recap" class="g-recaptcha"
-				data-sitekey="6Lfrr18UAAAAAGd424fRQMeX4GYy6FjS7Af1V8tJ"></div>
+			<div id="recap" class="g-recaptcha" data-sitekey="6Lfrr18UAAAAAGd424fRQMeX4GYy6FjS7Af1V8tJ"></div>
+		</div>
+		<div class="ui centered grid" id="naverLoginBtn">
+			<div id="naver_id_login" style="margin-top: 10px;"></div>
 		</div>
 	</div>
 	<div class="actions">
@@ -209,7 +206,7 @@
 			alert('검색 내용을 입력해주세요');
 			return false;
 		} else
-			return true;
+		return true;
 	}
 
 	function loginPlease() {
@@ -253,9 +250,29 @@
 		} 
 	});
 
-	$('.message .close').on('click', function() {
+/*	$('.message .close').on('click', function() {
 		$(this).closest('.message').transition('fade');
+	});*/
+
+	/* 네아로 */
+	var naver_id_login = new naver_id_login("PyoIesHAhe6a3F1GDj9P", "http://localhost/View/member/naverLoginCallBackNowPage.jsp");
+	var state = naver_id_login.getUniqState();
+	naver_id_login.setButton("green", 3, 35);
+	naver_id_login.setDomain("http://localhost/View/member/naverLogin.jsp");
+	naver_id_login.setState(state);
+	naver_id_login.setPopup(); /* 팝업 로그인 창*/
+	naver_id_login.init_naver_id_login();
+</script>
+
+<!-- 로그인 여부  -->
+<c:set value="${sessionScope.member.mbId}" var="id"></c:set>
+<c:if test="${empty id}">
+<script type="text/javascript">
+	$('#loginPlease').click(function(){
+		$('#needLogin').modal('show');
+		return false;
 	});
 </script>
+</c:if>
 
 </html>

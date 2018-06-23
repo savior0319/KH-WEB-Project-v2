@@ -65,7 +65,7 @@ pageEncoding="UTF-8"%>
     와이파이 있나요?
   </div>
   <div class="content">
-    <p>- 네. 빵빵합니다^^.</p>
+    <p>- 네. 빵빵합니다^^</p>
   </div>
   <div class="title">
     <i class="dropdown icon"></i>
