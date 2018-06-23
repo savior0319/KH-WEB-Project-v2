@@ -44,12 +44,10 @@ $(document).ready(function() {
 		data : {today:today},
 		type : 'post',
 		success : function() {
-			//console.log("ㅎㅎ");
-			//console.log(today);
-			
+			/* 성공 테스트 */
 		},
 		error : function() {
-			//console.log("ㅠㅠ");
+			/* 실패 테스트 */
 		}
 		
 	});

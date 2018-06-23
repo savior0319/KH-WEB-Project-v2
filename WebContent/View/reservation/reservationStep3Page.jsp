@@ -168,7 +168,7 @@ MemberVo mv = (MemberVo)request.getAttribute("memberInfo");
                 			pay_method : 'card',	// 결제수단 : 카드
                 			merchant_uid : 'merchant_' + new Date().getTime(),
                 			name : '더펜션예약:<%=rv.getResRoomName()%>',
-                			amount : '100',	//////////////////////////////////////////////////////////////////////// 결제 금액
+                			amount : '<%=rv.getResPrice()%>',	//////////////////////////////////////////////////////////////////////// 결제 금액 (실제 금액으로 수정함)
                 			buyer_email : '<%=mv.getMbEmail()%>', // 고객 이메일
                 			buyer_name :  '<%=mv.getMbName()%>(<%=mv.getMbId()%>)',
                 			buyer_tel :  '<%=mv.getMbPhone()%>'
@@ -192,11 +192,13 @@ MemberVo mv = (MemberVo)request.getAttribute("memberInfo");
                 				},
                 				type : 'post',
                 				success : function(){
-                					console.log("결제 성공");
+                					 alert('결제완료');
+                				/*	console.log("결제 성공");*/
                 					location.href="/View/reservation/reservationStep4Page.jsp";
                 				},
                 				error : function() {
-                					console.log("결제 실패");
+                					 alert('서버오류(잠시 후 다시 시도 해주세요');
+                		/*			console.log("결제 실패");*/
                 				}
                 			});
 

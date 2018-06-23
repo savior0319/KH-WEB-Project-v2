@@ -46,6 +46,13 @@
 					</div>
 				</div>
 			</div>
+
+			<div class="ui right aligned basic segment" style="margin: 0px; padding-top: 0px; padding-bottom: 8px;">
+				<form action="/View/board/reviewWriteReady.jsp">
+					<input type="submit" class="ui orange tiny button" id="loginPlease" value="글쓰기"> 
+				</form>
+			</div>
+
 			<div id="board" style="width: 100%; height: 500px;">
 				<table class="ui table" width="100%" cellpadding="0" cellspacing="0" border="0">
 
@@ -69,16 +76,16 @@
 						</tr>
 					</tbody>
 					<%
-					} else {
-						Page pagev = (Page) request.getAttribute("Page");
-						ArrayList<BoardVo> list = pagev.getList();
-						String getPageCount = pagev.getPageCount();
+				} else {
+				Page pagev = (Page) request.getAttribute("Page");
+				ArrayList<BoardVo> list = pagev.getList();
+					String getPageCount = pagev.getPageCount();
 
-						for (BoardVo b : list) {
-		
-						Timestamp writeDay = b.getBdWriteDate();
-						Timestamp stamp = new Timestamp(Calendar.getInstance().getTimeInMillis());
-						Date date = new Date(writeDay.getTime());
+					for (BoardVo b : list) {
+
+					Timestamp writeDay = b.getBdWriteDate();
+					Timestamp stamp = new Timestamp(Calendar.getInstance().getTimeInMillis());
+					Date date = new Date(writeDay.getTime());
 					%>
 					<tbody> 
 						<tr>
@@ -94,52 +101,39 @@
 					</tbody>
 					
 					<%
-						}
-					%>
-					<tfoot>
-   						<tr><th colspan="6">
-      					<div class="ui right floated pagination menu">
-					        <%=getPageCount%>
-					    </div>
-			    		</th>
-			 			 </tr>
-			 		</tfoot>
-					<%
-					}
-					%>
-					
-			</table>
-			
-			<form action="/search" method="get" style="display:inline;">
-				<select name="searchOption" style="width:80px;">
-               		<option value="title" selected>제목</option>
-               		<option value="contents">내용</option>
-               		<option value="writer">작성자</option>
-                </select> 
-				<div class="ui input" style="margin-top: 15px;">
-					<input type="text" name="search" placeholder="검색" style="margin-right: 5px;" id="searchVal">
-					<input class="ui blue button" type="submit" value="검색" style="margin-left: 5px;" onclick="return blankCheck();">
-				</div>
-			</form>
-			
-			<br><br>
-			
+				}
+				%>
+				<tfoot>
+					<tr><th colspan="6">
+						<div class="ui right floated pagination menu">
+							<%=getPageCount%>
+						</div>
+					</th>
+				</tr>
+			</tfoot>
 			<%
-			if(m != null) {
-			%>
-			<form action="/View/board/noticeWriteReady.jsp">
-				<input type="submit" class="ui red button" value="글쓰기"> 
-			</form>
-			
-			<%
-			}
-			%>
-			
-			<%-- 공지사항 글쓰기 관리자 페이지로 이동 --%>
-				<!--  -->
-</div>
-</div>
+		}
+		%>
 
+	</table>
+
+	<form action="/search" method="get" style="display:inline;">
+		<select name="searchOption" style="width:80px;">
+			<option value="title" selected>제목</option>
+			<option value="contents">내용</option>
+			<option value="writer">작성자</option>
+		</select> 
+		<div class="ui input" style="margin-top: 15px;">
+			<input type="text" name="search" placeholder="검색" style="margin-right: 5px;" id="searchVal">
+			<input class="ui blue button" type="submit" value="검색" style="margin-left: 5px;" onclick="return blankCheck();">
+		</div>
+	</form>
+
+	<br><br>
+
+	<%-- 공지사항 글쓰기 관리자 페이지로 이동 --%>
+</div>
+</div>
 </div>
 <!-- 본문 끝 -->
 
@@ -147,6 +141,56 @@
 <jsp:include page="/View/main/layout/footer.jsp"></jsp:include>
 <!-- 푸터 끝 -->
 </body>
+
+<!-- 로그인 안했을 경우-->
+<div class="ui mini modal" id="needLogin">
+	<div class="header">로그인</div>
+	<div class="content">
+		<label style="margin-left: 4px;">아이디</label>
+		<div class="ui input" style="margin-left: 10px;">
+			<input type="text" id="id" placeholder="아이디" maxlength="16">
+		</div>
+		<br><br>
+		<label>비밀번호</label>
+		<div class="ui input">
+			<input type="password" id="pwd" placeholder="비밀번호" maxlength="16">
+		</div>
+		<br><br>
+		<div class="ui centered grid">
+			<div id="recap" class="g-recaptcha" data-sitekey="6Lfrr18UAAAAAGd424fRQMeX4GYy6FjS7Af1V8tJ"></div>
+		</div>
+		<div class="ui centered grid" id="naverLoginBtn">
+			<div id="naver_id_login" style="margin-top: 10px;"></div>
+		</div>
+	</div>
+	<div class="actions">
+		<div class="ui blue cancel button" id="confirm">로그인</div>
+		<div class="ui orange cancel button">취소</div>
+	</div>
+</div>
+
+<!-- recapcha 확인용-->
+<div class="ui mini modal" id="robot">
+	<div class="header">로그인 실패</div>
+	<div class="content">
+		<p>로봇이 아님을 인증하세요</p>
+	</div>
+	<div class="actions">
+		<div class="ui blue cancel button">확인</div>
+	</div>
+</div>
+
+
+<!-- 아이디 || 비밀번호 공백 일 경우 -->
+<div class="ui mini modal" id="blankModal">
+	<div class="header">로그인 실패</div>
+	<div class="content">
+		<p>아이디와 비밀번호를 모두 입력해주세요</p>
+	</div>
+	<div class="actions">
+		<div class="ui blue cancel button" id="termsModal">확인</div>
+	</div>
+</div>
 
 <script>
 	function blankCheck() {
@@ -157,6 +201,68 @@
 		} else
 		return true;
 	}
+
+	function loginPlease() {
+		$('#needLogin').modal('show');
+	}
+
+	$('#confirm').click(function() {
+
+		var id = $('#id').val();
+		var pwd = $('#pwd').val();
+
+		if (id == "" || pwd == "") {
+			$('#blankModal').modal('show');
+			return false;
+		} else {
+			var auth = grecaptcha.getResponse();
+			if (auth.length == 0) {
+				$('#robot').modal('show');
+				return false;
+			} else {
+				$.ajax({
+					url : '/loginImmediate',
+					type : 'POST',
+					data : {
+						id : id,
+						pwd : pwd
+					},
+					success : function(data) {
+						if (data == "1") {
+							location.reload();
+						} else {
+							alert('아이디 또는 비밀번호를 확인해주세요');
+						}
+					},
+					error : function() {
+						alert('서버 오류 (잠시 후 다시 시도 해주세요');
+					}
+				});
+
+			}
+		} 
+	});
+
+
+	/* 네아로 */
+	var naver_id_login = new naver_id_login("PyoIesHAhe6a3F1GDj9P", "http://localhost/View/member/naverLoginCallBackNowPage.jsp");
+	var state = naver_id_login.getUniqState();
+	naver_id_login.setButton("green", 3, 35);
+	naver_id_login.setDomain("http://localhost/View/member/naverLogin.jsp");
+	naver_id_login.setState(state);
+	naver_id_login.setPopup(); /* 팝업 로그인 창*/
+	naver_id_login.init_naver_id_login();
 </script>
+
+<!-- 로그인 여부  -->
+<c:set value="${sessionScope.member.mbId}" var="id"></c:set>
+<c:if test="${empty id}">
+<script type="text/javascript">
+	$('#loginPlease').click(function(){
+		$('#needLogin').modal('show');
+		return false;
+	});
+</script>
+</c:if>
 
 </html>

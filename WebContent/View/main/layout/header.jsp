@@ -55,22 +55,22 @@ body {
 </style>
 <c:set value="${sessionScope.member.mbId}" var="id"></c:set>
 <c:if test="${id eq 'thepension'}">
-	<div style="color: white; font-size: 14px; font-weight: 600">
-		관리자 로그인 했습니다 <a href="/View/admin/admin.jsp" style="color: orange;">관리 페이지로 이동</a>
-	</div>
+<div style="color: white; font-size: 14px; font-weight: 600">
+	관리자 로그인 했습니다 <a href="/View/admin/admin.jsp" style="color: orange;">관리 페이지로 이동</a>
+</div>
 </c:if>
 
 <!-- 로그인  -->
 <c:set value="${sessionScope.member.mbId}" var="id"></c:set>
 <c:if test="${not empty id}">
-	<script type="text/javascript">
-		$(document).ready(function() {
-			var $loginBtn = $('.loginBtn');
-			$loginBtn.html('로그아웃').attr('href', '/logout');
-			var $signupBtn = $('.signupBtn');
-			$signupBtn.html('마이페이지').attr('href', '/View/member/myPage.jsp');
-		});
-	</script>
+<script type="text/javascript">
+	$(document).ready(function() {
+		var $loginBtn = $('.loginBtn');
+		$loginBtn.html('로그아웃').attr('href', '/logout');
+		var $signupBtn = $('.signupBtn');
+		$signupBtn.html('마이페이지').attr('href', '/View/member/myPage.jsp');
+	});
+</script>
 </c:if>
 
 <div id="load">
@@ -193,22 +193,22 @@ body {
 		}
 	});
 </script> -->
-	<script type="text/javascript">
-		window.onload = function() {
-			$('#load').hide();
-		}
+<script type="text/javascript">
+	window.onload = function() {
+		$('#load').hide();
+	}
 
-		/* 드롭 다운 메뉴 */
-		$('.ui.dropdown.item').dropdown();
+	/* 드롭 다운 메뉴 */
+	$('.ui.dropdown.item').dropdown();
 
-		/* 메뉴 hover */
-		$('.ui.menu a.item').on('mouseenter', function() {
-			$(this).addClass('active');
-		}).on('mouseleave', function() {
-			$(this).removeClass('active');
-		});
+	/* 메뉴 hover */
+	$('.ui.menu a.item').on('mouseenter', function() {
+		$(this).addClass('active');
+	}).on('mouseleave', function() {
+		$(this).removeClass('active');
+	});
 
-		$('.wholemenu').click(function() {
-			$('.ui.sidebar').sidebar('toggle');
-		});
-	</script>
+	$('.wholemenu').click(function() {
+		$('.ui.sidebar').sidebar('toggle');
+	});
+</script>
