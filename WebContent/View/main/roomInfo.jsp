@@ -22,7 +22,7 @@
 	gtag('config', 'UA-120156974-1');
 </script>
 <jsp:include page="/View/main/layout/cssjs.jsp"></jsp:include>
-<title>The Pension</title>
+<title>객실안내 - ${requestScope.pv.psName}</title>
 </head>
 
 <style>

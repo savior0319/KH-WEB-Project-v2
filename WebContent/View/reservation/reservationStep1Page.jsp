@@ -97,7 +97,8 @@ table {
 
 		<div class="ui green message">
 			<i class="close icon"></i>
-			<div class="ui small header">※ 예약하시려면 아래에서 예약할 방을 선택해주세요.<br>예약은 오늘 부터 6개월까지만 가능합니다.<br> 
+			<div class="ui small header">※ 예약하시려면 아래에서 예약할 방을 선택해주세요.<br>예약은 오늘 부터 6개월까지만 가능합니다.<br>
+      객실에 대한 자세한 정보는 <a href="/roomIntroduce">객실안내</a>를 참고하세요.
 				<div style="margin-top: 15px;">
 					<button class="ui blue basic button" style="padding-top: 20px;"></button><span style="color : black"> = 예약가능한방 </span>
 					<button class="ui red basic button" style="padding-top: 20px; margin-left: 15px;"></button><span style="color : black"> = 예약중인방</span>

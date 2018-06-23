@@ -133,7 +133,7 @@ body {
 		<br>
 
 		<a class="item" href="/board">공지사항</a>
-		<a class="item" href="/View/board/boardQuestion.jsp">자주 묻는 질문</a>
+		<a class="item" href="/View/board/faq.jsp">자주 묻는 질문</a>
 		<a class="item" href="/review">후기 게시판</a>
 		<a class="item" href="/View/member/question.jsp">1:1 문의</a>
 
@@ -169,7 +169,7 @@ body {
 					고객센터 <i class="dropdown icon"></i>
 					<div class="menu">
 						<a class="item" href="/board">공지사항</a>
-						<a class="item" href="/View/board/boardQuestion.jsp">자주 묻는 질문</a>
+						<a class="item" href="/View/board/faq.jsp">자주 묻는 질문</a>
 						<a class="item" href="/View/member/question.jsp">1:1 문의</a>
 						<a class="item" href="/review">후기 게시판</a>
 					</div>
