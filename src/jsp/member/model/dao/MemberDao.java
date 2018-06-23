@@ -51,7 +51,7 @@ public class MemberDao {
 			result = pstmt.executeUpdate();
 
 		} catch (SQLException e) {
-			System.out.println("");
+			// 네아로 아이디 이미 있는 값 확인 때문에 임시로 제거
 		} finally {
 			JDBCTemplate.close(pstmt);
 		}
