@@ -31,24 +31,6 @@ public class QuestionServlet extends HttpServlet {
 
 		ArrayList<QuestionVo> aList = new MemberService().questionList(id);
 
-		// AJAX 페이징
-		// int currentPage;
-		//
-		// if (request.getParameter("currentPage") == null) {
-		// currentPage = 1;
-		// } else {
-		// currentPage = Integer.parseInt(request.getParameter("currentPage"));
-		// }
-		//
-		// PageDataVo pd = new MemberService().question(currentPage);
-		//
-		// ArrayList<QuestionVo> aList = pd.getaList();
-		// String navi = pd.getPageNavi();
-		//
-		// response.setContentType("application/json");
-		// response.setCharacterEncoding("utf-8");
-		// new Gson().toJson(pd, response.getWriter());
-
 		response.setContentType("application/json");
 		response.setCharacterEncoding("utf-8");
 		new Gson().toJson(aList, response.getWriter());
