@@ -80,7 +80,6 @@ Date date = new Date(writeDay.getTime());
 		<div class="ui medium header" style="margin-top: 14px;">내용</div>
 		<div class="ui form">
 			<textarea rows="20" readonly style="resize: none;"><%=btlv.getBv().getBdContents()%></textarea>
-			<div class="ui medium header" style="margin-top: 14px;">사진</div>
 			<% for(int i = 0 ; i <btlv.getList().size(); i++){ %>
 			<div class="ui center aligned basic segment" style="padding: 0px;">
 				<div class="ui medium images" style="float: left; margin-right: 25px;">
