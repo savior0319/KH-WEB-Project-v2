@@ -34,15 +34,12 @@ public class BoardServlet extends HttpServlet {
 		}
 
 		Page page = new BoardService().selectAll(currentPage);
-		
-		System.out.println(page);
-		
+
 		RequestDispatcher view = request.getRequestDispatcher("/View/board/board.jsp");
 		request.setAttribute("Page", page);
 		view.forward(request, response);
-		
-	}		
-	
+
+	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
