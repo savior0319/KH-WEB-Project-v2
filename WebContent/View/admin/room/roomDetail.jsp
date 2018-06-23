@@ -6,6 +6,7 @@
 <html>
 <head>
 	<jsp:include page="/View/main/layout/cssjs.jsp"></jsp:include>
+	<title>관리자</title>
 </head>
 <body>
 <!-- 
@@ -32,7 +33,8 @@
     <br>
     <br>
     <div class="ui container">
-		<form class="ui form segment" action="/adminRoomInsert" method="post" enctype="multipart/form-data">
+    	<div class="ui segment">
+		<form class="ui form " action="/adminRoomUpdate" method="post" >
 		  <h4 class="ui dividing header">객실 정보</h4>
 		  <div class="field">
 		    <label>객실명</label>
@@ -56,15 +58,15 @@
 		  <div class="fields">
 		    <div class="three wide field">
 		      <label> 주말 요금</label>
-			  <input type="number" placeholder="0원" name="PS_Weekend" required readonly="readonly" class="ableChange" value="<%=pv.getPsWeekend()%>">
+			  <input type="number" placeholder="0원" step="1000" name="PS_Weekend" required readonly="readonly" class="ableChange" value="<%=pv.getPsWeekend()%>">
 			</div>
 			<div class="three wide field">
 		      <label> 주중 요금</label>
-			  <input type="number" placeholder="0원" name="PS_Weekday" required readonly="readonly" class="ableChange" value="<%=pv.getPsWeekday() %>">
+			  <input type="number" placeholder="0원" step="1000" name="PS_Weekday" required readonly="readonly" class="ableChange" value="<%=pv.getPsWeekday() %>">
 			</div>
 			<div class="three wide field">
 		      <label> 추가 요금</label>
-			  <input type="number" placeholder="0원" name="PS_Addtion_Price" required readonly="readonly" class="ableChange" value="<%=pv.getPsAddtionalPrice()%>">
+			  <input type="number" placeholder="0원" step="1000" name="PS_Addition_Price" required readonly="readonly" class="ableChange" value="<%=pv.getPsAddtionalPrice()%>">
 			</div>
 		  </div>
 		  <div class="field">
@@ -73,23 +75,27 @@
 			  <textarea rows="10" name="PS_Contents" maxlength="1333" required readonly="readonly" class="ableChange"><%=pv.getPsContents() %></textarea>
 			</div>
 		  </div>
+		  <input   type="submit" class="ui button" value="등록" onclick="return Check();" style="display: none" >
+		  <input  type="reset" class="ui button" value="리셋" style="display: none">
+		  
+		 </form>
+		 <button id="textEdit" class="ui button" onclick="ableChange();" >글 수정</button>
+		 <button id="textClose" class="ui button" onclick="disableChange();" >수정 취소</button>
+		 </div>
+		 <!--  글 수정 부분  -->
+		 <!--  사진 수정 및 삭제 부분 시작 -->
+		 <div class="ui segment">
 		  <h4>객실 사진 정보</h4>
-		  <!--  메인 사진 설정 -->
+		  <!--  메인 사진  -->
 		  <div class="field">
 		  	<label>메인 사진 </label>
-		  	<!--  -->
-		  	<input type="hidden" name="input_main" onchange="mainImgPreview(this);" accept="image/*" required class="ableChange">
 		  	<img class="ui image" id="main_img" src="<%=list.get(0).getPsPicPath()%>">
 		  </div>
-		  <!--  그 외 사진 설정 -->
+		  <!--  그 외 사진 -->
 		  	
 		  <div class="field">
 		  	<label>사진 추가</label>
-		  	<!-- <input type="button" class="ui button" onclick="return addImg();" value="사진 추가" disabled="disabled" class="ableChange"/> -->
-			<!--  사진 미리보기를 추가할 곳... -->
-			<!--  이 곳은 개선이 필요하다... -->
-				
-			<input type="hidden" class="ableChange" name="etc_img" onchange="etcImgPreview(this);" multiple="multiple"/>
+
 			<div id="etc_inputs" >
 				
 			</div>
@@ -104,13 +110,7 @@
 			
 					  
 		  </div>
-		  <!--  -->
-		  <input   type="submit" class="ui button" value="등록" onclick="return Check();" style="display: none" >
-		  <input  type="reset" class="ui button" value="리셋" style="display: none">
-		</form>
-		<button class="ui button" onclick="goBack();" >뒤로</button>
-		<button class="ui button" onclick="ableChange();" >글 수정</button>
-		<form action="/roomPicUpdateView" method="post" style="display:inline;">
+		  <form action="/roomPicUpdateView" method="post" style="display:inline;">
 			<input type="hidden" name="roonNameModi" value="<%=pv.getPsName()%>">
 			<input type="submit" class="ui button" value="사진 수정"/>
 		</form>
@@ -118,6 +118,14 @@
 			<input type="hidden" name="roonNameModi" value="<%=pv.getPsName()%>">
 			<input type="submit" class="ui button" value="사진 삭제"/>
 		</form>
+		</div>
+		<!--  사진 수정 및 삭제 부분 끝  -->
+			<button class="ui button" onclick="goBack();" >뒤로</button>
+			<form action="/adminRoomDelete" style="display: inline">
+				<input type="hidden" name="roomName" value="<%= pv.getPsName()%>">
+				<input class="ui button" type="submit" value="삭제"> 
+			</form>
+		
 		
     </div>
     <!-- 본문 내용 끝  -->

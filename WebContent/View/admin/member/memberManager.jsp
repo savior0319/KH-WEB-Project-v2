@@ -10,6 +10,7 @@
 <html>
 <head>
 	<jsp:include page="/View/main/layout/cssjs.jsp"></jsp:include>
+	<title>관리자</title>
 </head>
 <body>
 
@@ -25,9 +26,8 @@
     <div class="ui container">
     	<!-- 테이블 시작 -->
     	<h1>회원 리스트</h1>
-    	<div class="ui segment">
-    	<form action="/adminMemberList" method="post" style="display: inline;">
-    		<!--  검색 옵션 -->
+ 
+    	  <form action="/adminMemberList" method="post" style="display: inline;">
 		 	<select name="searchOption">
 		 		<% if(searchOption==null||searchOption.equals("MB_ID")){ %>
 		 			 <option value="MB_ID" selected="selected">아이디</option>
@@ -43,15 +43,16 @@
 			    	 <option value="MB_NAME" selected="selected">이름</option>
 			    <% } %>
 			</select>
-			
-			 <input type="text" name="searchData" value=<%=searchData %> >
+			 <input type="text" name="searchData" 
+			 <%if(searchData != null){ %>
+			 	 value=<%=searchData %>
+			 	<% }%>
+			  >
 			 <input type="submit" value="검색">
 		 </form>
-		 <!--  엑셀 다운로드 -->
-    	  <form  method="post" action="/memberListDown" style="display:inline" >
+		 <form  method="post" action="/memberListDown" style="display:inline" >
     	  	<input class="ui buton" type="submit" value="다운">
     	  </form>
-    	  </div> 
     	<table class="ui celled table">
 		  <thead>
 		    <tr>

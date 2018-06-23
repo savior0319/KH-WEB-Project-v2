@@ -10,6 +10,7 @@
 <html>
 <head>
 	<jsp:include page="/View/main/layout/cssjs.jsp"></jsp:include>
+	<title>관리자</title>
 </head>
 <body>
 <!--  a 태그들은 나중에 서블릿을 만들어야 한다. -->
@@ -33,7 +34,7 @@
     <div class="ui container">
 	  <!-- 테이블 시작 -->
     	<h1>매출 리스트</h1>
-    	  <form class="ui segment "action="/adminSalesManager" method="post" style="display: inline;">
+    	  <form  action="/adminSalesManager" method="post" style="display: inline;">
 		 	<select name="searchOption">
 		 		<% if(searchOption==null||searchOption.equals("SALES_ID")){ %>
 		 			 <option value="SALES_ID" selected="selected">아이디</option>
@@ -44,9 +45,16 @@
 			    <% } %>
 			</select>
 			
-			 <input type="text" name="searchData" value=<%=searchData %> >
+			 <input type="text" name="searchData" 
+			 	<%if(searchData != null){ %>
+			 	 	value=<%=searchData %>
+			 	<% }%>
+			  >
 			 <input type="submit" value="검색">
 		 </form>
+		 <form  method="post" action="/salesListDown" style="display:inline" >
+    	  	<input class="ui buton" type="submit" value="다운">
+    	  </form>
     	<table class="ui celled table">
 		  <thead>
 		    <tr>

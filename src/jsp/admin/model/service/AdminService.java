@@ -585,6 +585,59 @@ public class AdminService {
 			return result;
 		}
 
+		public boolean updateRoomText(PensionVo pv) {
+			Connection conn = null;
+			conn = JDBCTemplate.getConnect(conn);
+			boolean result = false;
+			result = aDao.updateRoomText(conn,pv);
+			if(result) {
+				JDBCTemplate.commit(conn);
+			}else {
+				JDBCTemplate.rollBack(conn);
+			}
+			JDBCTemplate.close(conn);
+			return result;
+		}
+		// 로그인 기록 엑셀 다운
+		public ArrayList<MemberLoginLogVo> memberLogListDown() {
+			Connection conn = null;
+			conn = JDBCTemplate.getConnect(conn);
+			ArrayList<MemberLoginLogVo> list = aDao.memberLogListDown(conn);
+			JDBCTemplate.close(conn);
+			return list;
+		}
+		// 예약 정보 엑셀 다운 
+		public ArrayList<ReservationVo> reservationListDown() {
+			Connection conn = null;
+			conn = JDBCTemplate.getConnect(conn);
+			ArrayList<ReservationVo> list = aDao.reservationListDown(conn);
+			JDBCTemplate.close(conn);
+			return list;
+		}
+		// 게시판 삭제
+		public boolean boardCompleteDel(int bdNo) {
+			Connection conn = null;
+			conn = JDBCTemplate.getConnect(conn);
+			int totalResult = aDao.boardCompleteDel(conn,bdNo);
+			boolean result = false;
+			if(totalResult>0) {
+				JDBCTemplate.commit(conn);
+				result = true;
+			}else {
+				JDBCTemplate.rollBack(conn);
+			}
+			JDBCTemplate.close(conn);
+			return result;
+		}
+		// 파일 목록 가져오기
+		public ArrayList<DataFile> boardFileList(int bdNo) {
+			Connection conn = null;
+			conn = JDBCTemplate.getConnect(conn);
+			
+			ArrayList<DataFile> list = aDao.boardFileList(conn, bdNo);
+			JDBCTemplate.close(conn);
+			return list;
+		}
 		
 		// 지은 추가
 		public ReserveCancelPageVo reserveCancelList(int currentPage, String searchData, String searchOption) {

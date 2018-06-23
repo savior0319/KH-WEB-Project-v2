@@ -27,11 +27,11 @@ import jsp.reservation.model.vo.SalesVo;
 
 public class AdminDao {
 	// TODO: properties에서 값을 불러오는 방식으로 변경해야 함.
-	
+
 	private PreparedStatement pstmt = null;
 	// private ResultSet rset = null;
 	private Properties prop = new Properties();
-	
+
 	// properties 쓰기 위해 만듬
 	public AdminDao() {
 		String path = AdminDao.class.getResource("").getPath();
@@ -41,20 +41,20 @@ public class AdminDao {
 			e.printStackTrace();
 		}
 	}
-	
+
 	// 객실 정보 불러오는 함수
 	public ArrayList<PensionVo> AllRoomList(Connection conn) {
 		ArrayList<PensionVo> list = new ArrayList<PensionVo>();
 		Statement stmt = null;
 		ResultSet rs = null;
 		String query ="select * from PENSION_TB ";
-		
+
 		try {
 			stmt = conn.createStatement();
 			rs = stmt.executeQuery(query);
 			while(rs.next()) {
 				PensionVo pv = new PensionVo();
-				
+
 				pv.setPsName(rs.getString("ps_name"));
 				pv.setPsPersonnel(rs.getInt("ps_personnel"));
 				pv.setPsMaxPersonnel(rs.getInt("ps_max_personnel"));
@@ -62,28 +62,28 @@ public class AdminDao {
 				pv.setPsWeekend(rs.getInt("ps_weekend"));
 				pv.setPsWeekday(rs.getInt("ps_weekday"));
 				pv.setPsAddtionalPrice(rs.getInt("ps_additional_price"));
-				
+
 				list.add(pv);
-				
+
 			}
 		} catch (SQLException e) {
-			
+
 			e.printStackTrace();
 		}finally {
 			JDBCTemplate.close(rs);
 			JDBCTemplate.close(stmt);
 		}
-		
+
 		return list;
 	}
-	
+
 	// 객실 정보를 등록하는 함수
 	public boolean insertRoom(Connection conn, PensionVo pv) {
 		PreparedStatement pstmt = null;
 		boolean result = false;
 		int row = 0;
 		String query ="insert into Pension_tb values(?,?,?,?,?,?,?)";
-		
+
 		try {
 			pstmt = conn.prepareStatement(query);
 			pstmt.setString(1, pv.getPsName());
@@ -102,10 +102,10 @@ public class AdminDao {
 			e.printStackTrace();
 		}
 		return result;
-		
+
 	}
-	
-	
+
+
 	// 회원 전체 보기 중에서... 
 	// 1.
 	public ArrayList<MemberVo> getMemberCurrentPage(Connection conn, int currentPage, int recordCountPerPage) {
@@ -114,16 +114,16 @@ public class AdminDao {
 		ArrayList<MemberVo> list = new ArrayList<MemberVo>();
 		// 시작 페이지 계산 
 		int start = currentPage*recordCountPerPage - (recordCountPerPage-1);
-					// 만약 요청한 페이지가 1이라면 1		(1*10) - (10-1) = 10-9 =1
-					// 만약 요청한 페이지가 2이라면 11 		(2*10) - 9	= 11
-		
+		// 만약 요청한 페이지가 1이라면 1		(1*10) - (10-1) = 10-9 =1
+		// 만약 요청한 페이지가 2이라면 11 		(2*10) - 9	= 11
+
 		// 끝 페이지 계산 
 		int end = currentPage*recordCountPerPage;	// 숫자가딱 맞지 않아도 된다.
-		
+
 		String query = "select * from "
 				+ "(select member_tb.* , row_number() over(order by MB_ID desc) as num from member_tb) "
 				+"where num between ? and ?";
-		
+
 		try {
 			pstmt = conn.prepareStatement(query);
 			pstmt.setInt(1, start);
@@ -151,7 +151,7 @@ public class AdminDao {
 		}	
 		return list;
 	}
-	
+
 	// 회원 전체 보기 중에서
 	// 2.
 	public String getMemberPageNavi(Connection conn, int currentPage, int recordCountPerPage, int naviCountPerPage) {
@@ -159,7 +159,7 @@ public class AdminDao {
 		ResultSet rs = null;
 		// 게시물의 total갯수를 구해야 함.
 		//  (total/recordCountPerPage)+1 이 페이지 갯수
-		
+
 		int recordTotalCount = 0; // 총 게시물 개수 저장 변수 (정보가 없으므로 초기값은 0)
 		String query = "select count(*) as totalCount from member_tb";
 		try {
@@ -185,7 +185,7 @@ public class AdminDao {
 		}
 		// 1 페이지 보다 더 아래의 페이지를 요청하거나, 
 		// 전체 페이지보다 큰 페이지를 요청했을 경우를 에러 방지.
-		
+
 		if(currentPage < 1) {
 			currentPage =1;
 		}
@@ -200,16 +200,16 @@ public class AdminDao {
 		// ((현재페이지-1)/리스트개수)*리스트 개수 +1 -> 몫으로 게산을 한다...
 		// 전제 조건 
 		int startNavi = ((currentPage-1)/naviCountPerPage)*naviCountPerPage+1;
-		
+
 		// 끝 navi 구하는 공식 (쉬움)
 		int endNavi = startNavi + naviCountPerPage -1;
-		
+
 		// 끝 navi를 구할 때 주의해야 할 점 
 		// 마지막 navi 부분은 한줄 추가를 해야 한다.
 		if(endNavi > pageTotalCount) {
 			endNavi = pageTotalCount;
 		}
-	
+
 		// page navi에서 사용할 '<' 모양과 '>' 모양을 사용하기 위해
 		// 필요한 변수 2개 생성 (시작과 끝은 필요없으므로 !)
 		// if- else 로 쓰지 않는 이유는 게시물의 갯수가 적을 경우 둘다 쓸 수 있기 때문에
@@ -226,7 +226,7 @@ public class AdminDao {
 		if(needPrev) { // 시작이 1페이지가 아니라면
 			sb.append("<a href='/adminMemberList?currentPage="+1+"'> << </a>");
 			sb.append("<a href='/adminMemberList?currentPage="+(startNavi-1)+"'> < </a>");
-	
+
 		}
 		for(int i = startNavi ; i <=endNavi ; i++) {
 			if(i==currentPage) {
@@ -242,7 +242,7 @@ public class AdminDao {
 		// 문자열 만들어짐.
 		return sb.toString();
 	}
-	
+
 	// 1. 게시판
 	public ArrayList<BoardVo> getBoardCurrentPage(Connection conn, int currentPage, int recordCountPerPage) {
 		PreparedStatement pstmt = null;
@@ -250,19 +250,19 @@ public class AdminDao {
 		ArrayList<BoardVo> list = new ArrayList<BoardVo>();
 		// 시작 페이지 계산 
 		int start = currentPage*recordCountPerPage - (recordCountPerPage-1);
-					// 만약 요청한 페이지가 1이라면 1		(1*10) - (10-1) = 10-9 =1
-					// 만약 요청한 페이지가 2이라면 11 		(2*10) - 9	= 11
-		
+		// 만약 요청한 페이지가 1이라면 1		(1*10) - (10-1) = 10-9 =1
+		// 만약 요청한 페이지가 2이라면 11 		(2*10) - 9	= 11
+
 		// 끝 페이지 계산 
 		int end = currentPage*recordCountPerPage;	// 숫자가딱 맞지 않아도 된다.
-		
+
 		String query = "select * from "
 				+ "(select board_tb.* , row_number() over(order by bd_no desc) as num from board_tb where bd_category=?) "
 				+"where num between ? and ?";
-		
+
 		try {
 			pstmt = conn.prepareStatement(query);
-			pstmt.setString(1,"공지사항");
+			pstmt.setString(1,"공지");
 			pstmt.setInt(2, start);
 			pstmt.setInt(3, end);
 			rs = pstmt.executeQuery();
@@ -285,7 +285,7 @@ public class AdminDao {
 			JDBCTemplate.close(rs);
 			JDBCTemplate.close(pstmt);
 		}
-		
+
 		return list;
 	}
 	// 2. 게시판
@@ -294,12 +294,12 @@ public class AdminDao {
 		ResultSet rs = null;
 		// 게시물의 total갯수를 구해야 함.
 		//  (total/recordCountPerPage)+1 이 페이지 갯수
-		
+
 		int recordTotalCount = 0; // 총 게시물 개수 저장 변수 (정보가 없으므로 초기값은 0)
 		String query = "select count(*) as totalCount from board_tb where bd_category=?";
 		try {
 			pstmt = conn.prepareStatement(query);
-			pstmt.setString(1, "공지사항");
+			pstmt.setString(1, "공지");
 			rs = pstmt.executeQuery();
 			if(rs.next()) {
 				recordTotalCount = rs.getInt("totalCount");
@@ -321,7 +321,7 @@ public class AdminDao {
 		}
 		// 1 페이지 보다 더 아래의 페이지를 요청하거나, 
 		// 전체 페이지보다 큰 페이지를 요청했을 경우를 에러 방지.
-		
+
 		if(currentPage < 1) {
 			currentPage =1;
 		}
@@ -336,16 +336,16 @@ public class AdminDao {
 		// ((현재페이지-1)/리스트개수)*리스트 개수 +1 -> 몫으로 게산을 한다...
 		// 전제 조건 
 		int startNavi = ((currentPage-1)/naviCountPerPage)*naviCountPerPage+1;
-		
+
 		// 끝 navi 구하는 공식 (쉬움)
 		int endNavi = startNavi + naviCountPerPage -1;
-		
+
 		// 끝 navi를 구할 때 주의해야 할 점 
 		// 마지막 navi 부분은 한줄 추가를 해야 한다.
 		if(endNavi > pageTotalCount) {
 			endNavi = pageTotalCount;
 		}
-	
+
 		// page navi에서 사용할 '<' 모양과 '>' 모양을 사용하기 위해
 		// 필요한 변수 2개 생성 (시작과 끝은 필요없으므로 !)
 		// if- else 로 쓰지 않는 이유는 게시물의 갯수가 적을 경우 둘다 쓸 수 있기 때문에
@@ -362,7 +362,7 @@ public class AdminDao {
 		if(needPrev) { // 시작이 1페이지가 아니라면
 			sb.append("<a href='/adminBoardList?currentPage="+1+"'> << </a>");
 			sb.append("<a href='/adminBoardList?currentPage="+(startNavi-1)+"'> < </a>");
-	
+
 		}
 		for(int i = startNavi ; i <=endNavi ; i++) {
 			if(i==currentPage) {
@@ -378,7 +378,7 @@ public class AdminDao {
 		// 문자열 만들어짐.
 		return sb.toString();
 	}
-	
+
 	// 예약 정보
 	public ArrayList<ReservationVo> getReserveCurrentPage(Connection conn, int currentPage, int recordCountPerPage) {
 		PreparedStatement pstmt = null;
@@ -386,16 +386,16 @@ public class AdminDao {
 		ArrayList<ReservationVo> list = new ArrayList<ReservationVo>();
 		// 시작 페이지 계산 
 		int start = currentPage*recordCountPerPage - (recordCountPerPage-1);
-					// 만약 요청한 페이지가 1이라면 1		(1*10) - (10-1) = 10-9 =1
-					// 만약 요청한 페이지가 2이라면 11 		(2*10) - 9	= 11
-		
+		// 만약 요청한 페이지가 1이라면 1		(1*10) - (10-1) = 10-9 =1
+		// 만약 요청한 페이지가 2이라면 11 		(2*10) - 9	= 11
+
 		// 끝 페이지 계산 
 		int end = currentPage*recordCountPerPage;	// 숫자가딱 맞지 않아도 된다.
-		
+
 		String query = "select * from "
 				+ "(select reservation_tb.* , row_number() over(order by res_no desc) as num from reservation_tb) "
 				+"where num between ? and ?";
-		
+
 		try {
 			pstmt = conn.prepareStatement(query);
 			pstmt.setInt(1, start);
@@ -422,7 +422,7 @@ public class AdminDao {
 			JDBCTemplate.close(rs);
 			JDBCTemplate.close(pstmt);
 		}
-		
+
 		return list;
 	}
 	// 예약 정보2.
@@ -431,7 +431,7 @@ public class AdminDao {
 		ResultSet rs = null;
 		// 게시물의 total갯수를 구해야 함.
 		//  (total/recordCountPerPage)+1 이 페이지 갯수
-		
+
 		int recordTotalCount = 0; // 총 게시물 개수 저장 변수 (정보가 없으므로 초기값은 0)
 		String query = "select count(*) as totalCount from reservation_tb";
 		try {
@@ -457,7 +457,7 @@ public class AdminDao {
 		}
 		// 1 페이지 보다 더 아래의 페이지를 요청하거나, 
 		// 전체 페이지보다 큰 페이지를 요청했을 경우를 에러 방지.
-		
+
 		if(currentPage < 1) {
 			currentPage =1;
 		}
@@ -472,16 +472,16 @@ public class AdminDao {
 		// ((현재페이지-1)/리스트개수)*리스트 개수 +1 -> 몫으로 게산을 한다...
 		// 전제 조건 
 		int startNavi = ((currentPage-1)/naviCountPerPage)*naviCountPerPage+1;
-		
+
 		// 끝 navi 구하는 공식 (쉬움)
 		int endNavi = startNavi + naviCountPerPage -1;
-		
+
 		// 끝 navi를 구할 때 주의해야 할 점 
 		// 마지막 navi 부분은 한줄 추가를 해야 한다.
 		if(endNavi > pageTotalCount) {
 			endNavi = pageTotalCount;
 		}
-	
+
 		// page navi에서 사용할 '<' 모양과 '>' 모양을 사용하기 위해
 		// 필요한 변수 2개 생성 (시작과 끝은 필요없으므로 !)
 		// if- else 로 쓰지 않는 이유는 게시물의 갯수가 적을 경우 둘다 쓸 수 있기 때문에
@@ -498,7 +498,7 @@ public class AdminDao {
 		if(needPrev) { // 시작이 1페이지가 아니라면
 			sb.append("<a href='/adminReserveManager?currentPage="+1+"'> << </a>");
 			sb.append("<a href='/adminReserveManager?currentPage="+(startNavi-1)+"'> < </a>");
-	
+
 		}
 		for(int i = startNavi ; i <=endNavi ; i++) {
 			if(i==currentPage) {
@@ -521,16 +521,16 @@ public class AdminDao {
 		ArrayList<SalesVo> list = new ArrayList<SalesVo>();
 		// 시작 페이지 계산 
 		int start = currentPage*recordCountPerPage - (recordCountPerPage-1);
-					// 만약 요청한 페이지가 1이라면 1		(1*10) - (10-1) = 10-9 =1
-					// 만약 요청한 페이지가 2이라면 11 		(2*10) - 9	= 11
-		
+		// 만약 요청한 페이지가 1이라면 1		(1*10) - (10-1) = 10-9 =1
+		// 만약 요청한 페이지가 2이라면 11 		(2*10) - 9	= 11
+
 		// 끝 페이지 계산 
 		int end = currentPage*recordCountPerPage;	// 숫자가딱 맞지 않아도 된다.
-		
+
 		String query = "select * from "
 				+ "(select sales_tb.* , row_number() over(order by sales_no desc) as num from sales_tb) "
 				+"where num between ? and ?";
-		
+
 		try {
 			pstmt = conn.prepareStatement(query);
 			pstmt.setInt(1, start);
@@ -551,7 +551,7 @@ public class AdminDao {
 			JDBCTemplate.close(rs);
 			JDBCTemplate.close(pstmt);
 		}
-		
+
 		return list;
 	}
 
@@ -560,7 +560,7 @@ public class AdminDao {
 		ResultSet rs = null;
 		// 게시물의 total갯수를 구해야 함.
 		//  (total/recordCountPerPage)+1 이 페이지 갯수
-		
+
 		int recordTotalCount = 0; // 총 게시물 개수 저장 변수 (정보가 없으므로 초기값은 0)
 		String query = "select count(*) as totalCount from sales_tb";
 		try {
@@ -586,7 +586,7 @@ public class AdminDao {
 		}
 		// 1 페이지 보다 더 아래의 페이지를 요청하거나, 
 		// 전체 페이지보다 큰 페이지를 요청했을 경우를 에러 방지.
-		
+
 		if(currentPage < 1) {
 			currentPage =1;
 		}
@@ -601,16 +601,16 @@ public class AdminDao {
 		// ((현재페이지-1)/리스트개수)*리스트 개수 +1 -> 몫으로 게산을 한다...
 		// 전제 조건 
 		int startNavi = ((currentPage-1)/naviCountPerPage)*naviCountPerPage+1;
-		
+
 		// 끝 navi 구하는 공식 (쉬움)
 		int endNavi = startNavi + naviCountPerPage -1;
-		
+
 		// 끝 navi를 구할 때 주의해야 할 점 
 		// 마지막 navi 부분은 한줄 추가를 해야 한다.
 		if(endNavi > pageTotalCount) {
 			endNavi = pageTotalCount;
 		}
-	
+
 		// page navi에서 사용할 '<' 모양과 '>' 모양을 사용하기 위해
 		// 필요한 변수 2개 생성 (시작과 끝은 필요없으므로 !)
 		// if- else 로 쓰지 않는 이유는 게시물의 갯수가 적을 경우 둘다 쓸 수 있기 때문에
@@ -627,7 +627,7 @@ public class AdminDao {
 		if(needPrev) { // 시작이 1페이지가 아니라면
 			sb.append("<a href='/adminSalesManager?currentPage="+1+"'> << </a>");
 			sb.append("<a href='/adminSalesManager?currentPage="+(startNavi-1)+"'> < </a>");
-	
+
 		}
 		for(int i = startNavi ; i <=endNavi ; i++) {
 			if(i==currentPage) {
@@ -685,9 +685,9 @@ public class AdminDao {
 			pstmt.setInt(5, pv.getPsWeekend());
 			pstmt.setInt(6, pv.getPsWeekday());
 			pstmt.setInt(7, pv.getPsAddtionalPrice());
-			
+
 			row = pstmt.executeUpdate();
-			
+
 			if(row>0) {
 				result = true;
 			}
@@ -711,10 +711,10 @@ public class AdminDao {
 			pstmt.setString(1, picVo.getpsPicName());
 			pstmt.setString(2, picVo.getPsPicPath());
 			pstmt.setString(3, picVo.getPsPicMain());
-			
-			
+
+
 			row = pstmt.executeUpdate();
-			
+
 			if(row>0) {
 				result = true;
 			}
@@ -732,11 +732,11 @@ public class AdminDao {
 		ResultSet rs = null;
 		PensionVo pv = null;
 		String query = "select * from pension_tb where ps_name=?";
-		
+
 		try {
 			pstmt = conn.prepareStatement(query);
 			pstmt.setString(1, psName);
-			
+
 			rs = pstmt.executeQuery();
 			if(rs.next()) {
 				pv = new PensionVo(rs.getString("PS_NAME"), rs.getInt("PS_PERSONNEL"), rs.getInt("PS_MAX_PERSONNEL"), rs.getString("PS_CONTENTS"), rs.getInt("PS_WEEKEND"), rs.getInt("PS_WEEKDAY"), rs.getInt("PS_ADDITIONAL_PRICE"));
@@ -748,7 +748,7 @@ public class AdminDao {
 			JDBCTemplate.close(rs);
 			JDBCTemplate.close(pstmt);
 		}
-		
+
 		return pv;
 	}
 
@@ -797,7 +797,7 @@ public class AdminDao {
 				qv.setqWriter(rs.getString("Q_WRITER"));
 				qv.setqWriteDate(rs.getTimestamp("Q_WRITE_DATE"));
 				qv.setqAnswerCheck(rs.getString("Q_ANSWER_ChECK"));
-				
+
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -818,7 +818,7 @@ public class AdminDao {
 			pstmt = conn.prepareStatement(query);
 			pstmt.setInt(1, asv.getaQNo());
 			pstmt.setString(2, asv.getaContents());
-			
+
 			row = pstmt.executeUpdate();
 			if(row>0) {
 				result = true;
@@ -829,7 +829,7 @@ public class AdminDao {
 		}finally {
 			JDBCTemplate.close(pstmt);
 		}
-	
+
 		return result;
 	}
 	// 답변 했음으로 표시.
@@ -841,7 +841,7 @@ public class AdminDao {
 		try {
 			pstmt = conn.prepareStatement(query);
 			pstmt.setInt(1, qNo);
-			
+
 			row = pstmt.executeUpdate();
 			if(row>0) {
 				result = true;
@@ -852,7 +852,7 @@ public class AdminDao {
 		}finally {
 			JDBCTemplate.close(pstmt);
 		}
-		
+
 		return result;
 	}
 	// 전체 로그 기록 불러오기
@@ -862,13 +862,13 @@ public class AdminDao {
 		String query = "SELECT * FROM "
 				+ "(SELECT MEMBER_LOG_TB.* , ROW_NUMBER() OVER(ORDER BY MB_LOG_TIME DESC) AS NUM FROM MEMBER_LOG_TB ) "
 				+"WHERE NUM BETWEEN ? AND ?";
-//		String query = "select * from MEMBER_LOG_TB order by MB_LOG_TIME DESC";
+		//		String query = "select * from MEMBER_LOG_TB order by MB_LOG_TIME DESC";
 		ArrayList<MemberLoginLogVo> list = new ArrayList<MemberLoginLogVo>();
-		
+
 		int start = currentPage*recordCountPerPage - (recordCountPerPage-1);
 		// 만약 요청한 페이지가 1이라면 1		(1*10) - (10-1) = 10-9 =1
 		// 만약 요청한 페이지가 2이라면 11 		(2*10) - 9	= 11
-		
+
 		// 끝 페이지 계산 
 		int end = currentPage*recordCountPerPage;	// 숫자가딱 맞지 않아도 된다.
 
@@ -910,8 +910,8 @@ public class AdminDao {
 				asv.setaNo(rs.getInt("A_NO"));
 				asv.setaQNo(rs.getInt("A_Q_NO"));
 				asv.setaContents(rs.getString("A_CONTENTS"));
-				
-				
+
+
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -955,13 +955,13 @@ public class AdminDao {
 		}
 		return result;
 	}
-	
+
 	public ReservationVo selectOneReservation(Connection conn, String roomName, Date comDate) {
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		String query = "select * from reservation_tb where res_room_name=? and res_in_date <= ? and res_out_date >= ?";
 		ReservationVo rv = null;
-		
+
 		try {
 			pstmt = conn.prepareStatement(query);
 			//
@@ -970,7 +970,7 @@ public class AdminDao {
 			// 시간 비교를 하는 것이 좀 그러네...
 			pstmt.setDate(2, comDate);
 			pstmt.setDate(3, comDate);
-			
+
 			rs = pstmt.executeQuery();
 			while(rs.next()) {
 				rv = new ReservationVo();
@@ -984,25 +984,25 @@ public class AdminDao {
 				rv.setResPeriod(rs.getInt("res_period"));
 				rv.setResPrice(rs.getInt("res_price"));
 				rv.setResPaymentDate(rs.getTimestamp("res_payment_date"));
-				
+
 			}
-			
+
 		} catch (SQLException e) {
-			
+
 			e.printStackTrace();
 		}finally {
 			JDBCTemplate.close(rs);
 			JDBCTemplate.close(pstmt);
 		}
-		
+
 		return rv;
 	}
-	
+
 	// 게시판 등록 (순수 게시판만...)
 	public boolean boardInsert(Connection conn, BoardVo bv) {
 		PreparedStatement pstmt = null;
 		int row = 0 ;
-		String query = "insert into board_tb values(BD_NO_SEQ.NEXTVAL,?,?,?,SYSDATE,0,0,?)";
+		String query = "insert into board_tb values(BD_NO_SEQ.NEXTVAL,?,?,?,SYSDATE,DEFAULT,DEFAULT,?)";
 		boolean result = false;
 		try {
 			pstmt = conn.prepareStatement(query);
@@ -1029,15 +1029,15 @@ public class AdminDao {
 		BoardVo newBv = null;	
 		ResultSet rs = null;
 		// 좀 그렇다... 아니면 차라리 올릴때 같이 올리도록 하는 것이 좋을 텐데...
-		
+
 		String query = "select * from board_tb where bd_name = ? and bd_contents=? and bd_writer=?";
-		
+
 		try {
 			pstmt = conn.prepareStatement(query);
 			pstmt.setString(1,bv.getBdName());
 			pstmt.setString(2, bv.getBdContents());
 			pstmt.setString(3, bv.getBdWriter());
-			
+
 			rs = pstmt.executeQuery();
 			if(rs.next()) {
 				newBv = new BoardVo();
@@ -1061,7 +1061,7 @@ public class AdminDao {
 	// 파일 삽입
 	public boolean fileInsert(Connection conn, DataFile dataFile) {
 		PreparedStatement pstmt = null;
-		String query = "insert into board_file_tb values(BD_FILE_NO_SEQ.NEXTVAL,?,?,SYSDATE,?,0,?,?)";
+		String query = "insert into board_file_tb values(BD_FILE_NO_SEQ.NEXTVAL,?,?,SYSDATE,?,DEFAULT,?,?)";
 		int row = 0;
 		boolean result =false;
 		try {
@@ -1088,7 +1088,7 @@ public class AdminDao {
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		String query = "select * from board_tb where BD_NO=?";
-		
+
 		BoardVo bv = null;
 		try {
 			pstmt = conn.prepareStatement(query);
@@ -1112,16 +1112,16 @@ public class AdminDao {
 			JDBCTemplate.close(rs);
 			JDBCTemplate.close(pstmt);
 		}
-		
+
 		return bv;
 	}
-	
+
 	// 게시판에 있는 사진들 가져오기
 	public ArrayList<DataFile> selectBoardFiles(Connection conn, int bdNo) {
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		String query = "select * from board_file_tb where BD_FILE_BD_NO=? order by BD_FILE_NO DESC";
-		
+
 		ArrayList<DataFile> list = new ArrayList<DataFile>();
 		try {
 			pstmt = conn.prepareStatement(query);
@@ -1146,7 +1146,7 @@ public class AdminDao {
 			JDBCTemplate.close(rs);
 			JDBCTemplate.close(pstmt);
 		}
-		
+
 		return list;
 	}
 
@@ -1157,19 +1157,19 @@ public class AdminDao {
 		ArrayList<ReservationVo> list = new ArrayList<ReservationVo>();
 		// 시작 페이지 계산 
 		int start = currentPage*recordCountPerPage - (recordCountPerPage-1);
-					// 만약 요청한 페이지가 1이라면 1		(1*10) - (10-1) = 10-9 =1
-					// 만약 요청한 페이지가 2이라면 11 		(2*10) - 9	= 11
-		
+		// 만약 요청한 페이지가 1이라면 1		(1*10) - (10-1) = 10-9 =1
+		// 만약 요청한 페이지가 2이라면 11 		(2*10) - 9	= 11
+
 		// 끝 페이지 계산 
 		int end = currentPage*recordCountPerPage;	// 숫자가딱 맞지 않아도 된다.
-		
+
 		String query = "SELECT * FROM "
 				+ "(SELECT RESERVATION_TB.* , ROW_NUMBER() OVER(ORDER BY RES_NO DESC) AS NUM FROM RESERVATION_TB WHERE "+searchOption+" LIKE ? ) "
 				+"WHERE NUM BETWEEN ? AND ?";
-		
+
 		try {
 			pstmt = conn.prepareStatement(query);
-			
+
 			pstmt.setString(1,"%"+searchData+"%");
 			pstmt.setInt(2, start);
 			pstmt.setInt(3, end);
@@ -1186,7 +1186,7 @@ public class AdminDao {
 				rv.setResPeriod(rs.getInt("RES_PERIOD"));
 				rv.setResPrice(rs.getInt("RES_PRICE"));
 				rv.setResPaymentDate(rs.getTimestamp("RES_PAYMENT_DATE"));
-				
+
 				list.add(rv);
 			}
 		} catch (SQLException e) {
@@ -1196,7 +1196,7 @@ public class AdminDao {
 			JDBCTemplate.close(rs);
 			JDBCTemplate.close(pstmt);
 		}
-		
+
 		return list;
 	}
 
@@ -1206,14 +1206,14 @@ public class AdminDao {
 		ResultSet rs = null;
 		// 게시물의 total갯수를 구해야 함.
 		//  (total/recordCountPerPage)+1 이 페이지 갯수
-		
+
 		int recordTotalCount = 0; // 총 게시물 개수 저장 변수 (정보가 없으므로 초기값은 0)
-		
+
 		String query = "select count(*) as totalCount from reservation_tb where "+searchOption+" like ?";
 
 		try {
 			pstmt = conn.prepareStatement(query);
-			
+
 			pstmt.setString(1, "%"+searchData+"%");
 			rs = pstmt.executeQuery();
 			if(rs.next()) {
@@ -1236,25 +1236,25 @@ public class AdminDao {
 		}
 		// 1 페이지 보다 더 아래의 페이지를 요청하거나, 
 		// 전체 페이지보다 큰 페이지를 요청했을 경우를 에러 방지.
-		
+
 		if(currentPage < 1) {
 			currentPage =1;
 		}
 		if(currentPage > pageTotalCount) {
 			currentPage = pageTotalCount;
 		}
-		
+
 		int startNavi = ((currentPage-1)/naviCountPerPage)*naviCountPerPage+1;
-		
+
 		// 끝 navi 구하는 공식 (쉬움)
 		int endNavi = startNavi + naviCountPerPage -1;
-		
+
 		// 끝 navi를 구할 때 주의해야 할 점 
 		// 마지막 navi 부분은 한줄 추가를 해야 한다.
 		if(endNavi > pageTotalCount) {
 			endNavi = pageTotalCount;
 		}
-	
+
 		// page navi에서 사용할 '<' 모양과 '>' 모양을 사용하기 위해
 		// 필요한 변수 2개 생성 (시작과 끝은 필요없으므로 !)
 		// if- else 로 쓰지 않는 이유는 게시물의 갯수가 적을 경우 둘다 쓸 수 있기 때문에
@@ -1271,7 +1271,7 @@ public class AdminDao {
 		if(needPrev) { // 시작이 1페이지가 아니라면
 			sb.append("<a href='/adminReserveManager?searchData="+searchData+"&searchOption="+searchOption+"&currentPage="+1+"'> << </a>");
 			sb.append("<a href='/adminReserveManager?searchData="+searchData+"&searchOption="+searchOption+"&currentPage="+(startNavi-1)+"'> < </a>");
-	
+
 		}
 		for(int i = startNavi ; i <=endNavi ; i++) {
 			if(i==currentPage) {
@@ -1295,16 +1295,16 @@ public class AdminDao {
 		ArrayList<MemberVo> list = new ArrayList<MemberVo>();
 		// 시작 페이지 계산 
 		int start = currentPage*recordCountPerPage - (recordCountPerPage-1);
-					// 만약 요청한 페이지가 1이라면 1		(1*10) - (10-1) = 10-9 =1
-					// 만약 요청한 페이지가 2이라면 11 		(2*10) - 9	= 11
-		
+		// 만약 요청한 페이지가 1이라면 1		(1*10) - (10-1) = 10-9 =1
+		// 만약 요청한 페이지가 2이라면 11 		(2*10) - 9	= 11
+
 		// 끝 페이지 계산 
 		int end = currentPage*recordCountPerPage;	// 숫자가딱 맞지 않아도 된다.
-		
+
 		String query = "select * from "
 				+ "(select member_tb.* , row_number() over(order by MB_ID desc) as num from member_tb where "+searchOption +" like ? ) "
 				+"where num between ? and ?";
-		
+
 		try {
 			pstmt = conn.prepareStatement(query);
 			pstmt.setString(1,"%"+searchData+"%");
@@ -1340,7 +1340,7 @@ public class AdminDao {
 		ResultSet rs = null;
 		// 게시물의 total갯수를 구해야 함.
 		//  (total/recordCountPerPage)+1 이 페이지 갯수
-		
+
 		int recordTotalCount = 0; // 총 게시물 개수 저장 변수 (정보가 없으므로 초기값은 0)
 		String query = "select count(*) as totalCount from member_tb where "+searchOption+" like ?";
 		try {
@@ -1367,7 +1367,7 @@ public class AdminDao {
 		}
 		// 1 페이지 보다 더 아래의 페이지를 요청하거나, 
 		// 전체 페이지보다 큰 페이지를 요청했을 경우를 에러 방지.
-		
+
 		if(currentPage < 1) {
 			currentPage =1;
 		}
@@ -1382,16 +1382,16 @@ public class AdminDao {
 		// ((현재페이지-1)/리스트개수)*리스트 개수 +1 -> 몫으로 게산을 한다...
 		// 전제 조건 
 		int startNavi = ((currentPage-1)/naviCountPerPage)*naviCountPerPage+1;
-		
+
 		// 끝 navi 구하는 공식 (쉬움)
 		int endNavi = startNavi + naviCountPerPage -1;
-		
+
 		// 끝 navi를 구할 때 주의해야 할 점 
 		// 마지막 navi 부분은 한줄 추가를 해야 한다.
 		if(endNavi > pageTotalCount) {
 			endNavi = pageTotalCount;
 		}
-	
+
 		// page navi에서 사용할 '<' 모양과 '>' 모양을 사용하기 위해
 		// 필요한 변수 2개 생성 (시작과 끝은 필요없으므로 !)
 		// if- else 로 쓰지 않는 이유는 게시물의 갯수가 적을 경우 둘다 쓸 수 있기 때문에
@@ -1408,7 +1408,7 @@ public class AdminDao {
 		if(needPrev) { // 시작이 1페이지가 아니라면
 			sb.append("<a href='/adminMemberList?searchData="+searchData+"&searchOption="+searchOption+"&currentPage="+1+"'> << </a>");
 			sb.append("<a href='/adminMemberList?searchData="+searchData+"&searchOption="+searchOption+"&currentPage="+(startNavi-1)+"'> < </a>");
-	
+
 		}
 		for(int i = startNavi ; i <=endNavi ; i++) {
 			if(i==currentPage) {
@@ -1430,14 +1430,14 @@ public class AdminDao {
 		ResultSet rs = null;
 		// 게시물의 total갯수를 구해야 함.
 		//  (total/recordCountPerPage)+1 이 페이지 갯수
-		
+
 		int recordTotalCount = 0; // 총 게시물 개수 저장 변수 (정보가 없으므로 초기값은 0)
-		
+
 		String query = "select count(*) as totalCount from reservation_tb ";
 
 		try {
 			pstmt = conn.prepareStatement(query);
-			
+
 			rs = pstmt.executeQuery();
 			if(rs.next()) {
 				recordTotalCount = rs.getInt("totalCount");
@@ -1459,25 +1459,25 @@ public class AdminDao {
 		}
 		// 1 페이지 보다 더 아래의 페이지를 요청하거나, 
 		// 전체 페이지보다 큰 페이지를 요청했을 경우를 에러 방지.
-		
+
 		if(currentPage < 1) {
 			currentPage =1;
 		}
 		if(currentPage > pageTotalCount) {
 			currentPage = pageTotalCount;
 		}
-		
+
 		int startNavi = ((currentPage-1)/naviCountPerPage)*naviCountPerPage+1;
-		
+
 		// 끝 navi 구하는 공식 (쉬움)
 		int endNavi = startNavi + naviCountPerPage -1;
-		
+
 		// 끝 navi를 구할 때 주의해야 할 점 
 		// 마지막 navi 부분은 한줄 추가를 해야 한다.
 		if(endNavi > pageTotalCount) {
 			endNavi = pageTotalCount;
 		}
-	
+
 		// page navi에서 사용할 '<' 모양과 '>' 모양을 사용하기 위해
 		// 필요한 변수 2개 생성 (시작과 끝은 필요없으므로 !)
 		// if- else 로 쓰지 않는 이유는 게시물의 갯수가 적을 경우 둘다 쓸 수 있기 때문에
@@ -1494,7 +1494,7 @@ public class AdminDao {
 		if(needPrev) { // 시작이 1페이지가 아니라면
 			sb.append("<a href='/adminMemberLog?currentPage="+1+"'> << </a>");
 			sb.append("<a href='/adminMemberLog?currentPage="+(startNavi-1)+"'> < </a>");
-	
+
 		}
 		for(int i = startNavi ; i <=endNavi ; i++) {
 			if(i==currentPage) {
@@ -1518,9 +1518,9 @@ public class AdminDao {
 		String query = "SELECT * FROM "
 				+ "(SELECT MEMBER_LOG_TB.* , ROW_NUMBER() OVER(ORDER BY MB_LOG_TIME DESC) AS NUM FROM MEMBER_LOG_TB WHERE "+searchOption+" LIKE ? ) "
 				+"WHERE NUM BETWEEN ? AND ?";
-		
+
 		ArrayList<MemberLoginLogVo> list = new ArrayList<MemberLoginLogVo>();
-		
+
 		int start = currentPage*recordCountPerPage - (recordCountPerPage-1);
 		int end = currentPage*recordCountPerPage;	
 
@@ -1547,7 +1547,7 @@ public class AdminDao {
 			JDBCTemplate.close(pstmt);
 		}
 		return list;
-		
+
 	}
 
 	public String getLoginLogPageNavi(Connection conn, int currentPage, int recordCountPerPage, int naviCountPerPage,
@@ -1556,9 +1556,9 @@ public class AdminDao {
 		ResultSet rs = null;
 
 		int recordTotalCount = 0; // 총 게시물 개수 저장 변수 (정보가 없으므로 초기값은 0)
-		
+
 		String query = "select count(*) as totalCount from member_log_tb where "+searchOption+" like ?";
-		
+
 		try {
 			pstmt = conn.prepareStatement(query);
 			pstmt.setString(1, "%"+searchData+"%");
@@ -1608,7 +1608,7 @@ public class AdminDao {
 		if(needPrev) { // 시작이 1페이지가 아니라면
 			sb.append("<a href='/adminMemberLog?searchData="+searchData+"&searchOption="+searchOption+"&currentPage="+1+"'> << </a>");
 			sb.append("<a href='/adminMemberLog?searchData="+searchData+"&searchOption="+searchOption+"&currentPage="+(startNavi-1)+"'> < </a>");
-	
+
 		}
 		for(int i = startNavi ; i <=endNavi ; i++) {
 			if(i==currentPage) {
@@ -1632,7 +1632,7 @@ public class AdminDao {
 		// 시작 페이지 계산 
 		int start = currentPage*recordCountPerPage - (recordCountPerPage-1);
 		int end = currentPage*recordCountPerPage;	// 숫자가딱 맞지 않아도 된다.
-		
+
 		String query = "SELECT * FROM "
 				+ "(SELECT QUESTION_TB.* , ROW_NUMBER() OVER(ORDER BY Q_NO DESC) AS NUM FROM QUESTION_TB ) "
 				+"WHERE NUM BETWEEN ? AND ?";		
@@ -1657,7 +1657,7 @@ public class AdminDao {
 			JDBCTemplate.close(rs);
 			JDBCTemplate.close(pstmt);
 		}
-		
+
 		return list;
 	}
 
@@ -1666,9 +1666,9 @@ public class AdminDao {
 		ResultSet rs = null;
 		// 게시물의 total갯수를 구해야 함.
 		//  (total/recordCountPerPage)+1 이 페이지 갯수
-		
+
 		int recordTotalCount = 0; // 총 게시물 개수 저장 변수 (정보가 없으므로 초기값은 0)
-		
+
 		String query = "SELECT COUNT(*) AS TOTALCOUNT FROM QUESTION_TB";
 
 		try {
@@ -1694,25 +1694,25 @@ public class AdminDao {
 		}
 		// 1 페이지 보다 더 아래의 페이지를 요청하거나, 
 		// 전체 페이지보다 큰 페이지를 요청했을 경우를 에러 방지.
-		
+
 		if(currentPage < 1) {
 			currentPage =1;
 		}
 		if(currentPage > pageTotalCount) {
 			currentPage = pageTotalCount;
 		}
-		
+
 		int startNavi = ((currentPage-1)/naviCountPerPage)*naviCountPerPage+1;
-		
+
 		// 끝 navi 구하는 공식 (쉬움)
 		int endNavi = startNavi + naviCountPerPage -1;
-		
+
 		// 끝 navi를 구할 때 주의해야 할 점 
 		// 마지막 navi 부분은 한줄 추가를 해야 한다.
 		if(endNavi > pageTotalCount) {
 			endNavi = pageTotalCount;
 		}
-	
+
 		// page navi에서 사용할 '<' 모양과 '>' 모양을 사용하기 위해
 		// 필요한 변수 2개 생성 (시작과 끝은 필요없으므로 !)
 		// if- else 로 쓰지 않는 이유는 게시물의 갯수가 적을 경우 둘다 쓸 수 있기 때문에
@@ -1729,7 +1729,7 @@ public class AdminDao {
 		if(needPrev) { // 시작이 1페이지가 아니라면
 			sb.append("<a href='/adminQuestionList?currentPage="+1+"'> << </a>");
 			sb.append("<a href='/adminQuestionList?currentPage="+(startNavi-1)+"'> < </a>");
-	
+
 		}
 		for(int i = startNavi ; i <=endNavi ; i++) {
 			if(i==currentPage) {
@@ -1754,7 +1754,7 @@ public class AdminDao {
 		// 시작 페이지 계산 
 		int start = currentPage*recordCountPerPage - (recordCountPerPage-1);
 		int end = currentPage*recordCountPerPage;	// 숫자가딱 맞지 않아도 된다.
-		
+
 		String query = "SELECT * FROM "
 				+ "(SELECT QUESTION_TB.* , ROW_NUMBER() OVER(ORDER BY Q_NO DESC) AS NUM FROM QUESTION_TB WHERE "+searchOption+" LIKE ? ) "
 				+"WHERE NUM BETWEEN ? AND ?";		
@@ -1780,7 +1780,7 @@ public class AdminDao {
 			JDBCTemplate.close(rs);
 			JDBCTemplate.close(pstmt);
 		}
-		
+
 		return list;
 	}
 
@@ -1790,7 +1790,7 @@ public class AdminDao {
 		ResultSet rs = null;
 
 		int recordTotalCount = 0; // 총 게시물 개수 저장 변수 (정보가 없으므로 초기값은 0)
-		
+
 		String query = "SELECT COUNT(*) AS TOTALCOUNT FROM QUESTION_TB where "+searchOption+" like ?";
 
 		try {
@@ -1842,7 +1842,7 @@ public class AdminDao {
 		if(needPrev) { // 시작이 1페이지가 아니라면
 			sb.append("<a href='/adminQuestionList?searchData="+searchData+"&searchOption="+searchOption+"&currentPage="+1+"'> << </a>");
 			sb.append("<a href='/adminQuestionList?searchData="+searchData+"&searchOption="+searchOption+"&currentPage="+(startNavi-1)+"'> < </a>");
-	
+
 		}
 		for(int i = startNavi ; i <=endNavi ; i++) {
 			if(i==currentPage) {
@@ -1866,19 +1866,19 @@ public class AdminDao {
 		ArrayList<BoardVo> list = new ArrayList<BoardVo>();
 		// 시작 페이지 계산 
 		int start = currentPage*recordCountPerPage - (recordCountPerPage-1);
-					// 만약 요청한 페이지가 1이라면 1		(1*10) - (10-1) = 10-9 =1
-					// 만약 요청한 페이지가 2이라면 11 		(2*10) - 9	= 11
-		
+		// 만약 요청한 페이지가 1이라면 1		(1*10) - (10-1) = 10-9 =1
+		// 만약 요청한 페이지가 2이라면 11 		(2*10) - 9	= 11
+
 		// 끝 페이지 계산 
 		int end = currentPage*recordCountPerPage;	// 숫자가딱 맞지 않아도 된다.
-		
+
 		String query = "select * from "
 				+ "(select board_tb.* , row_number() over(order by bd_no desc) as num from board_tb where bd_category=?) "
 				+"where num between ? and ?";
-		
+
 		try {
 			pstmt = conn.prepareStatement(query);
-			pstmt.setString(1,"공지사항");
+			pstmt.setString(1,"공지");
 			pstmt.setInt(2, start);
 			pstmt.setInt(3, end);
 			rs = pstmt.executeQuery();
@@ -1901,7 +1901,7 @@ public class AdminDao {
 			JDBCTemplate.close(rs);
 			JDBCTemplate.close(pstmt);
 		}
-		
+
 		return list;
 	}
 
@@ -1911,12 +1911,12 @@ public class AdminDao {
 		ResultSet rs = null;
 		// 게시물의 total갯수를 구해야 함.
 		//  (total/recordCountPerPage)+1 이 페이지 갯수
-		
+
 		int recordTotalCount = 0; // 총 게시물 개수 저장 변수 (정보가 없으므로 초기값은 0)
 		String query = "select count(*) as totalCount from board_tb where bd_category=?";
 		try {
 			pstmt = conn.prepareStatement(query);
-			pstmt.setString(1, "공지사항");
+			pstmt.setString(1, "공지");
 			rs = pstmt.executeQuery();
 			if(rs.next()) {
 				recordTotalCount = rs.getInt("totalCount");
@@ -1938,7 +1938,7 @@ public class AdminDao {
 		}
 		// 1 페이지 보다 더 아래의 페이지를 요청하거나, 
 		// 전체 페이지보다 큰 페이지를 요청했을 경우를 에러 방지.
-		
+
 		if(currentPage < 1) {
 			currentPage =1;
 		}
@@ -1953,16 +1953,16 @@ public class AdminDao {
 		// ((현재페이지-1)/리스트개수)*리스트 개수 +1 -> 몫으로 게산을 한다...
 		// 전제 조건 
 		int startNavi = ((currentPage-1)/naviCountPerPage)*naviCountPerPage+1;
-		
+
 		// 끝 navi 구하는 공식 (쉬움)
 		int endNavi = startNavi + naviCountPerPage -1;
-		
+
 		// 끝 navi를 구할 때 주의해야 할 점 
 		// 마지막 navi 부분은 한줄 추가를 해야 한다.
 		if(endNavi > pageTotalCount) {
 			endNavi = pageTotalCount;
 		}
-	
+
 		// page navi에서 사용할 '<' 모양과 '>' 모양을 사용하기 위해
 		// 필요한 변수 2개 생성 (시작과 끝은 필요없으므로 !)
 		// if- else 로 쓰지 않는 이유는 게시물의 갯수가 적을 경우 둘다 쓸 수 있기 때문에
@@ -1979,7 +1979,7 @@ public class AdminDao {
 		if(needPrev) { // 시작이 1페이지가 아니라면
 			sb.append("<a href='/adminBoardList?searchData="+searchData+"&searchOption="+searchOption+"&currentPage="+1+"'> << </a>");
 			sb.append("<a href='/adminBoardList?searchData="+searchData+"&searchOption="+searchOption+"&currentPage="+(startNavi-1)+"'> < </a>");
-	
+
 		}
 		for(int i = startNavi ; i <=endNavi ; i++) {
 			if(i==currentPage) {
@@ -2039,16 +2039,17 @@ public class AdminDao {
 		ArrayList<SalesVo> list = new ArrayList<SalesVo>();
 		// 시작 페이지 계산 
 		int start = currentPage*recordCountPerPage - (recordCountPerPage-1);
-					// 만약 요청한 페이지가 1이라면 1		(1*10) - (10-1) = 10-9 =1
-					// 만약 요청한 페이지가 2이라면 11 		(2*10) - 9	= 11
-		
+		// 만약 요청한 페이지가 1이라면 1		(1*10) - (10-1) = 10-9 =1
+		// 만약 요청한 페이지가 2이라면 11 		(2*10) - 9	= 11
+
 		// 끝 페이지 계산 
 		int end = currentPage*recordCountPerPage;	// 숫자가딱 맞지 않아도 된다.
-		
+		// 필드가 있어서 안 된다.
+		// 
 		String query = "select * from "
 				+ "(select sales_tb.* , row_number() over(order by sales_no desc) as num from sales_tb  WHERE "+searchOption+" LIKE ? ) "
 				+"where num between ? and ?";
-		
+
 		try {
 			pstmt = conn.prepareStatement(query);
 			pstmt.setString(1,"%"+searchData+"%");
@@ -2070,7 +2071,7 @@ public class AdminDao {
 			JDBCTemplate.close(rs);
 			JDBCTemplate.close(pstmt);
 		}
-		
+
 		return list;
 	}
 
@@ -2080,7 +2081,7 @@ public class AdminDao {
 		ResultSet rs = null;
 		// 게시물의 total갯수를 구해야 함.
 		//  (total/recordCountPerPage)+1 이 페이지 갯수
-		
+
 		int recordTotalCount = 0; // 총 게시물 개수 저장 변수 (정보가 없으므로 초기값은 0)
 		String query = "select count(*) as totalCount from sales_tb";
 		try {
@@ -2106,7 +2107,7 @@ public class AdminDao {
 		}
 		// 1 페이지 보다 더 아래의 페이지를 요청하거나, 
 		// 전체 페이지보다 큰 페이지를 요청했을 경우를 에러 방지.
-		
+
 		if(currentPage < 1) {
 			currentPage =1;
 		}
@@ -2121,16 +2122,16 @@ public class AdminDao {
 		// ((현재페이지-1)/리스트개수)*리스트 개수 +1 -> 몫으로 게산을 한다...
 		// 전제 조건 
 		int startNavi = ((currentPage-1)/naviCountPerPage)*naviCountPerPage+1;
-		
+
 		// 끝 navi 구하는 공식 (쉬움)
 		int endNavi = startNavi + naviCountPerPage -1;
-		
+
 		// 끝 navi를 구할 때 주의해야 할 점 
 		// 마지막 navi 부분은 한줄 추가를 해야 한다.
 		if(endNavi > pageTotalCount) {
 			endNavi = pageTotalCount;
 		}
-	
+
 		// page navi에서 사용할 '<' 모양과 '>' 모양을 사용하기 위해
 		// 필요한 변수 2개 생성 (시작과 끝은 필요없으므로 !)
 		// if- else 로 쓰지 않는 이유는 게시물의 갯수가 적을 경우 둘다 쓸 수 있기 때문에
@@ -2147,7 +2148,7 @@ public class AdminDao {
 		if(needPrev) { // 시작이 1페이지가 아니라면
 			sb.append("<a href='/adminSalesManager?searchData="+searchData+"&searchOption="+searchOption+"&currentPage="+1+"'> << </a>");
 			sb.append("<a href='/adminSalesManager?searchData="+searchData+"&searchOption="+searchOption+"&currentPage="+(startNavi-1)+"'> < </a>");
-	
+
 		}
 		for(int i = startNavi ; i <=endNavi ; i++) {
 			if(i==currentPage) {
@@ -2192,12 +2193,12 @@ public class AdminDao {
 			JDBCTemplate.close(rs);
 			JDBCTemplate.close(pstmt);
 		}
-		
+
 		return list;
 	}
-  
-  // 메인사진 변경
-  public int mainUpdateImage(Connection conn, String afterPath, String beforeFileName) {
+
+	// 메인사진 변경
+	public int mainUpdateImage(Connection conn, String afterPath, String beforeFileName) {
 		PreparedStatement pstmt = null;
 		String query = prop.getProperty("mainImageUpdate");
 		int result = 0;
@@ -2214,8 +2215,8 @@ public class AdminDao {
 		}
 		return result;
 	}
-  
-  // 메인사진 삭제
+
+	// 메인사진 삭제
 	public int mainDeleteImage(Connection conn, String deleteImage) {
 		PreparedStatement pstmt = null;
 		String query = prop.getProperty("mainImageDelete");
@@ -2233,6 +2234,37 @@ public class AdminDao {
 		return result;
 	}
 
+
+	public boolean updateRoomText(Connection conn, PensionVo pv) {
+		PreparedStatement pstmt = null;
+		boolean result = false;
+		int row = -1 ; 
+
+		String query = "UPDATE PENSION_TB SET PS_PERSONNEL =? , PS_MAX_PERSONNEL=?,PS_CONTENTS=?,PS_WEEKEND=?,PS_WEEKDAY=?,PS_ADDITIONAL_PRICE=? WHERE PS_NAME=?";
+		//UPDATE QUESTION_TB SET Q_ANSWER_CHECK='Y' WHERE Q_NO = ?
+		try {
+			pstmt = conn.prepareStatement(query);
+			pstmt.setInt(1, pv.getPsPersonnel());
+			pstmt.setInt(2, pv.getPsMaxPersonnel());
+			pstmt.setString(3, pv.getPsContents());
+			pstmt.setInt(4, pv.getPsWeekend());
+			pstmt.setInt(5, pv.getPsWeekday());
+			pstmt.setInt(6, pv.getPsAddtionalPrice());
+			pstmt.setString(7, pv.getPsName());
+			row = pstmt.executeUpdate();
+			if(row>0) {
+				result = true;
+			}
+
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally {
+			JDBCTemplate.close(pstmt);
+		}
+
+		return result;
+	}
 	
 	
 	//////////////////////////////////////////////////////////////////////////////////////////////////////// 지은 추가
@@ -2421,6 +2453,7 @@ public class AdminDao {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}finally {
+
 			JDBCTemplate.close(rset);
 			JDBCTemplate.close(pstmt);
 		}
@@ -2545,20 +2578,18 @@ public class AdminDao {
 				
 				list.add(rhv);
 
-
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}finally {
+
 			JDBCTemplate.close(rset);
 			JDBCTemplate.close(pstmt);
 		}
 		
 		return list;
-		
-		
-		
+	
 	}
 
 	public String getReserveHistoryPageNavi(Connection conn, int currentPage, int recordCountPerPage,
@@ -2580,6 +2611,7 @@ public class AdminDao {
 			if(rset.next()) {
 				recordTotalCount = rset.getInt("totalCount");
 			}
+
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -2770,5 +2802,116 @@ public class AdminDao {
 		
 	}
 	
-	
+	public ArrayList<MemberLoginLogVo> memberLogListDown(Connection conn) {
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		ArrayList<MemberLoginLogVo> list = new ArrayList<MemberLoginLogVo>();
+
+		String query = "SELECT * FROM MEMBER_LOG_TB";
+		try {
+			pstmt = conn.prepareStatement(query);
+			rs = pstmt.executeQuery();
+			while(rs.next()) {
+				MemberLoginLogVo mllv = new MemberLoginLogVo();
+				mllv.setMbLogId(rs.getString("MB_LOG_ID"));
+				mllv.setMbLogTime(rs.getTimestamp("MB_LOG_TIME"));
+				mllv.setMbLogBrowser(rs.getString("MB_LOG_BROWSER"));
+				mllv.setMbLogIp(rs.getString("MB_LOG_IP"));
+				mllv.setMbLogLocale(rs.getString("MB_LOG_LOCALE"));
+				list.add(mllv);
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally {
+			JDBCTemplate.close(rs);
+			JDBCTemplate.close(pstmt);
+		}
+
+
+		return list;
+	}
+
+	public ArrayList<ReservationVo> reservationListDown(Connection conn) {
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		ArrayList<ReservationVo> list = new ArrayList<ReservationVo>();
+
+		String query = "SELECT * FROM RESERVATION_TB";
+		try {
+			pstmt = conn.prepareStatement(query);
+			rs = pstmt.executeQuery();
+
+			while(rs.next()) {
+				ReservationVo rv = new ReservationVo();
+				rv.setResNo(rs.getInt("res_no"));
+				rv.setResRoomName(rs.getString("res_room_name"));
+				rv.setResId(rs.getString("res_id"));
+				rv.setResPersonnel(rs.getInt("res_personnel"));
+				rv.setResReservationDate(rs.getTimestamp("res_reservation_date"));
+				rv.setResInDate(rs.getDate("res_in_date"));
+				rv.setResOutDate(rs.getDate("res_out_date"));
+				rv.setResPeriod(rs.getInt("res_period"));
+				rv.setResPrice(rs.getInt("res_price"));
+				rv.setResPaymentDate(rs.getTimestamp("res_payment_date"));
+				list.add(rv);
+
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally {
+			JDBCTemplate.close(rs);
+			JDBCTemplate.close(pstmt);
+		}		
+		return list;
+	}
+
+	public int boardCompleteDel(Connection conn, int bdNo) {
+		PreparedStatement pstmt = null;
+		int row = 0;
+		String query = "delete from board_tb where bd_no=?";
+		try {
+			pstmt = conn.prepareStatement(query);
+			pstmt.setInt(1, bdNo);
+			row = pstmt.executeUpdate();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally {
+			JDBCTemplate.close(pstmt);
+		}
+		return row;
+	}
+	// 게시판의 파일 목록  가져오기
+	public ArrayList<DataFile> boardFileList(Connection conn, int bdNo) {
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		ArrayList<DataFile> list = new ArrayList<DataFile>();
+		String query = "select * from board_File_tb where bd_file_bd_no=?";
+		try {
+			pstmt = conn.prepareStatement(query);
+			pstmt.setInt(1, bdNo);
+			rs = pstmt.executeQuery();
+			while(rs.next()) {
+				DataFile df = new DataFile();
+				df.setBdFileNo(rs.getInt("BD_FILE_NO"));
+				df.setBdFileSize(rs.getLong("BD_FILE_SIZE"));
+				df.setBdFileName(rs.getString("BD_FILE_NAME"));
+				df.setBdFileUptime(rs.getTimestamp("BD_FILE_UPTIME"));
+				df.setBdFileWriter(rs.getString("BD_FILE_WRITER"));
+				df.setBdFileCount(rs.getInt("BD_FILE_COUNT"));
+				df.setBdFilePath(rs.getString("BD_FILE_PATH"));
+				df.setBdFilebdNo(rs.getInt("BD_FILE_BD_NO"));
+				list.add(df);
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally {
+			JDBCTemplate.close(rs);
+			JDBCTemplate.close(pstmt);
+		}
+		return list;
+	}
 }

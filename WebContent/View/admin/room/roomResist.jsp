@@ -4,6 +4,7 @@
 <html>
 <head>
 	<jsp:include page="/View/main/layout/cssjs.jsp"></jsp:include>
+	<title>관리자</title>
 </head>
 <body>
 <!--  a 태그들은 나중에 서블릿을 만들어야 한다. -->
@@ -45,15 +46,15 @@
 		  <div class="fields">
 		    <div class="three wide field">
 		      <label> 주말 요금</label>
-			  <input type="number" placeholder="0원" name="PS_Weekend" required>
+			  <input type="number" placeholder="0원" name="PS_Weekend"  step="1000" required>
 			</div>
 			<div class="three wide field">
 		      <label> 주중 요금</label>
-			  <input type="number" placeholder="0원" name="PS_Weekday" required>
+			  <input type="number" placeholder="0원" name="PS_Weekday"  step="1000" required>
 			</div>
 			<div class="three wide field">
 		      <label> 추가 요금</label>
-			  <input type="number" placeholder="0원" name="PS_Addition_Price" required>
+			  <input type="number" placeholder="0원" name="PS_Addition_Price"  step="1000" required>
 			</div>
 		  </div>
 		  <div class="field">

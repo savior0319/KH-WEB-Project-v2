@@ -1,8 +1,8 @@
 package jsp.admin.controller;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -10,19 +10,20 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import jsp.admin.model.service.AdminService;
-import jsp.admin.model.vo.BoardTotalInfoVo;
+import jsp.board.model.vo.DataFile;
+import jsp.common.PensionFileDel;
 
 /**
- * Servlet implementation class AdminBoardDetailServlet
+ * Servlet implementation class AdminBoardDeleteServlet
  */
-@WebServlet(name = "AdminBoardDetail", urlPatterns = { "/adminBoardDetail" })
-public class AdminBoardDetailServlet extends HttpServlet {
+@WebServlet(name = "AdminBoardDelete", urlPatterns = { "/adminBoardDelete" })
+public class AdminBoardDeleteServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public AdminBoardDetailServlet() {
+    public AdminBoardDeleteServlet() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -34,21 +35,27 @@ public class AdminBoardDetailServlet extends HttpServlet {
 		// TODO Auto-generated method stub
 		//response.getWriter().append("Served at: ").append(request.getContextPath());
 		request.setCharacterEncoding("utf-8");
-		String bdNostr = request.getParameter("bdNo");
-		int bdNo = 0;
-		if(bdNostr != null) {
-			bdNo = Integer.parseInt(bdNostr);
-		}
-		//int bdNo = Integer.parseInt(request.getParameter("bdNo"));
+		int bdNo = Integer.parseInt(request.getParameter("bdNo"));
+		String path = getServletContext().getRealPath("/");
+		// 1. 파일 가져오기
+		ArrayList<DataFile> list = new AdminService().boardFileList(bdNo);
+		// 2. 파일 삭제 하기
 		
-		BoardTotalInfoVo btlv = new AdminService().selectBoardOne(bdNo);
-		/*if(btlv != null) {*/
-			RequestDispatcher view  = request.getRequestDispatcher("/View/admin/board/boardDetail.jsp");
-			request.setAttribute("boardDetail", btlv);
-			view.forward(request, response);
-		/*}else {
-			response.sendRedirect("/View/error/errorPage");
-		}*/
+		boolean reusltFile = new PensionFileDel().boardFileListDel(list,path);
+		// 3. 디비 삭제
+		if(reusltFile){
+			System.out.println("삭제 성공 ");
+		}else {
+			System.out.println("삭제 실패");
+		}
+		
+		boolean result = new AdminService().boardCompleteDel(bdNo);
+		
+		if(result) {
+			response.sendRedirect("/adminBoardList");
+		}else {
+			response.sendRedirect("/View/error/errorPage.jsp");
+		}
 	}
 
 	/**

@@ -2,7 +2,6 @@ package jsp.admin.controller;
 
 import java.io.IOException;
 
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -10,19 +9,19 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import jsp.admin.model.service.AdminService;
-import jsp.admin.model.vo.BoardTotalInfoVo;
+import jsp.reservation.model.vo.PensionVo;
 
 /**
- * Servlet implementation class AdminBoardDetailServlet
+ * Servlet implementation class AdminRoomUpdateServlet
  */
-@WebServlet(name = "AdminBoardDetail", urlPatterns = { "/adminBoardDetail" })
-public class AdminBoardDetailServlet extends HttpServlet {
+@WebServlet(name = "AdminRoomUpdate", urlPatterns = { "/adminRoomUpdate" })
+public class AdminRoomUpdateServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public AdminBoardDetailServlet() {
+    public AdminRoomUpdateServlet() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -34,21 +33,25 @@ public class AdminBoardDetailServlet extends HttpServlet {
 		// TODO Auto-generated method stub
 		//response.getWriter().append("Served at: ").append(request.getContextPath());
 		request.setCharacterEncoding("utf-8");
-		String bdNostr = request.getParameter("bdNo");
-		int bdNo = 0;
-		if(bdNostr != null) {
-			bdNo = Integer.parseInt(bdNostr);
-		}
-		//int bdNo = Integer.parseInt(request.getParameter("bdNo"));
 		
-		BoardTotalInfoVo btlv = new AdminService().selectBoardOne(bdNo);
-		/*if(btlv != null) {*/
-			RequestDispatcher view  = request.getRequestDispatcher("/View/admin/board/boardDetail.jsp");
-			request.setAttribute("boardDetail", btlv);
-			view.forward(request, response);
-		/*}else {
-			response.sendRedirect("/View/error/errorPage");
-		}*/
+		PensionVo pv = new PensionVo(
+				request.getParameter("PS_Name"), 
+				Integer.parseInt(request.getParameter("PS_Person")), 
+				Integer.parseInt(request.getParameter("PS_MaxPerson")), 
+				request.getParameter("PS_Contents"), 
+				Integer.parseInt(request.getParameter("PS_Weekend")), 
+				Integer.parseInt(request.getParameter("PS_Weekday")), 
+				Integer.parseInt(request.getParameter("PS_Addition_Price"))
+				);
+		
+		boolean result = new AdminService().updateRoomText(pv);
+		
+		if(result) {
+			//String psName = request.getParameter("psName");
+			response.sendRedirect("/adminRoomDetail?psName="+pv.getPsName());
+		}else {
+			response.sendRedirect("/View/error/errorPage.jsp");
+		}
 	}
 
 	/**

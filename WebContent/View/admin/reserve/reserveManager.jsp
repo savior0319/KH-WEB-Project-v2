@@ -5,6 +5,7 @@
 <html>
 <head>
 	<jsp:include page="/View/main/layout/cssjs.jsp"></jsp:include>
+	<title>관리자</title>
 </head>
 <body>
   <jsp:include page="/View/admin/layout/sideMenu.jsp"></jsp:include>
@@ -19,11 +20,31 @@
     	<h1>예약 리스트</h1>
     	   <%
 				ReservePageVo rpv = (ReservePageVo)request.getAttribute("ReservePage");
-				if(rpv != null){
-			 	ArrayList<ReservationVo> rlist = rpv.getList();
-			 	String pageNavi = rpv.getPageNavi();	// navi 리스트 
 			 	String searchData = request.getParameter("searchData");
+				String searchOption = request.getParameter("searchOption");
 			%> 	
+			
+			<form action="/adminReserveManager" method="post" style="display: inline;">
+		 	<select name="searchOption">
+		 		<% if(searchOption==null||searchOption.equals("RES_ROOM_NAME")){ %>
+		 			 <option value="RES_ROOM_NAME" selected="selected">객실이름</option>
+			    <option value="RES_ID">아이디</option>
+		 		<%}else{%>
+			    <option value="RES_ROOM_NAME">객실이름</option>
+			    <option value="RES_ID" selected="selected">아이디</option>
+			    <%} %>
+			</select>
+			 <input type="text" name="searchData" 
+			 <%if(searchData != null){ %>
+			 	 value=<%=searchData %>
+			 	<% }%>
+			  >
+			 <input type="submit" value="검색">
+			 
+		 </form>
+		 <form  method="post" action="/reservationListDown" style="display:inline" >
+    	  	<input class="ui buton" type="submit" value="다운">
+    	  </form>
     	<table class="ui celled table">
 		  <thead>
 		    <tr>
@@ -34,7 +55,7 @@
 			    <th>입실일</th>
 			    <th>퇴실일</th>
 			    <th>요금</th>
-			    
+			    <th>예약 취소</th>
 			    <!-- 상세보기를 넣을까? -->
 			    <!-- <th>블랙 리스트 선정</th> -->
 		  	</tr>
@@ -43,7 +64,11 @@
 		  <!--  이 부분에 추가  -->
 		   
   		  <tbody>
-  		  <%if(rlist != null && !rlist.isEmpty()){ %>
+  		  <%
+  			if(rpv != null){
+		 	ArrayList<ReservationVo> rlist = rpv.getList();
+		 	String pageNavi = rpv.getPageNavi();	// navi 리스트 
+  		  if(rlist != null && !rlist.isEmpty()){ %>
 		   	<%for(ReservationVo r : rlist){ %>
 		   	<tr>
 		   		<td><%= r.getResNo() %></td>
@@ -53,6 +78,7 @@
 		   		<td><%= r.getResInDate()%></td>
 		   		<td><%= r.getResOutDate() %></td>
 		   		<td><%= r.getResPrice() %></td>
+		   		<td><button class="ui button" value="<%=r.getResNo()%>">예약취소</button></td>
 		   	</tr>
 		   	<%} %>
 		   <%} %>
@@ -61,7 +87,7 @@
 
 		  <tfoot>
 			    <tr>
-			     <th colspan="7">
+			     <th colspan="8">
 			      <div class="ui segment">
 			       <%= pageNavi %>
 			      </div>
@@ -69,22 +95,7 @@
 			  </tr>
 		  </tfoot>
 		</table>
-		
-		
-		 <form action="/adminReserveManager" method="post" style="display: inline;">
-		 	<select name="searchOption">
-			    <option value="RES_ROOM_NAME">객실이름</option>
-			    <option value="RES_ID">아이디</option>
-			</select>
-			 <input type="text" name="searchData" >
-			 <input type="submit" value="검색">
-		 </form>
-		
-    	<!--  테이블 끝 -->
-    	<% }else{ %>
-    	<hr/>
-    	<h3>회원이 없습니다.</h3>
-    	<hr/>
+
     	<% } %>
     </div>
     <!-- 본문 내용 끝  -->
@@ -97,7 +108,25 @@ $(document).ready(function(){
 	    context: '.visible.example .bottom.segment'
 	  })
 	  .sidebar('hide');
-});
+})
+
+$('td>button').click(function() {
+							
+							 	var resNo = $(this).attr('value');
+							 
+								$.ajax({
+								 	url : '/reservationCancelCall',
+								 	data : { res_no : resNo },
+								 	type : 'get',
+								 	success : function() {
+									 	alert("예약 취소가 접수되었습니다.");
+									 	window.location.reload();
+								 	},
+								 	error : function() {
+									 	console.log("cancelCall:실패");
+								 	}
+								});
+							})
 </script>
 </body>
 </html>

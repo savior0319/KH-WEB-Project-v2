@@ -1,8 +1,8 @@
 package jsp.admin.controller;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -10,19 +10,21 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import jsp.admin.model.service.AdminService;
-import jsp.admin.model.vo.BoardTotalInfoVo;
+import jsp.admin.model.vo.MemberLoginLogVo;
+import jsp.common.PensionExcelWriter;
+import jsp.reservation.model.vo.ReservationVo;
 
 /**
- * Servlet implementation class AdminBoardDetailServlet
+ * Servlet implementation class ReservationListDownServlet
  */
-@WebServlet(name = "AdminBoardDetail", urlPatterns = { "/adminBoardDetail" })
-public class AdminBoardDetailServlet extends HttpServlet {
+@WebServlet(name = "ReservationListDown", urlPatterns = { "/reservationListDown" })
+public class ReservationListDownServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public AdminBoardDetailServlet() {
+    public ReservationListDownServlet() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -31,24 +33,19 @@ public class AdminBoardDetailServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		//response.getWriter().append("Served at: ").append(request.getContextPath());
 		request.setCharacterEncoding("utf-8");
-		String bdNostr = request.getParameter("bdNo");
-		int bdNo = 0;
-		if(bdNostr != null) {
-			bdNo = Integer.parseInt(bdNostr);
-		}
-		//int bdNo = Integer.parseInt(request.getParameter("bdNo"));
 		
-		BoardTotalInfoVo btlv = new AdminService().selectBoardOne(bdNo);
-		/*if(btlv != null) {*/
-			RequestDispatcher view  = request.getRequestDispatcher("/View/admin/board/boardDetail.jsp");
-			request.setAttribute("boardDetail", btlv);
-			view.forward(request, response);
-		/*}else {
-			response.sendRedirect("/View/error/errorPage");
-		}*/
+		ArrayList<ReservationVo> list = new AdminService().reservationListDown();
+		String path = getServletContext().getRealPath("/")+"reservationListDown.xlsx";
+		boolean result = new PensionExcelWriter().reservationLogListWriter(list,path);
+		System.out.println(request.getRequestURL().toString());
+		if(result) {
+			response.sendRedirect("/adminReserveManager");
+			// 성공 메시지를 띄워야 한다.
+		}else {
+			response.sendRedirect("/View/error/errorPage.jsp");
+
+		}
 	}
 
 	/**
