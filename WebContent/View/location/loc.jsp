@@ -48,19 +48,41 @@
 		</div>
 
 
-		<div class="ui center aligned segment">
-			<div class="ui large header">주소 : 서울 영등포구 선유동2로 57 (이레빌딩)</div>
-			<div class="ui medium header">교통안내</div>
-			<div class="ui small header">
-				뛰어오는 고객 : 당산역 12번 출구 뛰어서 5분
-				<br>
-				걸어오는 고객 : 당산역 12번 출구 걸어서 10분
-				<br>
-				기어오는 고객 : 당산역 12번 출구 기어서 70분
-				<br>
-			</div>
-		</div>
-
+		<h4 class="ui horizontal divider header">
+			<i class="address book icon"></i> 주소 및 연락처
+		</h4>
+		<p>
+		<center><br>
+			<p>서울 영등포구 선유동2로 57 (이레빌딩)<br></p>
+			<p><i class="phone icon"></i> 010-3787-5606</p>
+		<br></center>
+		</p>
+		<h4 class="ui horizontal divider header">
+			<i class="building icon"></i> 오시는 길
+		</h4>
+		<table class="ui definition table">
+			<tbody>
+				<tr>
+					<td class="two wide column center aligned">버스</td>
+					<td>
+						<p><b>선유고등학교 / (구)강서세무서</b></p>
+						<p><i class="bus green icon"></i> 7612 <br></p>
+						<p><i class="bus red icon"></i> 1000 / 1200 / 1300 / 1301 / 1302 / 1400 / 1500 / 1601 / M6628 / M6724</p>
+						<br>
+						<p><b>당산역</b></p>
+						<p><i class="bus blue icon"></i> 602 / 760 / 5620 / 5714 / 6514 / 6623 / 6631</p>
+					</td>
+				</tr>
+				<tr>
+					<td class="center aligned">지하철</td>
+					<td><i class="subway icon"></i> 지하철 2, 9호선 당산역 12번 출구 400m</td>
+				</tr>
+				<tr>
+					<td class="center aligned">자가용</td>
+					<td><i class="car icon"></i> 양화대교 남단 300m 지점(구 강서세무서 옆)</td>
+				</tr>
+			</tbody>
+		</table>
 	</div>
 	<!-- 본문 끝 -->
 
@@ -93,19 +115,19 @@
 		});
 
 		/* 마커 클릭 시 문구 */
-		var contentString = [ '<div class="iw_inner">', '   <h3>더 펜션</h3>',
+		var contentString = [ '<div class="ui segment">', '   <h3>더 펜션</h3>',
 		'   <p>서울 영등포구 선유동2로 57 (이레빌딩)<br><br>', '</div>' ].join('');
 
 		/* 마커 클릭 시 창 */
 		var infowindow = new naver.maps.InfoWindow({
 			content : contentString,
 			maxWidth : 200,
-			backgroundColor : "#ffcfa7",
-			borderColor : "#6897f0",
+			backgroundColor : "#FFFFF",
+			borderColor : "#FFFFF",
 			borderWidth : 5,
 			anchorSize : new naver.maps.Size(30, 30),
 			anchorSkew : true,
-			anchorColor : "#ffcfa7",
+			anchorColor : "#FFFFFF",
 			pixelOffset : new naver.maps.Point(20, -20)
 		});
 

@@ -54,8 +54,7 @@
 							<th width="70">번호</th>
 							<th width="380">제목</th>
 							<th width="70">작성자</th>
-							<th width="160">작성일</th>
-							<th width="60">추천수</th>
+							<th width="90">작성일</th>
 							<th width="60">조회수</th>
 						</tr>
 					</thead>
@@ -88,7 +87,6 @@
 							</td>
 							<td><%=b.getBdWriter()%></td>
 							<td><%=date%></td>
-							<td><%=b.getBdRecommendCount() %></td>
 							<td><%=b.getBdViewCount()%></td>
 						</tr>
 					</tbody>
