@@ -3,26 +3,26 @@
 <%@ page errorPage="/View/error/error.jsp"%>
 <%@ page import="java.util.*" import="jsp.main.model.vo.*"%>
 <%
-	@SuppressWarnings("all")
-	ArrayList<PensionPicTb> list = (ArrayList<PensionPicTb>) request.getAttribute("PensionPicTb");
+@SuppressWarnings("all")
+ArrayList<PensionPicTb> list = (ArrayList<PensionPicTb>) request.getAttribute("PensionPicTb");
 %>
 
 <!DOCTYPE html>
 <html>
 
 <head>
-<!-- Global site tag (gtag.js) - Google Analytics -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=UA-120156974-1"></script>
-<script>
-	window.dataLayer = window.dataLayer || [];
-	function gtag() {
-		dataLayer.push(arguments);
-	}
-	gtag('js', new Date());
-	gtag('config', 'UA-120156974-1');
-</script>
-<jsp:include page="/View/main/layout/cssjs.jsp"></jsp:include>
-<title>The Pension</title>
+	<!-- Global site tag (gtag.js) - Google Analytics -->
+	<script async src="https://www.googletagmanager.com/gtag/js?id=UA-120156974-1"></script>
+	<script>
+		window.dataLayer = window.dataLayer || [];
+		function gtag() {
+			dataLayer.push(arguments);
+		}
+		gtag('js', new Date());
+		gtag('config', 'UA-120156974-1');
+	</script>
+	<jsp:include page="/View/main/layout/cssjs.jsp"></jsp:include>
+	<title>객실안내</title>
 </head>
 
 <style>
@@ -51,7 +51,7 @@
 				<img src="${requestScope.dTb.desImagePath }" class="swiperImg">
 			</div>
 			<div style="background: url('/Image/title/pattern01a.png'); border: 0px; padding: 0px; margin: 0px;">
-				<div class="ui center aligned basic segment" style="letter-spacing: 5px;">바다여행의 아름다운 추억을 더펜션에서 만들어 가세요.</div>
+				<div class="ui center aligned basic segment" style="letter-spacing: 5px;">바다여행의 아름다운 추억을 더 펜션에서 만들어 가세요.</div>
 			</div>
 		</div>
 	</div>
@@ -103,58 +103,58 @@
     </div>
   </div>
 </div>
- -->
+-->
 
 
-	<!-- 사진 시작 -->
+<!-- 사진 시작 -->
+<%
+int pageIndex = 0;
+int row = 0;
+int count=0;
+if (list.size() % 3 > 0) {
+pageIndex = list.size() / 3 + 1;
+}
+else {
+pageIndex = list.size() / 3;
+}
+for (int i = 0; i < pageIndex; i++) {
+if(list.size()-count>=3)
+{
+	row = 3;
+}else{
+row = (list.size()-count) % 3;
+}
+%>
+<div class="ui three column grid">
 	<%
-		int pageIndex = 0;
-		int row = 0;
-		int count=0;
-		if (list.size() % 3 > 0) {
-			pageIndex = list.size() / 3 + 1;
-		}
-		else {
-			pageIndex = list.size() / 3;
-		}
-		for (int i = 0; i < pageIndex; i++) {
-			if(list.size()-count>=3)
-			{
-				row = 3;
-			}else{
-				row = (list.size()-count) % 3;
-			}
+	for (int j = 0; j < row; j++) {
 	%>
-	<div class="ui three column grid">
-		<%
-			for (int j = 0; j < row; j++) {
-		%>
-		<div class="column">
-			<div class="ui segment">
-				<a href="/roomInfo?roomName=<%=list.get(count).getpsPicName()%>">
-					<img src="<%=list.get(count).getPsPicPath()%>" style="width: 100%;">
-					<div style="text-align: center;">
-						<span><%=list.get(count).getpsPicName()%></span>
-					</div>
-				</a>
-			</div>
+	<div class="column">
+		<div class="ui segment">
+			<a href="/roomInfo?roomName=<%=list.get(count).getpsPicName()%>">
+				<img src="<%=list.get(count).getPsPicPath()%>" style="width: 100%;">
+				<div style="text-align: center;">
+					<span><%=list.get(count).getpsPicName()%></span>
+				</div>
+			</a>
 		</div>
-		<%
-		count++;
-			}
-		%>
 	</div>
 	<%
-		}
-	%>
+	count++;
+}
+%>
+</div>
+<%
+}
+%>
 
-	<!-- 사진 끝 -->
-	</div>
-	<!-- 본문 끝 -->
+<!-- 사진 끝 -->
+</div>
+<!-- 본문 끝 -->
 
-	<!-- 푸터 시작  -->
-	<jsp:include page="/View/main/layout/footer.jsp"></jsp:include>
-	<!-- 푸터 끝 -->
+<!-- 푸터 시작  -->
+<jsp:include page="/View/main/layout/footer.jsp"></jsp:include>
+<!-- 푸터 끝 -->
 </body>
 
 <script>

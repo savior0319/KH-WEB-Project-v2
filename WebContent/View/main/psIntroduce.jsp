@@ -17,7 +17,7 @@
 	gtag('config', 'UA-120156974-1');
 </script>
 <jsp:include page="/View/main/layout/cssjs.jsp"></jsp:include>
-<title>The Pension</title>
+<title>펜션소개</title>
 
 <!-- 웹 폰트 적용 -->
 <link href="https://fonts.googleapis.com/css?family=Song+Myung" rel="stylesheet">
@@ -60,7 +60,7 @@ font-size: 25px;
 		<div style="background:url('/Image/title/pattern01a.png'); border :0px; padding: 0px; margin: 0px;">
 		<div class="ui center aligned basic segment"
 		style="letter-spacing: 5px;">
-		바다여행의 아름다운 추억을 더펜션에서 만들어 가세요.
+		바다여행의 아름다운 추억을 더 펜션에서 만들어 가세요.
 		</div>
 		</div>
 		</div>
