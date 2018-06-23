@@ -18,6 +18,12 @@
 </script>
 <jsp:include page="/View/main/layout/cssjs.jsp"></jsp:include>
 <title>The Pension</title>
+
+<!-- 웹 폰트 적용 -->
+<link href="https://fonts.googleapis.com/css?family=Song+Myung" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css?family=Nanum+Myeongjo" rel="stylesheet">
+
+
 </head>
 
 <style>
@@ -31,6 +37,14 @@
 .swiper-container {
 	opacity: 0.85;
 }
+
+/* 웹 폰트 적용 */
+/*
+font-family: 'Nanum Myeongjo', serif;
+font-size: 25px;
+*/
+/*여기는 부분부분 적용해야하는거같아서 이따가 해보께영~*/
+
 </style>
 
 <body>
