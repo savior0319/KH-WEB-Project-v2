@@ -41,7 +41,7 @@
 				<div class="content">
 					<div class="header">
 						<h1>
-							고객후기
+							후기 게시판
 						</h1>
 					</div>
 				</div>
@@ -118,7 +118,7 @@
 	</table>
 
 	<form action="/search" method="get" style="display:inline;">
-		<select name="searchOption" style="width:80px;">
+		<select class="ui dropdown" name="searchOption" style="width:80px;">
 			<option value="title" selected>제목</option>
 			<option value="contents">내용</option>
 			<option value="writer">작성자</option>

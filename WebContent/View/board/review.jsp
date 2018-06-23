@@ -45,7 +45,7 @@ MemberVo m = (MemberVo) session.getAttribute("member");
 				<i class="clipboard outline icon"></i>
 				<div class="content">
 					<div class="header">
-						<h1>고객후기</h1>
+						<h1>후기 게시판</h1>
 					</div>
 				</div>
 			</div>
@@ -120,7 +120,7 @@ MemberVo m = (MemberVo) session.getAttribute("member");
 
 		</table>
 		<form action="/reviewSearch" method="get" style="display:inline;">
-			<select name="searchOption" style="width:80px;">
+			<select class="ui dropdown" name="searchOption" style="width:80px;">
 				<option value="title" selected>제목</option>
 				<option value="contents">내용</option>
 				<option value="writer">작성자</option>
