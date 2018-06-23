@@ -35,7 +35,7 @@ public class LoginToNaverServlet extends HttpServlet {
 			String birthSplit[] = birth.split("-");
 			String birthAppend = birthSplit[0] + birthSplit[1];
 			String birthEncrypt = new SHA256Hash().enctyptSHA256(birthAppend);
-			String address = "네이버로 가입";
+			String address = "네이버회원";
 
 			MemberVo mv = new MemberVo();
 			mv.setMbAddress(address);
