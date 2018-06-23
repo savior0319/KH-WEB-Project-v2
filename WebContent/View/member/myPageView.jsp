@@ -31,6 +31,7 @@
 <c:if test="${id == '네이버회원'}">
 <script type="text/javascript">
 	$(document).ready(function() {
+		$('#naverLogin').show();
 		$('#myPage').hide();
 		$('#pwdChange').hide();
 		$('#withDraw').hide();
@@ -49,6 +50,7 @@
 	<br>
 	<div class="ui container">
 		<!-- 여기에 본문 내용 작성하면 됨 -->
+		<div class="ui red message" id="naverLogin" style="display: none;"><div class="ui small header">※ 네이버 아이디로 로그인했습니다(회원 정보 수정 및 탈퇴는 네이버에서 해주세요.)</div></div>
 		<h1>
 			<div class="ui large red leaderboard test ad" id="title" data-text="마이페이지" style="width: 100%;"></div>
 		</h1>
