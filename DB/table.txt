@@ -1,550 +1,929 @@
- /*
-CREATE USER THEPENSION IDENTIFIED BY THEPENSION;
-GRANT RESOURCE, CONNECT TO THEPENSION;
+/*  
+CREATE USER THEPENSION IDENTIFIED BY THEPENSION;  
+GRANT RESOURCE, CONNECT TO THEPENSION;  
 
-https://docs.google.com/spreadsheets/d/1BG2icxfUG2y90zw5zMY3xTotiBLUfEzau8mOnjRxeos/edit#gid=0
-*/
-
--- 삭제
-DROP SEQUENCE RECOMMEND_BOARD_SEQ;
-DROP TABLE RECOMMEND_BOARD_TB;
-
-DROP SEQUENCE RECOMMEND_COMMENT_SEQ;
-DROP TABLE RECOMMEND_COMMENT_TB;
-
-DROP SEQUENCE RC_NO_SEQ;
-DROP TABLE RES_CANCEL_TB;
-
-DROP SEQUENCE A_NO_SEQ;
-DROP TABLE ANSWER_TB;
-
-DROP SEQUENCE Q_NO_SEQ;
-DROP TABLE Question_TB;
-
-DROP TABLE MEMBER_LOG_TB;
-
-DROP SEQUENCE PS_PIC_NO;
-DROP TABLE PENSION_PIC_TB;
-
-DROP TABLE MAIN_PIC_TB;
-
-DROP SEQUENCE SALES_NO_SEQ;
-DROP TABLE SALES_TB;
-
-DROP SEQUENCE BD_FILE_NO_SEQ;
-DROP TABLE BOARD_FILE_TB;
-
-DROP SEQUENCE CM_DEL_NO;
-DROP TABLE COMMENT_DEL_TB;
-
-DROP SEQUENCE BD_DEL_NO_SEQ;
-DROP TABLE BOARD_DEL_TB;
-
-DROP SEQUENCE RES_HIS_NO_SEQ;
-DROP TABLE RESERVATION_HISTORY_TB;
-
-DROP TABLE MEMBER_DEL_TB;
-
-DROP TABLE DESCRIPTION_TB;
-
-DROP SEQUENCE CM_NO_SEQ;
-DROP TABLE COMMENT_TB;
-
-DROP SEQUENCE BD_NO_SEQ;
-DROP TABLE BOARD_TB;
-
-DROP SEQUENCE RES_NO_SEQ;
-DROP TABLE RESERVATION_TB;
-
-DROP TABLE PENSION_TB;
-
-DROP TABLE MEMBER_TB;
-
-/* 테이블 생성 */
- 
--- 회원 테이블
-CREATE TABLE MEMBER_TB(
-MB_ID VARCHAR2(50) PRIMARY KEY,
-MB_PWD CHAR(64) NOT NULL,
-MB_BIRTH DATE NOT NULL,
-MB_EMAIL VARCHAR2(100) NOT NULL UNIQUE,
-MB_PHONE CHAR(13) NOT NULL,
-MB_GENDER CHAR(1) NOT NULL CHECK(MB_GENDER IN('M', 'F')),
-MB_NAME VARCHAR2(30) NOT NULL,
-MB_ENTDATE DATE DEFAULT SYSDATE NOT NULL,
-MB_ADDRESS VARCHAR2(150) NOT NULL
-);
-
--- 펜션 정보 테이블
-CREATE TABLE PENSION_TB(
-PS_NAME VARCHAR2(50) PRIMARY KEY, 
-PS_PERSONNEL NUMBER NOT NULL,
-PS_MAX_PERSONNEL NUMBER,
-PS_CONTENTS VARCHAR2(4000),
-PS_WEEKEND NUMBER,
-PS_WEEKDAY NUMBER,
-PS_ADDITIONAL_PRICE NUMBER NOT NULL
-);
-
--- 펜션 사진 번호 시퀀스
-CREATE SEQUENCE PS_PIC_NO
-START WITH 1
-INCREMENT BY 1
-NOCACHE
-NOCYCLE;
-
--- 펜션 사진 정보 테이블
-CREATE TABLE PENSION_PIC_TB(
-PS_PIC_NAME VARCHAR2(50) NOT NULL,
-PS_PIC_PATH VARCHAR2(500) UNIQUE NOT NULL,
-PS_PIC_MAIN CHAR(1) NOT NULL CHECK(PS_PIC_MAIN IN('Y', 'N')),
-FOREIGN KEY (PS_PIC_NAME) REFERENCES PENSION_TB(PS_NAME)
-);
-
--- 예약 정보 테이블 시퀀스
-CREATE SEQUENCE RES_NO_SEQ
-START WITH 1
-INCREMENT BY 1
-NOCACHE
-NOCYCLE;
-
--- 예약 정보 테이블
-CREATE TABLE RESERVATION_TB(
-RES_NO NUMBER PRIMARY KEY,
-RES_ROOM_NAME VARCHAR2(50),
-RES_ID VARCHAR2(50),
-RES_PERSONNEL NUMBER NOT NULL,
-RES_RESERVATION_DATE TIMESTAMP NOT NULL,
-RES_IN_DATE DATE NOT NULL,
-RES_OUT_DATE DATE NOT NULL,
-RES_PERIOD NUMBER NOT NULL,
-RES_PRICE NUMBER NOT NULL,
-RES_PAYMENT_DATE TIMESTAMP DEFAULT SYSDATE NOT NULL,
-FOREIGN KEY (RES_ROOM_NAME) REFERENCES PENSION_TB(PS_NAME)
-);
-
--- 게시글 번호 시퀀스
-CREATE SEQUENCE BD_NO_SEQ
-START WITH 1
-INCREMENT BY 1
-NOCACHE
-NOCYCLE;
-
--- 게시판 테이블(작성자가 탈퇴 할 수 있으므로 NULL)
-CREATE TABLE BOARD_TB(
-BD_NO NUMBER PRIMARY KEY,
-BD_NAME	VARCHAR2(150) NOT NULL,
-BD_CONTENTS	VARCHAR2(4000) NOT NULL,
-BD_WRITER VARCHAR2(50),
-BD_WRITE_DATE TIMESTAMP NOT NULL,
-BD_VIEW_COUNT NUMBER DEFAULT 0 NOT NULL,
-BD_RECOMMEND_COUNT NUMBER DEFAULT 0 NOT NULL,
-BD_CATEGORY	VARCHAR2(50) NOT NULL,
-FOREIGN KEY (BD_WRITER) REFERENCES MEMBER_TB(MB_ID)
-ON DELETE SET NULL
-);
-
--- 댓글 번호 시퀀스
-CREATE SEQUENCE CM_NO_SEQ
-START WITH 1
-INCREMENT BY 1
-NOCACHE
-NOCYCLE;
-
--- 댓글 테이블(작성자가 탈퇴 할 수 있으므로 NULL)
-CREATE TABLE COMMENT_TB(
-CM_NO NUMBER PRIMARY KEY,
-CM_BD_NO NUMBER,
-CM_WRITER VARCHAR2(50),
-CM_CONTENTS	VARCHAR2(900) NOT NULL,
-CM_WRITE_DATE TIMESTAMP DEFAULT SYSDATE NOT NULL,
-CM_RECOMMEND_COUNT NUMBER DEFAULT 0 NOT NULL,
-FOREIGN KEY (CM_BD_NO) REFERENCES BOARD_TB(BD_NO),
-FOREIGN KEY (CM_WRITER) REFERENCES MEMBER_TB(MB_ID)
-ON DELETE SET NULL
-);
-
--- 펜션 설명 테이블
-CREATE TABLE DESCRIPTION_TB(
-DES_IMAGEPATH VARCHAR2(500),
-DES_ATTENTION VARCHAR2(4000),
-DES_REFUND	VARCHAR2(4000),
-DES_ACCOUNT VARCHAR2(4000),
-DES_MAINVIEW VARCHAR2(4000),
-DES_PENSION_ABOUT VARCHAR2(4000),
-DES_ROOM VARCHAR2(4000),
-DES_ETC VARCHAR2(4000)
-);
-
--- 탈퇴한 회원 정보 테이블
-CREATE TABLE MEMBER_DEL_TB(
-MB_DEL_ID VARCHAR2(50),
-MB_DEL_EMAIL VARCHAR2(100) UNIQUE NOT NULL,
-MB_DEL_ENTDATE DATE NOT NULL,
-MB_DEL_OUTDATE DATE DEFAULT SYSDATE NOT NULL,
-MB_DEL_NAME	VARCHAR2(30) NOT NULL,
-MB_DEL_BIRTH DATE NOT NULL
-);
-
--- 예약 기록 번호 시퀀스
-CREATE SEQUENCE RES_HIS_NO_SEQ
-START WITH 1
-INCREMENT BY 1
-NOCACHE
-NOCYCLE;
-
--- 지난 예약 정보 테이블
-CREATE TABLE RESERVATION_HISTORY_TB(
-RES_HIS_NO NUMBER PRIMARY KEY,
-RES_HIS_RES_NO NUMBER,
-RES_HIS_ROOM_NAME VARCHAR2(50),
-RES_HIS_ID VARCHAR2(50),
-RES_HIS_PERSONNEL NUMBER NOT NULL,
-RES_HIS_RESERVATION_DATE TIMESTAMP DEFAULT SYSDATE NOT NULL,
-RES_HIS_IN_DATE DATE NOT NULL,
-RES_HIS_OUT_DATE DATE NOT NULL,
-RES_HIS_PERIOD NUMBER NOT NULL,
-RES_HIS_PRICE NUMBER NOT NULL,
-RES_HIS_PAYMENT_DATE TIMESTAMP NOT NULL
-);
-
--- 삭제 게시글 번호 시퀀스
-CREATE SEQUENCE BD_DEL_NO_SEQ
-START WITH 1
-INCREMENT BY 1
-NOCACHE
-NOCYCLE;
-
--- 삭제 게시판 테이블
-CREATE TABLE BOARD_DEL_TB(
-BD_DEL_NO NUMBER PRIMARY KEY,
-BD_DEL_NAME	VARCHAR2(150) NOT NULL,
-BD_DEL_CONTENTS	VARCHAR2(4000) NOT NULL,
-BD_DEL_WRITER VARCHAR2(50),
-BD_DEL_WRITE_DATE TIMESTAMP NOT NULL,
-BD_DEL_DELETE_DATE TIMESTAMP DEFAULT SYSDATE NOT NULL,
-FOREIGN KEY (BD_DEL_WRITER) REFERENCES MEMBER_TB(MB_ID)
-ON DELETE SET NULL
-);
-
--- 삭제 댓글번호 시퀀스
-CREATE SEQUENCE CM_DEL_NO
-START WITH 1
-INCREMENT BY 1
-NOCACHE
-NOCYCLE;
-
--- 삭제 댓글 테이블
-CREATE TABLE COMMENT_DEL_TB(
-CM_DEL_NO NUMBER PRIMARY KEY,
-CM_BD_NO NUMBER, 
-CM_DEL_WRITER VARCHAR2(50),
-CM_DEL_CONTENTS	VARCHAR2(4000) NOT NULL,
-CM_DEL_WRITE_DATE TIMESTAMP NOT NULL,
-CM_DEL_DELETE_DATE TIMESTAMP DEFAULT SYSDATE NOT NULL,
-FOREIGN KEY (CM_BD_NO) REFERENCES COMMENT_TB(CM_NO),
-FOREIGN KEY (CM_DEL_WRITER) REFERENCES MEMBER_TB(MB_ID)
-ON DELETE SET NULL
-);
-
--- 파일 번호 시퀀스
-CREATE SEQUENCE BD_FILE_NO_SEQ
-START WITH 1
-INCREMENT BY 1
-NOCACHE
-NOCYCLE;
-
--- 파일 정보 테이블
--- ※ (해당 게시글 삭제 시 해당 게시글의 파일도 자동으로 삭제되게 해야함)
-CREATE TABLE BOARD_FILE_TB(
-BD_FILE_NO NUMBER PRIMARY KEY,
-BD_FILE_SIZE NUMBER NOT NULL,
-BD_FILE_NAME VARCHAR2(150) NOT NULL,
-BD_FILE_UPTIME TIMESTAMP NOT NULL,
-BD_FILE_WRITER VARCHAR2(50) NOT NULL,
-BD_FILE_COUNT NUMBER DEFAULT 0 NOT NULL,
-BD_FILE_PATH VARCHAR2(300) NOT NULL UNIQUE,
-BD_FILE_BD_NO NUMBER NOT NULL,
-FOREIGN KEY (BD_FILE_WRITER) REFERENCES MEMBER_TB(MB_ID)
-ON DELETE SET NULL,
-FOREIGN KEY (BD_FILE_BD_NO) REFERENCES BOARD_TB(BD_NO)
-ON DELETE CASCADE
-);
-
--- 매출 번호 시퀀스 
-CREATE SEQUENCE SALES_NO_SEQ
-START WITH 1
-INCREMENT BY 1
-NOCACHE
-NOCYCLE;
-
--- 매출 테이블
-CREATE TABLE SALES_TB(
-SALES_NO NUMBER PRIMARY KEY,
-SALES_ID VARCHAR2(50) NOT NULL,
-SALES_PAYMENT_DATE DATE NOT NULL,
-SALES_PAYMENT_PRICE	NUMBER NOT NULL,
-SALES_RESERVATION_NO NUMBER NOT NULL,
-FOREIGN KEY (SALES_ID) REFERENCES MEMBER_TB(MB_ID) ON DELETE SET NULL,
-FOREIGN KEY (SALES_RESERVATION_NO) REFERENCES RESERVATION_TB(RES_NO)
-);
-
--- 메인 사진 테이블
-CREATE TABLE MAIN_PIC_TB(
-MAIN_PIC_PATH VARCHAR2(500) NOT NULL UNIQUE
-);
-
-
--- 회원 접속 로그를 남기기 위한 테이블
-CREATE TABLE MEMBER_LOG_TB(
-MB_LOG_ID VARCHAR2(50),
-MB_LOG_TIME	TIMESTAMP DEFAULT SYSDATE,
-MB_LOG_BROWSER VARCHAR2(50),
-MB_LOG_IP VARCHAR2(100),
-MB_LOG_LOCALE VARCHAR2(50),
-FOREIGN KEY (MB_LOG_ID) REFERENCES MEMBER_TB(MB_ID)
-ON DELETE SET NULL
-);
-
-
--- 문의 번호 시퀀스
-CREATE SEQUENCE Q_NO_SEQ
-START WITH 1
-INCREMENT BY 1
-NOCACHE
-NOCYCLE;
-
-
--- 문의 사항 테이블
-CREATE TABLE Question_TB
-(
-    Q_NO              NUMBER            NULL, 
-    Q_NAME            VARCHAR2(150)     NOT NULL, 
-    Q_CONTENTS        VARCHAR2(4000)    NOT NULL, 
-    Q_WRITER          VARCHAR2(50),
-    Q_WRITE_DATE      TIMESTAMP         NOT NULL, 
-    Q_ANSWER_CHECK    CHAR(1)          DEFAULT 'N' NOT NULL, 
-    CONSTRAINT QUESTION_TB_PK PRIMARY KEY (Q_NO),
-    FOREIGN KEY (Q_WRITER) REFERENCES MEMBER_TB(MB_ID)
-    ON DELETE CASCADE
-);
-
--- 1:1 문의하기 시퀀스
-CREATE SEQUENCE A_NO_SEQ
-START WITH 1
-INCREMENT BY 1
-NOCACHE
-NOCYCLE; 
-
--- 1:1 문의하기 답변테이블
-CREATE TABLE ANSWER_TB
-(
-    A_NO              NUMBER            NOT NULL, 
-    A_Q_NO            NUMBER            NOT NULL, 
-    A_CONTENTS         VARCHAR2(4000)    NOT NULL, 
-    CONSTRAINT ANSWER_TB_PK PRIMARY KEY (A_NO),
-    FOREIGN KEY (A_Q_NO) REFERENCES QUESTION_TB(Q_NO)
-);
-
--- 예약 취소 테이블 시퀀스
-CREATE SEQUENCE RC_NO_SEQ
-START WITH 1
-INCREMENT BY 1
-NOCACHE
-NOCYCLE;
-
--- 예약 취소 테이블
-CREATE TABLE RES_CANCEL_TB (
-    RC_NO NUMBER PRIMARY KEY,
-    RC_RES_NO NUMBER NOT NULL,
-    RC_RES_ROOM_NAME VARCHAR2(50),
-    RC_RES_ID VARCHAR2(50),
-    RC_RES_PERSONNEL NUMBER NOT NULL,
-    RC_RES_RESERVATION_DATE TIMESTAMP NOT NULL,
-    RC_RES_IN_DATE DATE NOT NULL,
-    RC_RES_OUT_DATE DATE NOT NULL,
-    RC_RES_PERIOD NUMBER NOT NULL,
-    RC_RES_PRICE NUMBER NOT NULL,
-    RC_RES_PAYMENT_DATE TIMESTAMP DEFAULT SYSDATE NOT NULL,
-    RC_DATE TIMESTAMP NOT NULL,
-    RC_REFUND_CHECK CHAR(1) NOT NULL CHECK(RC_REFUND_CHECK IN('Y','N')),
-    RC_CANCEL_CHECK CHAR(1) NOT NULL CHECK(RC_CANCEL_CHECK IN('Y','N'))
-);
-
--- 게시글 추천 테이블 생성
-CREATE TABLE RECOMMEND_BOARD_TB(
-RM_BD_NO NUMBER PRIMARY KEY, 
-MB_ID VARCHAR2(50),
-BD_NO NUMBER,
-FOREIGN KEY (MB_ID) REFERENCES MEMBER_TB(MB_ID) ON DELETE SET NULL,
-FOREIGN KEY (BD_NO) REFERENCES BOARD_TB(BD_NO) ON DELETE SET NULL
-);
-
--- 댓글 추천 테이블 생성
-CREATE TABLE RECOMMEND_COMMENT_TB(
-RM_CM_NO NUMBER PRIMARY KEY, 
-MB_ID VARCHAR2(50),
-CM_NO NUMBER,
-FOREIGN KEY (MB_ID) REFERENCES MEMBER_TB(MB_ID) ON DELETE SET NULL,
-FOREIGN KEY (CM_NO) REFERENCES COMMENT_TB(CM_NO) ON DELETE SET NULL
-);
-
--- 게시글 추천 시퀀스 생성
-CREATE SEQUENCE RECOMMEND_BOARD_SEQ
-START WITH 1
-INCREMENT BY 1
-NOCACHE
-NOCYCLE;
-
--- 댓글 추천 시퀀스 생성
-CREATE SEQUENCE RECOMMEND_COMMENT_SEQ
-START WITH 1
-INCREMENT BY 1
-NOCACHE
-NOCYCLE;
-
-insert into main_pic_tb values('/Image/main/m01.jpg');
-insert into main_pic_tb values('/Image/main/m02.jpg');
-insert into main_pic_tb values('/Image/main/m03.jpg');
-insert into main_pic_tb values('/Image/main/m04.jpg');
-insert into main_pic_tb values('/Image/main/m05.jpg');
-insert into main_pic_tb values('/Image/main/m06.jpg');
-insert into main_pic_tb values('/Image/main/m07.jpg');
-insert into main_pic_tb values('/Image/main/m08.jpg');
-insert into main_pic_tb values('/Image/main/m09.jpg');
-insert into main_pic_tb values('/Image/main/m10.jpg');
-insert into main_pic_tb values('/Image/main/m11.jpg');
-insert into main_pic_tb values('/Image/main/m12.jpg');
-
-insert into DESCRIPTION_TB(DES_ROOM,DES_IMAGEPATH,DES_PENSION_ABOUT,DES_MAINVIEW) values('석양이 아름다운 음포 해수욕장 바다가 있는곳 태안 더펜션 객실을 소개합니다.','/Image/title/ti02.jpg','펜션 내용이다~~~~~~~~~~~','Lorem ipsum dolor sit amet consectetur adipisicing elit. Corporis tempore voluptatum exercitationem suscipit autem accusantium minus adipisci, eveniet aut earum iste ullam? Dignissimos, minus inventore porro expedita accusamus quam harum modi nihil ipsum nesciunt ducimus ullam animi libero aperiam. Minima nostrum deserunt perferendis dolorum porro beatae eligendi blanditiis modi eius reiciendis vero, ex libero iusto pariatur. Voluptates dignissimos earum eius, nemo nihil sit qui accusantium in adipisci, reprehenderit doloremque? Earum laudantium molestias nam soluta? Corporis alias possimus, officia, blanditiis commodi tenetur deserunt ipsum saepe soluta voluptate vero minus magnam voluptates eum ea ullam doloremque ipsa fuga. Dicta accusantium fugiat ut! Suscipit labore, beatae incidunt libero, temporibus quos error aspernatur amet enim, explicabo culpa alias in. Libero nam veritatis, totam repudiandae ipsum iste commodi? Sint in, culpa sit, officiis omnis, cumque corrupti eos error aliquid sapiente cupiditate corporis quod eveniet maiores quo. Laborum ipsa rerum obcaecati ipsum nemo voluptates repellat facere illum, quas accusantium. Expedita consectetur quaerat minus fugit aliquid aperiam placeat rerum hic velit voluptatibus nemo repudiandae est voluptatum magnam inventore similique quibusdam quidem vel dolore, laboriosam nesciunt reiciendis suscipit. Saepe odio quidem cumque, impedit soluta quia. Nam itaque pariatur dolorem quas ducimus at similique esse commodi, tenetur nobis asperiores, accusantium veritatis assumenda accusamus. Laboriosam necessitatibus quis aspernatur dolorum non impedit expedita. Perspiciatis recusandae hic molestiae qui officia, cupiditate iste. Mollitia aspernatur voluptatem illum, eos accusamus quo temporibus voluptatum possimus in officiis laudantium sapiente quod. Culpa fugiat saepe nulla itaque dolores dicta, minima exercitationem provident recusandae cumque illo laboriosam consequuntur. Reiciendis repellendus adipisci laborum dolores eligendi ut molestiae ab hic quisquam illum! Unde blanditiis tenetur ipsum aut ad? Voluptatem esse neque ex incidunt. Tenetur et, quas sapiente rem repellendus autem nihil, earum accusamus quibusdam doloribus ea totam expedita praesentium commodi deleniti magni pariatur suscipit doloremque sunt ratione. Laborum animi enim nostrum sequi et quibusdam fuga voluptatem. In error, mollitia earum fugit quasi delectus, velit ratione perspiciatis rerum quia, excepturi quidem sequi dignissimos labore nam sed! Natus, labore! Voluptates aliquam quis accusamus, voluptas odio a rem enim excepturi veritatis asperiores ipsam alias amet, in necessitatibus dolorem aspernatur numquam, esse tempore dolor architecto ex tenetur doloribus labore exercitationem. Odio et ipsum ea sed! Unde, beatae laborum, at quia vitae repellat vero modi ipsam dolore similique tenetur non officiis eos placeat. Laudantium, quas ');
-
-
-insert into PENSION_TB values('옥수수방',5,9,'내용',60000,50000,10000);
-insert into PENSION_TB values('갈대방',6,10,'내용',62000,52000,10000);
-insert into PENSION_TB values('수수방',7,11,'내용',64000,54000,10000);
-insert into PENSION_TB values('대나무방',8,12,'내용',66000,56000,10000);
-insert into PENSION_TB values('레몬방',5,10,'내용',68000,58000,10000);
-insert into PENSION_TB values('햄버거방',4,8,'내용',70000,60000,10000);
-
-
-insert into PENSION_PIC_TB values('옥수수방','/Image/room/101_01.jpg','Y');
-insert into PENSION_PIC_TB values('옥수수방','/Image/room/101_02.jpg','N');
-insert into PENSION_PIC_TB values('옥수수방','/Image/room/101_03.jpg','N');
-insert into PENSION_PIC_TB values('옥수수방','/Image/room/101_04.jpg','N');
-insert into PENSION_PIC_TB values('옥수수방','/Image/room/101_05.jpg','N');
-insert into PENSION_PIC_TB values('옥수수방','/Image/room/101_06.jpg','N');
-insert into PENSION_PIC_TB values('옥수수방','/Image/room/101_07.jpg','N');
-insert into PENSION_PIC_TB values('옥수수방','/Image/room/101_08.jpg','N');
-insert into PENSION_PIC_TB values('옥수수방','/Image/room/101_09.jpg','N');
-insert into PENSION_PIC_TB values('옥수수방','/Image/room/101_010.jpg','N');
-insert into PENSION_PIC_TB values('옥수수방','/Image/room/101_011.jpg','N');
-insert into PENSION_PIC_TB values('옥수수방','/Image/room/101_012.jpg','N');
-
-insert into PENSION_PIC_TB values('갈대방','/Image/room/102_01.jpg','Y');
-insert into PENSION_PIC_TB values('갈대방','/Image/room/102_02.jpg','N');
-insert into PENSION_PIC_TB values('갈대방','/Image/room/102_03.jpg','N');
-insert into PENSION_PIC_TB values('갈대방','/Image/room/102_04.jpg','N');
-insert into PENSION_PIC_TB values('갈대방','/Image/room/102_05.jpg','N');
-insert into PENSION_PIC_TB values('갈대방','/Image/room/102_06.jpg','N');
-insert into PENSION_PIC_TB values('갈대방','/Image/room/102_07.jpg','N');
-insert into PENSION_PIC_TB values('갈대방','/Image/room/102_08.jpg','N');
-insert into PENSION_PIC_TB values('갈대방','/Image/room/102_09.jpg','N');
-insert into PENSION_PIC_TB values('갈대방','/Image/room/102_10.jpg','N');
-
-insert into PENSION_PIC_TB values('수수방','/Image/room/103_01.jpg','Y');
-insert into PENSION_PIC_TB values('수수방','/Image/room/103_02.jpg','N');
-insert into PENSION_PIC_TB values('수수방','/Image/room/103_03.jpg','N');
-insert into PENSION_PIC_TB values('수수방','/Image/room/103_04.jpg','N');
-insert into PENSION_PIC_TB values('수수방','/Image/room/103_05.jpg','N');
-insert into PENSION_PIC_TB values('수수방','/Image/room/103_06.jpg','N');
-insert into PENSION_PIC_TB values('수수방','/Image/room/103_07.jpg','N');
-insert into PENSION_PIC_TB values('수수방','/Image/room/103_08.jpg','N');
-insert into PENSION_PIC_TB values('수수방','/Image/room/103_09.jpg','N');
-
-insert into PENSION_PIC_TB values('대나무방','/Image/room/104_01.jpg','Y');
-insert into PENSION_PIC_TB values('대나무방','/Image/room/104_02.jpg','N');
-insert into PENSION_PIC_TB values('대나무방','/Image/room/104_03.jpg','N');
-insert into PENSION_PIC_TB values('대나무방','/Image/room/104_04.jpg','N');
-insert into PENSION_PIC_TB values('대나무방','/Image/room/104_05.jpg','N');
-insert into PENSION_PIC_TB values('대나무방','/Image/room/104_06.jpg','N');
-insert into PENSION_PIC_TB values('대나무방','/Image/room/104_07.jpg','N');
-insert into PENSION_PIC_TB values('대나무방','/Image/room/104_08.jpg','N');
-insert into PENSION_PIC_TB values('대나무방','/Image/room/104_09.jpg','N');
-insert into PENSION_PIC_TB values('대나무방','/Image/room/104_10.jpg','N');
-insert into PENSION_PIC_TB values('대나무방','/Image/room/104_11.jpg','N');
-insert into PENSION_PIC_TB values('대나무방','/Image/room/104_12.jpg','N');
-
-insert into PENSION_PIC_TB values('레몬방','/Image/room/201_01.jpg','Y');
-insert into PENSION_PIC_TB values('레몬방','/Image/room/201_02.jpg','N');
-insert into PENSION_PIC_TB values('레몬방','/Image/room/201_03.jpg','N');
-insert into PENSION_PIC_TB values('레몬방','/Image/room/201_04.jpg','N');
-insert into PENSION_PIC_TB values('레몬방','/Image/room/201_05.jpg','N');
-insert into PENSION_PIC_TB values('레몬방','/Image/room/201_06.jpg','N');
-insert into PENSION_PIC_TB values('레몬방','/Image/room/201_07.jpg','N');
-insert into PENSION_PIC_TB values('레몬방','/Image/room/201_08.jpg','N');
-insert into PENSION_PIC_TB values('레몬방','/Image/room/201_09.jpg','N');
-insert into PENSION_PIC_TB values('레몬방','/Image/room/201_10.jpg','N');
-insert into PENSION_PIC_TB values('레몬방','/Image/room/201_11.jpg','N');
-insert into PENSION_PIC_TB values('레몬방','/Image/room/201_12.jpg','N');
-insert into PENSION_PIC_TB values('레몬방','/Image/room/201_13.jpg','N');
-insert into PENSION_PIC_TB values('레몬방','/Image/room/201_14.jpg','N');
-insert into PENSION_PIC_TB values('레몬방','/Image/room/201_15.jpg','N');
-
-insert into PENSION_PIC_TB values('햄버거방','/Image/room/202_01.jpg','Y');
-insert into PENSION_PIC_TB values('햄버거방','/Image/room/202_02.jpg','N');
-insert into PENSION_PIC_TB values('햄버거방','/Image/room/202_03.jpg','N');
-insert into PENSION_PIC_TB values('햄버거방','/Image/room/202_04.jpg','N');
-insert into PENSION_PIC_TB values('햄버거방','/Image/room/202_05.jpg','N');
-insert into PENSION_PIC_TB values('햄버거방','/Image/room/202_06.jpg','N');
-insert into PENSION_PIC_TB values('햄버거방','/Image/room/202_07.jpg','N');
-insert into PENSION_PIC_TB values('햄버거방','/Image/room/202_08.jpg','N');
-insert into PENSION_PIC_TB values('햄버거방','/Image/room/202_09.jpg','N');
-insert into PENSION_PIC_TB values('햄버거방','/Image/room/202_10.jpg','N');
-insert into PENSION_PIC_TB values('햄버거방','/Image/room/202_11.jpg','N');
-insert into PENSION_PIC_TB values('햄버거방','/Image/room/202_12.jpg','N');
-
-commit;
--- 객실 예약 샘플 데이터
-insert into reservation_tb values(RES_NO_SEQ.nextval,'옥수수방','thepension',3,sysdate,sysdate+2,sysdate+6,4,999999,sysdate);
---insert into reservation_tb values(RES_NO_SEQ.nextval,'옥수수방','asd123',4,sysdate,sysdate+8,sysdate+10,2,999999,sysdate);
---insert into reservation_tb values(RES_NO_SEQ.nextval,'햄버거방','asd123',5,sysdate,sysdate+1,sysdate+5,4,999999,sysdate);
---insert into reservation_tb values(RES_NO_SEQ.nextval,'갈대방','asd123',4,sysdate,sysdate+7,sysdate+9,2,999999,sysdate);
---INSERT INTO RESERVATION_TB VALUES(RES_NO_SEQ.NEXTVAL,'레몬방','asd123',3,SYSDATE,SYSDATE+140,SYSDATE+144,4,999999,SYSDATE);
-
--- 게시판 샘플 데이터
---INSERT INTO BOARD_TB VALUES(1, '공지1', '공지입니다', 'savior0319', SYSDATE, DEFAULT, DEFAULT, '공지');
---INSERT INTO BOARD_TB VALUES(2, '공지1', '공지입니다', 'savior0319', SYSDATE, DEFAULT, DEFAULT, '공지');
---INSERT INTO BOARD_TB VALUES(3, '공지1', '공지입니다', 'savior0319', SYSDATE, DEFAULT, DEFAULT, '공지');
---INSERT INTO BOARD_TB VALUES(4, '공지1', '공지입니다', 'savior0319', SYSDATE, DEFAULT, DEFAULT, '공지');
---INSERT INTO BOARD_TB VALUES(5, '공지1', '공지입니다', 'savior0319', SYSDATE, DEFAULT, DEFAULT, '공지');
---INSERT INTO BOARD_TB VALUES(6, '공지1', '공지입니다', 'savior0319', SYSDATE, DEFAULT, DEFAULT, '공지');
-
--- 1:1 문의 샘플 데이터
---INSERT INTO QUESTION_TB VALUES(1, '문의1', '문의입니다', 'savior0319', SYSDATE, DEFAULT);
---INSERT INTO QUESTION_TB VALUES(2, '문의2', '문의입니다', 'savior0319', SYSDATE, DEFAULT);
---INSERT INTO QUESTION_TB VALUES(3, '문의3', '문의입니다', 'savior0319', SYSDATE, DEFAULT);
---INSERT INTO QUESTION_TB VALUES(4, '문의4', '문의입니다', 'savior0319', SYSDATE, DEFAULT);
---INSERT INTO QUESTION_TB VALUES(5, '문의5', '문의입니다', 'savior0319', SYSDATE, DEFAULT);
---INSERT INTO QUESTION_TB VALUES(6, '문의6', '문의입니다', 'savior0319', SYSDATE, DEFAULT);
---INSERT INTO QUESTION_TB VALUES(7, '문의7', '문의입니다', 'savior0319', SYSDATE, DEFAULT);
---INSERT INTO QUESTION_TB VALUES(8, '문의8', '문의입니다', 'savior0319', SYSDATE, DEFAULT);
---INSERT INTO QUESTION_TB VALUES(9, '문의9', '문의입니다', 'savior0319', SYSDATE, DEFAULT);
---INSERT INTO QUESTION_TB VALUES(10, '문의10', '문의입니다', 'savior0319', SYSDATE, DEFAULT);
---INSERT INTO QUESTION_TB VALUES(11, '문의11', '문의입니다', 'savior0319', SYSDATE, DEFAULT);
---INSERT INTO QUESTION_TB VALUES(12, '문의12', '문의입니다', 'savior0319', SYSDATE, DEFAULT);
---INSERT INTO QUESTION_TB VALUES(13, '문의13', '문의입니다', 'savior0319', SYSDATE, DEFAULT);
---INSERT INTO QUESTION_TB VALUES(14, '문의14', '문의입니다', 'savior0319', SYSDATE, DEFAULT);
---INSERT INTO QUESTION_TB VALUES(15, '문의15', '문의입니다', 'savior0319', SYSDATE, DEFAULT);
---INSERT INTO QUESTION_TB VALUES(16, '문의16', '문의입니다', 'savior0319', SYSDATE, DEFAULT);
---INSERT INTO QUESTION_TB VALUES(17, '문의17', '문의입니다', 'savior0319', SYSDATE, DEFAULT);
---INSERT INTO QUESTION_TB VALUES(18, '문의18', '문의입니다', 'savior0319', SYSDATE, DEFAULT);
---INSERT INTO QUESTION_TB VALUES(19, '문의19', '문의입니다', 'savior0319', SYSDATE, DEFAULT);
---INSERT INTO QUESTION_TB VALUES(20, '문의20', '문의입니다', 'savior0319', SYSDATE, DEFAULT);
---INSERT INTO QUESTION_TB VALUES(21, '문의21', '문의입니다', 'savior0319', SYSDATE, DEFAULT);
---INSERT INTO QUESTION_TB VALUES(22, '문의22', '문의입니다', 'savior0319', SYSDATE, DEFAULT);
-
-INSERT INTO MEMBER_TB VALUES('thepension', 'ba78181ad6ce8fe814dd84b8899f19e45038ed5dfcf8aba700d24366052eb309', '90/01/01', 'thepension@thepension.com', '010-0000-0000',  'M', '관리자', SYSDATE, '인천 계양구 계양대로 지하 73 작전역');
-COMMIT;
-
---SELECT * FROM RES_CANCEL_TB;
---UPDATE RES_CANCEL_TB SET RC_CANCEL_CHECK = 'Y';
+https://docs.google.com/spreadsheets/d/1BG2icxfUG2y90zw5zMY3xTotiBLUfEzau8mOnjRxeos/edit#gid=0  
+*/ 
+-- 삭제  
+DROP SEQUENCE RECOMMEND_BOARD_SEQ; 
+
+DROP TABLE RECOMMEND_BOARD_TB; 
+
+DROP SEQUENCE RECOMMEND_COMMENT_SEQ; 
+
+DROP TABLE RECOMMEND_COMMENT_TB; 
+
+DROP SEQUENCE RC_NO_SEQ; 
+
+DROP TABLE RES_CANCEL_TB; 
+
+DROP SEQUENCE A_NO_SEQ; 
+
+DROP TABLE ANSWER_TB; 
+
+DROP SEQUENCE Q_NO_SEQ; 
+
+DROP TABLE QUESTION_TB; 
+
+DROP TABLE MEMBER_LOG_TB; 
+
+DROP SEQUENCE PS_PIC_NO; 
+
+DROP TABLE PENSION_PIC_TB; 
+
+DROP TABLE MAIN_PIC_TB; 
+
+DROP SEQUENCE SALES_NO_SEQ; 
+
+DROP TABLE SALES_TB; 
+
+DROP SEQUENCE BD_FILE_NO_SEQ; 
+
+DROP TABLE BOARD_FILE_TB; 
+
+DROP SEQUENCE CM_DEL_NO; 
+
+DROP TABLE COMMENT_DEL_TB; 
+
+DROP SEQUENCE BD_DEL_NO_SEQ; 
+
+DROP TABLE BOARD_DEL_TB; 
+
+DROP SEQUENCE RES_HIS_NO_SEQ; 
+
+DROP TABLE RESERVATION_HISTORY_TB; 
+
+DROP TABLE MEMBER_DEL_TB; 
+
+DROP TABLE DESCRIPTION_TB; 
+
+DROP SEQUENCE CM_NO_SEQ; 
+
+DROP TABLE COMMENT_TB; 
+
+DROP SEQUENCE BD_NO_SEQ; 
+
+DROP TABLE BOARD_TB; 
+
+DROP SEQUENCE RES_NO_SEQ; 
+
+DROP TABLE RESERVATION_TB; 
+
+DROP TABLE PENSION_TB; 
+
+DROP TABLE MEMBER_TB; 
+
+/* 테이블 생성 */ 
+-- 회원 테이블  
+CREATE TABLE MEMBER_TB 
+  ( 
+     MB_ID      VARCHAR2(50) PRIMARY KEY, 
+     MB_PWD     CHAR(64) NULL, 
+     MB_BIRTH   DATE NULL, 
+     MB_EMAIL   VARCHAR2(100) NOT NULL UNIQUE, 
+     MB_PHONE   CHAR(13) NULL, 
+     MB_GENDER  CHAR(1) NOT NULL CHECK(MB_GENDER IN('M', 'F')), 
+     MB_NAME    VARCHAR2(30) NOT NULL, 
+     MB_ENTDATE DATE DEFAULT SYSDATE NOT NULL, 
+     MB_ADDRESS VARCHAR2(150) NULL 
+  ); 
+
+-- 펜션 정보 테이블  
+CREATE TABLE PENSION_TB 
+  ( 
+     PS_NAME             VARCHAR2(50) PRIMARY KEY, 
+     PS_PERSONNEL        NUMBER NOT NULL, 
+     PS_MAX_PERSONNEL    NUMBER, 
+     PS_CONTENTS         VARCHAR2(4000), 
+     PS_WEEKEND          NUMBER, 
+     PS_WEEKDAY          NUMBER, 
+     PS_ADDITIONAL_PRICE NUMBER NOT NULL 
+  ); 
+
+-- 펜션 사진 번호 시퀀스  
+CREATE SEQUENCE PS_PIC_NO 
+  START WITH 1 
+  INCREMENT BY 1 
+  NOCACHE 
+  NOCYCLE; 
+
+-- 펜션 사진 정보 테이블  
+CREATE TABLE PENSION_PIC_TB 
+  ( 
+     PS_PIC_NAME VARCHAR2(50) NOT NULL, 
+     PS_PIC_PATH VARCHAR2(500) UNIQUE NOT NULL, 
+     PS_PIC_MAIN CHAR(1) NOT NULL CHECK(PS_PIC_MAIN IN('Y', 'N')), 
+     FOREIGN KEY (PS_PIC_NAME) REFERENCES PENSION_TB(PS_NAME) 
+  ); 
+
+-- 예약 정보 테이블 시퀀스  
+CREATE SEQUENCE RES_NO_SEQ 
+  START WITH 1 
+  INCREMENT BY 1 
+  NOCACHE 
+  NOCYCLE; 
+
+-- 예약 정보 테이블  
+CREATE TABLE RESERVATION_TB 
+  ( 
+     RES_NO               NUMBER PRIMARY KEY, 
+     RES_ROOM_NAME        VARCHAR2(50), 
+     RES_ID               VARCHAR2(50), 
+     RES_PERSONNEL        NUMBER NOT NULL, 
+     RES_RESERVATION_DATE TIMESTAMP NOT NULL, 
+     RES_IN_DATE          DATE NOT NULL, 
+     RES_OUT_DATE         DATE NOT NULL, 
+     RES_PERIOD           NUMBER NOT NULL, 
+     RES_PRICE            NUMBER NOT NULL, 
+     RES_PAYMENT_DATE     TIMESTAMP DEFAULT SYSDATE NOT NULL, 
+     FOREIGN KEY (RES_ROOM_NAME) REFERENCES PENSION_TB(PS_NAME) 
+  ); 
+
+-- 게시글 번호 시퀀스  
+CREATE SEQUENCE BD_NO_SEQ 
+  START WITH 1 
+  INCREMENT BY 1 
+  NOCACHE 
+  NOCYCLE; 
+
+-- 게시판 테이블(작성자가 탈퇴 할 수 있으므로 NULL)  
+CREATE TABLE BOARD_TB 
+  ( 
+     BD_NO              NUMBER PRIMARY KEY, 
+     BD_NAME            VARCHAR2(150) NOT NULL, 
+     BD_CONTENTS        VARCHAR2(4000) NOT NULL, 
+     BD_WRITER          VARCHAR2(50), 
+     BD_WRITE_DATE      TIMESTAMP NOT NULL, 
+     BD_VIEW_COUNT      NUMBER DEFAULT 0 NOT NULL, 
+     BD_RECOMMEND_COUNT NUMBER DEFAULT 0 NOT NULL, 
+     BD_CATEGORY        VARCHAR2(50) NOT NULL, 
+     FOREIGN KEY (BD_WRITER) REFERENCES MEMBER_TB(MB_ID) ON DELETE SET NULL 
+  ); 
+
+-- 댓글 번호 시퀀스  
+CREATE SEQUENCE CM_NO_SEQ 
+  START WITH 1 
+  INCREMENT BY 1 
+  NOCACHE 
+  NOCYCLE; 
+
+-- 댓글 테이블(작성자가 탈퇴 할 수 있으므로 NULL)  
+CREATE TABLE COMMENT_TB 
+  ( 
+     CM_NO              NUMBER PRIMARY KEY, 
+     CM_BD_NO           NUMBER, 
+     CM_WRITER          VARCHAR2(50), 
+     CM_CONTENTS        VARCHAR2(900) NOT NULL, 
+     CM_WRITE_DATE      TIMESTAMP DEFAULT SYSDATE NOT NULL, 
+     CM_RECOMMEND_COUNT NUMBER DEFAULT 0 NOT NULL, 
+     FOREIGN KEY (CM_BD_NO) REFERENCES BOARD_TB(BD_NO), 
+     FOREIGN KEY (CM_WRITER) REFERENCES MEMBER_TB(MB_ID) ON DELETE SET NULL 
+  ); 
+
+-- 펜션 설명 테이블  
+CREATE TABLE DESCRIPTION_TB 
+  ( 
+     DES_IMAGEPATH     VARCHAR2(500), 
+     DES_ATTENTION     VARCHAR2(4000), 
+     DES_REFUND        VARCHAR2(4000), 
+     DES_ACCOUNT       VARCHAR2(4000), 
+     DES_MAINVIEW      VARCHAR2(4000), 
+     DES_PENSION_ABOUT VARCHAR2(4000), 
+     DES_ROOM          VARCHAR2(4000), 
+     DES_ETC           VARCHAR2(4000) 
+  ); 
+
+-- 탈퇴한 회원 정보 테이블  
+CREATE TABLE MEMBER_DEL_TB 
+  ( 
+     MB_DEL_ID      VARCHAR2(50), 
+     MB_DEL_EMAIL   VARCHAR2(100) UNIQUE NOT NULL, 
+     MB_DEL_ENTDATE DATE NOT NULL, 
+     MB_DEL_OUTDATE DATE DEFAULT SYSDATE NOT NULL, 
+     MB_DEL_NAME    VARCHAR2(30) NOT NULL, 
+     MB_DEL_BIRTH   DATE NOT NULL 
+  ); 
+
+-- 예약 기록 번호 시퀀스  
+CREATE SEQUENCE RES_HIS_NO_SEQ 
+  START WITH 1 
+  INCREMENT BY 1 
+  NOCACHE 
+  NOCYCLE; 
+
+-- 지난 예약 정보 테이블  
+CREATE TABLE RESERVATION_HISTORY_TB 
+  ( 
+     RES_HIS_NO               NUMBER PRIMARY KEY, 
+     RES_HIS_RES_NO           NUMBER, 
+     RES_HIS_ROOM_NAME        VARCHAR2(50), 
+     RES_HIS_ID               VARCHAR2(50), 
+     RES_HIS_PERSONNEL        NUMBER NOT NULL, 
+     RES_HIS_RESERVATION_DATE TIMESTAMP DEFAULT SYSDATE NOT NULL, 
+     RES_HIS_IN_DATE          DATE NOT NULL, 
+     RES_HIS_OUT_DATE         DATE NOT NULL, 
+     RES_HIS_PERIOD           NUMBER NOT NULL, 
+     RES_HIS_PRICE            NUMBER NOT NULL, 
+     RES_HIS_PAYMENT_DATE     TIMESTAMP NOT NULL 
+  ); 
+
+-- 삭제 게시글 번호 시퀀스  
+CREATE SEQUENCE BD_DEL_NO_SEQ 
+  START WITH 1 
+  INCREMENT BY 1 
+  NOCACHE 
+  NOCYCLE; 
+
+-- 삭제 게시판 테이블  
+CREATE TABLE BOARD_DEL_TB 
+  ( 
+     BD_DEL_NO          NUMBER PRIMARY KEY, 
+     BD_DEL_NAME        VARCHAR2(150) NOT NULL, 
+     BD_DEL_CONTENTS    VARCHAR2(4000) NOT NULL, 
+     BD_DEL_WRITER      VARCHAR2(50), 
+     BD_DEL_WRITE_DATE  TIMESTAMP NOT NULL, 
+     BD_DEL_DELETE_DATE TIMESTAMP DEFAULT SYSDATE NOT NULL, 
+     FOREIGN KEY (BD_DEL_WRITER) REFERENCES MEMBER_TB(MB_ID) ON DELETE SET NULL 
+  ); 
+
+-- 삭제 댓글번호 시퀀스  
+CREATE SEQUENCE CM_DEL_NO 
+  START WITH 1 
+  INCREMENT BY 1 
+  NOCACHE 
+  NOCYCLE; 
+
+-- 삭제 댓글 테이블  
+CREATE TABLE COMMENT_DEL_TB 
+  ( 
+     CM_DEL_NO          NUMBER PRIMARY KEY, 
+     CM_BD_NO           NUMBER, 
+     CM_DEL_WRITER      VARCHAR2(50), 
+     CM_DEL_CONTENTS    VARCHAR2(4000) NOT NULL, 
+     CM_DEL_WRITE_DATE  TIMESTAMP NOT NULL, 
+     CM_DEL_DELETE_DATE TIMESTAMP DEFAULT SYSDATE NOT NULL, 
+     FOREIGN KEY (CM_BD_NO) REFERENCES COMMENT_TB(CM_NO), 
+     FOREIGN KEY (CM_DEL_WRITER) REFERENCES MEMBER_TB(MB_ID) ON DELETE SET NULL 
+  ); 
+
+-- 파일 번호 시퀀스  
+CREATE SEQUENCE BD_FILE_NO_SEQ 
+  START WITH 1 
+  INCREMENT BY 1 
+  NOCACHE 
+  NOCYCLE; 
+
+-- 파일 정보 테이블  
+-- ※ (해당 게시글 삭제 시 해당 게시글의 파일도 자동으로 삭제되게 해야함)  
+CREATE TABLE BOARD_FILE_TB 
+  ( 
+     BD_FILE_NO     NUMBER PRIMARY KEY, 
+     BD_FILE_SIZE   NUMBER NOT NULL, 
+     BD_FILE_NAME   VARCHAR2(150) NOT NULL, 
+     BD_FILE_UPTIME TIMESTAMP NOT NULL, 
+     BD_FILE_WRITER VARCHAR2(50) NOT NULL, 
+     BD_FILE_COUNT  NUMBER DEFAULT 0 NOT NULL, 
+     BD_FILE_PATH   VARCHAR2(300) NOT NULL UNIQUE, 
+     BD_FILE_BD_NO  NUMBER NOT NULL, 
+     FOREIGN KEY (BD_FILE_WRITER) REFERENCES MEMBER_TB(MB_ID) ON DELETE SET NULL 
+     , 
+     FOREIGN KEY (BD_FILE_BD_NO) REFERENCES BOARD_TB(BD_NO) ON DELETE CASCADE 
+  ); 
+
+-- 매출 번호 시퀀스   
+CREATE SEQUENCE SALES_NO_SEQ 
+  START WITH 1 
+  INCREMENT BY 1 
+  NOCACHE 
+  NOCYCLE; 
+
+-- 매출 테이블  
+CREATE TABLE SALES_TB 
+  ( 
+     SALES_NO             NUMBER PRIMARY KEY, 
+     SALES_ID             VARCHAR2(50) NOT NULL, 
+     SALES_PAYMENT_DATE   DATE NOT NULL, 
+     SALES_PAYMENT_PRICE  NUMBER NOT NULL, 
+     SALES_RESERVATION_NO NUMBER NOT NULL, 
+     FOREIGN KEY (SALES_ID) REFERENCES MEMBER_TB(MB_ID) ON DELETE SET NULL, 
+     FOREIGN KEY (SALES_RESERVATION_NO) REFERENCES RESERVATION_TB(RES_NO) 
+  ); 
+
+-- 메인 사진 테이블  
+CREATE TABLE MAIN_PIC_TB 
+  ( 
+     MAIN_PIC_PATH VARCHAR2(500) NOT NULL UNIQUE 
+  ); 
+
+-- 회원 접속 로그를 남기기 위한 테이블  
+CREATE TABLE MEMBER_LOG_TB 
+  ( 
+     MB_LOG_ID      VARCHAR2(50), 
+     MB_LOG_TIME    TIMESTAMP DEFAULT SYSDATE, 
+     MB_LOG_BROWSER VARCHAR2(50), 
+     MB_LOG_IP      VARCHAR2(100), 
+     MB_LOG_LOCALE  VARCHAR2(50), 
+     FOREIGN KEY (MB_LOG_ID) REFERENCES MEMBER_TB(MB_ID) ON DELETE SET NULL 
+  ); 
+
+-- 문의 번호 시퀀스  
+CREATE SEQUENCE Q_NO_SEQ 
+  START WITH 1 
+  INCREMENT BY 1 
+  NOCACHE 
+  NOCYCLE; 
+
+-- 문의 사항 테이블  
+CREATE TABLE QUESTION_TB 
+  ( 
+     Q_NO           NUMBER NULL, 
+     Q_NAME         VARCHAR2(150) NOT NULL, 
+     Q_CONTENTS     VARCHAR2(4000) NOT NULL, 
+     Q_WRITER       VARCHAR2(50), 
+     Q_WRITE_DATE   TIMESTAMP NOT NULL, 
+     Q_ANSWER_CHECK CHAR(1) DEFAULT 'N' NOT NULL, 
+     CONSTRAINT QUESTION_TB_PK PRIMARY KEY (Q_NO), 
+     FOREIGN KEY (Q_WRITER) REFERENCES MEMBER_TB(MB_ID) ON DELETE CASCADE 
+  ); 
+
+-- 1:1 문의하기 시퀀스  
+CREATE SEQUENCE A_NO_SEQ 
+  START WITH 1 
+  INCREMENT BY 1 
+  NOCACHE 
+  NOCYCLE; 
+
+-- 1:1 문의하기 답변테이블  
+CREATE TABLE ANSWER_TB 
+  ( 
+     A_NO       NUMBER NOT NULL, 
+     A_Q_NO     NUMBER NOT NULL, 
+     A_CONTENTS VARCHAR2(4000) NOT NULL, 
+     CONSTRAINT ANSWER_TB_PK PRIMARY KEY (A_NO), 
+     FOREIGN KEY (A_Q_NO) REFERENCES QUESTION_TB(Q_NO) 
+  ); 
+
+-- 예약 취소 테이블 시퀀스  
+CREATE SEQUENCE RC_NO_SEQ 
+  START WITH 1 
+  INCREMENT BY 1 
+  NOCACHE 
+  NOCYCLE; 
+
+-- 예약 취소 테이블  
+CREATE TABLE RES_CANCEL_TB 
+  ( 
+     RC_NO                   NUMBER PRIMARY KEY, 
+     RC_RES_NO               NUMBER NOT NULL, 
+     RC_RES_ROOM_NAME        VARCHAR2(50), 
+     RC_RES_ID               VARCHAR2(50), 
+     RC_RES_PERSONNEL        NUMBER NOT NULL, 
+     RC_RES_RESERVATION_DATE TIMESTAMP NOT NULL, 
+     RC_RES_IN_DATE          DATE NOT NULL, 
+     RC_RES_OUT_DATE         DATE NOT NULL, 
+     RC_RES_PERIOD           NUMBER NOT NULL, 
+     RC_RES_PRICE            NUMBER NOT NULL, 
+     RC_RES_PAYMENT_DATE     TIMESTAMP DEFAULT SYSDATE NOT NULL, 
+     RC_DATE                 TIMESTAMP NOT NULL, 
+     RC_REFUND_CHECK         CHAR(1) NOT NULL CHECK(RC_REFUND_CHECK IN('Y', 'N') 
+     ), 
+     RC_CANCEL_CHECK         CHAR(1) NOT NULL CHECK(RC_CANCEL_CHECK IN('Y', 'N') 
+     ) 
+  ); 
+
+-- 게시글 추천 테이블 생성  
+CREATE TABLE RECOMMEND_BOARD_TB 
+  ( 
+     RM_BD_NO NUMBER PRIMARY KEY, 
+     MB_ID    VARCHAR2(50), 
+     BD_NO    NUMBER, 
+     FOREIGN KEY (MB_ID) REFERENCES MEMBER_TB(MB_ID) ON DELETE SET NULL, 
+     FOREIGN KEY (BD_NO) REFERENCES BOARD_TB(BD_NO) ON DELETE SET NULL 
+  ); 
+
+-- 댓글 추천 테이블 생성  
+CREATE TABLE RECOMMEND_COMMENT_TB 
+  ( 
+     RM_CM_NO NUMBER PRIMARY KEY, 
+     MB_ID    VARCHAR2(50), 
+     CM_NO    NUMBER, 
+     FOREIGN KEY (MB_ID) REFERENCES MEMBER_TB(MB_ID) ON DELETE SET NULL, 
+     FOREIGN KEY (CM_NO) REFERENCES COMMENT_TB(CM_NO) ON DELETE SET NULL 
+  ); 
+
+-- 게시글 추천 시퀀스 생성  
+CREATE SEQUENCE RECOMMEND_BOARD_SEQ 
+  START WITH 1 
+  INCREMENT BY 1 
+  NOCACHE 
+  NOCYCLE; 
+
+-- 댓글 추천 시퀀스 생성  
+CREATE SEQUENCE RECOMMEND_COMMENT_SEQ 
+  START WITH 1 
+  INCREMENT BY 1 
+  NOCACHE 
+  NOCYCLE; 
+
+INSERT INTO MAIN_PIC_TB 
+VALUES      ('/Image/main/m01.jpg'); 
+
+INSERT INTO MAIN_PIC_TB 
+VALUES      ('/Image/main/m02.jpg'); 
+
+INSERT INTO MAIN_PIC_TB 
+VALUES      ('/Image/main/m03.jpg'); 
+
+INSERT INTO MAIN_PIC_TB 
+VALUES      ('/Image/main/m04.jpg'); 
+
+INSERT INTO MAIN_PIC_TB 
+VALUES      ('/Image/main/m05.jpg'); 
+
+INSERT INTO MAIN_PIC_TB 
+VALUES      ('/Image/main/m06.jpg'); 
+
+INSERT INTO MAIN_PIC_TB 
+VALUES      ('/Image/main/m07.jpg'); 
+
+INSERT INTO MAIN_PIC_TB 
+VALUES      ('/Image/main/m08.jpg'); 
+
+INSERT INTO MAIN_PIC_TB 
+VALUES      ('/Image/main/m09.jpg'); 
+
+INSERT INTO MAIN_PIC_TB 
+VALUES      ('/Image/main/m10.jpg'); 
+
+INSERT INTO MAIN_PIC_TB 
+VALUES      ('/Image/main/m11.jpg'); 
+
+INSERT INTO MAIN_PIC_TB 
+VALUES      ('/Image/main/m12.jpg'); 
+
+INSERT INTO DESCRIPTION_TB 
+            (DES_ROOM, 
+             DES_IMAGEPATH, 
+             DES_PENSION_ABOUT, 
+             DES_MAINVIEW) 
+VALUES      ( 
+'석양이 아름다운 음포 해수욕장 바다가 있는곳 태안 더펜션 객실을 소개합니다.' 
+, 
+'/Image/title/ti02.jpg', 
+'펜션 내용이다~~~~~~~~~~~', 
+'Lorem ipsum dolor sit amet consectetur adipisicing elit. Corporis tempore voluptatum exercitationem suscipit autem accusantium minus adipisci, eveniet aut earum iste ullam? Dignissimos, minus inventore porro expedita accusamus quam harum modi nihil ipsum nesciunt ducimus ullam animi libero aperiam. Minima nostrum deserunt perferendis dolorum porro beatae eligendi blanditiis modi eius reiciendis vero, ex libero iusto pariatur. Voluptates dignissimos earum eius, nemo nihil sit qui accusantium in adipisci, reprehenderit doloremque? Earum laudantium molestias nam soluta? Corporis alias possimus, officia, blanditiis commodi tenetur deserunt ipsum saepe soluta voluptate vero minus magnam voluptates eum ea ullam doloremque ipsa fuga. Dicta accusantium fugiat ut! Suscipit labore, beatae incidunt libero, temporibus quos error aspernatur amet enim, explicabo culpa alias in. Libero nam veritatis, totam repudiandae ipsum iste commodi? Sint in, culpa sit, officiis omnis, cumque corrupti eos error aliquid sapiente cupiditate corporis quod eveniet maiores quo. Laborum ipsa rerum obcaecati ipsum nemo voluptates repellat facere illum, quas accusantium. Expedita consectetur quaerat minus fugit aliquid aperiam placeat rerum hic velit voluptatibus nemo repudiandae est voluptatum magnam inventore similique quibusdam quidem vel dolore, laboriosam nesciunt reiciendis suscipit. Saepe odio quidem cumque, impedit soluta quia. Nam itaque pariatur dolorem quas ducimus at similique esse commodi, tenetur nobis asperiores, accusantium veritatis assumenda accusamus. Laboriosam necessitatibus quis aspernatur dolorum non impedit expedita. Perspiciatis recusandae hic molestiae qui officia, cupiditate iste. Mollitia aspernatur voluptatem illum, eos accusamus quo temporibus voluptatum possimus in officiis laudantium sapiente quod. Culpa fugiat saepe nulla itaque dolores dicta, minima exercitationem provident recusandae cumque illo laboriosam consequuntur. Reiciendis repellendus adipisci laborum dolores eligendi ut molestiae ab hic quisquam illum! Unde blanditiis tenetur ipsum aut ad? Voluptatem esse neque ex incidunt. Tenetur et, quas sapiente rem repellendus autem nihil, earum accusamus quibusdam doloribus ea totam expedita praesentium commodi deleniti magni pariatur suscipit doloremque sunt ratione. Laborum animi enim nostrum sequi et quibusdam fuga voluptatem. In error, mollitia earum fugit quasi delectus, velit ratione perspiciatis rerum quia, excepturi quidem sequi dignissimos labore nam sed! Natus, labore! Voluptates aliquam quis accusamus, voluptas odio a rem enim excepturi veritatis asperiores ipsam alias amet, in necessitatibus dolorem aspernatur numquam, esse tempore dolor architecto ex tenetur doloribus labore exercitationem. Odio et ipsum ea sed! Unde, beatae laborum, at quia vitae repellat vero modi ipsam dolore similique tenetur non officiis eos placeat. Laudantium, quas '
+); 
+
+INSERT INTO PENSION_TB 
+VALUES      ('옥수수방', 
+             5, 
+             9, 
+             '내용', 
+             60000, 
+             50000, 
+             10000); 
+
+INSERT INTO PENSION_TB 
+VALUES      ('갈대방', 
+             6, 
+             10, 
+             '내용', 
+             62000, 
+             52000, 
+             10000); 
+
+INSERT INTO PENSION_TB 
+VALUES      ('수수방', 
+             7, 
+             11, 
+             '내용', 
+             64000, 
+             54000, 
+             10000); 
+
+INSERT INTO PENSION_TB 
+VALUES      ('대나무방', 
+             8, 
+             12, 
+             '내용', 
+             66000, 
+             56000, 
+             10000); 
+
+INSERT INTO PENSION_TB 
+VALUES      ('레몬방', 
+             5, 
+             10, 
+             '내용', 
+             68000, 
+             58000, 
+             10000); 
+
+INSERT INTO PENSION_TB 
+VALUES      ('햄버거방', 
+             4, 
+             8, 
+             '내용', 
+             70000, 
+             60000, 
+             10000); 
+
+INSERT INTO PENSION_PIC_TB 
+VALUES      ('옥수수방', 
+             '/Image/room/101_01.jpg', 
+             'Y'); 
+
+INSERT INTO PENSION_PIC_TB 
+VALUES      ('옥수수방', 
+             '/Image/room/101_02.jpg', 
+             'N'); 
+
+INSERT INTO PENSION_PIC_TB 
+VALUES      ('옥수수방', 
+             '/Image/room/101_03.jpg', 
+             'N'); 
+
+INSERT INTO PENSION_PIC_TB 
+VALUES      ('옥수수방', 
+             '/Image/room/101_04.jpg', 
+             'N'); 
+
+INSERT INTO PENSION_PIC_TB 
+VALUES      ('옥수수방', 
+             '/Image/room/101_05.jpg', 
+             'N'); 
+
+INSERT INTO PENSION_PIC_TB 
+VALUES      ('옥수수방', 
+             '/Image/room/101_06.jpg', 
+             'N'); 
+
+INSERT INTO PENSION_PIC_TB 
+VALUES      ('옥수수방', 
+             '/Image/room/101_07.jpg', 
+             'N'); 
+
+INSERT INTO PENSION_PIC_TB 
+VALUES      ('옥수수방', 
+             '/Image/room/101_08.jpg', 
+             'N'); 
+
+INSERT INTO PENSION_PIC_TB 
+VALUES      ('옥수수방', 
+             '/Image/room/101_09.jpg', 
+             'N'); 
+
+INSERT INTO PENSION_PIC_TB 
+VALUES      ('옥수수방', 
+             '/Image/room/101_010.jpg', 
+             'N'); 
+
+INSERT INTO PENSION_PIC_TB 
+VALUES      ('옥수수방', 
+             '/Image/room/101_011.jpg', 
+             'N'); 
+
+INSERT INTO PENSION_PIC_TB 
+VALUES      ('옥수수방', 
+             '/Image/room/101_012.jpg', 
+             'N'); 
+
+INSERT INTO PENSION_PIC_TB 
+VALUES      ('갈대방', 
+             '/Image/room/102_01.jpg', 
+             'Y'); 
+
+INSERT INTO PENSION_PIC_TB 
+VALUES      ('갈대방', 
+             '/Image/room/102_02.jpg', 
+             'N'); 
+
+INSERT INTO PENSION_PIC_TB 
+VALUES      ('갈대방', 
+             '/Image/room/102_03.jpg', 
+             'N'); 
+
+INSERT INTO PENSION_PIC_TB 
+VALUES      ('갈대방', 
+             '/Image/room/102_04.jpg', 
+             'N'); 
+
+INSERT INTO PENSION_PIC_TB 
+VALUES      ('갈대방', 
+             '/Image/room/102_05.jpg', 
+             'N'); 
+
+INSERT INTO PENSION_PIC_TB 
+VALUES      ('갈대방', 
+             '/Image/room/102_06.jpg', 
+             'N'); 
+
+INSERT INTO PENSION_PIC_TB 
+VALUES      ('갈대방', 
+             '/Image/room/102_07.jpg', 
+             'N'); 
+
+INSERT INTO PENSION_PIC_TB 
+VALUES      ('갈대방', 
+             '/Image/room/102_08.jpg', 
+             'N'); 
+
+INSERT INTO PENSION_PIC_TB 
+VALUES      ('갈대방', 
+             '/Image/room/102_09.jpg', 
+             'N'); 
+
+INSERT INTO PENSION_PIC_TB 
+VALUES      ('갈대방', 
+             '/Image/room/102_10.jpg', 
+             'N'); 
+
+INSERT INTO PENSION_PIC_TB 
+VALUES      ('수수방', 
+             '/Image/room/103_01.jpg', 
+             'Y'); 
+
+INSERT INTO PENSION_PIC_TB 
+VALUES      ('수수방', 
+             '/Image/room/103_02.jpg', 
+             'N'); 
+
+INSERT INTO PENSION_PIC_TB 
+VALUES      ('수수방', 
+             '/Image/room/103_03.jpg', 
+             'N'); 
+
+INSERT INTO PENSION_PIC_TB 
+VALUES      ('수수방', 
+             '/Image/room/103_04.jpg', 
+             'N'); 
+
+INSERT INTO PENSION_PIC_TB 
+VALUES      ('수수방', 
+             '/Image/room/103_05.jpg', 
+             'N'); 
+
+INSERT INTO PENSION_PIC_TB 
+VALUES      ('수수방', 
+             '/Image/room/103_06.jpg', 
+             'N'); 
+
+INSERT INTO PENSION_PIC_TB 
+VALUES      ('수수방', 
+             '/Image/room/103_07.jpg', 
+             'N'); 
+
+INSERT INTO PENSION_PIC_TB 
+VALUES      ('수수방', 
+             '/Image/room/103_08.jpg', 
+             'N'); 
+
+INSERT INTO PENSION_PIC_TB 
+VALUES      ('수수방', 
+             '/Image/room/103_09.jpg', 
+             'N'); 
+
+INSERT INTO PENSION_PIC_TB 
+VALUES      ('대나무방', 
+             '/Image/room/104_01.jpg', 
+             'Y'); 
+
+INSERT INTO PENSION_PIC_TB 
+VALUES      ('대나무방', 
+             '/Image/room/104_02.jpg', 
+             'N'); 
+
+INSERT INTO PENSION_PIC_TB 
+VALUES      ('대나무방', 
+             '/Image/room/104_03.jpg', 
+             'N'); 
+
+INSERT INTO PENSION_PIC_TB 
+VALUES      ('대나무방', 
+             '/Image/room/104_04.jpg', 
+             'N'); 
+
+INSERT INTO PENSION_PIC_TB 
+VALUES      ('대나무방', 
+             '/Image/room/104_05.jpg', 
+             'N'); 
+
+INSERT INTO PENSION_PIC_TB 
+VALUES      ('대나무방', 
+             '/Image/room/104_06.jpg', 
+             'N'); 
+
+INSERT INTO PENSION_PIC_TB 
+VALUES      ('대나무방', 
+             '/Image/room/104_07.jpg', 
+             'N'); 
+
+INSERT INTO PENSION_PIC_TB 
+VALUES      ('대나무방', 
+             '/Image/room/104_08.jpg', 
+             'N'); 
+
+INSERT INTO PENSION_PIC_TB 
+VALUES      ('대나무방', 
+             '/Image/room/104_09.jpg', 
+             'N'); 
+
+INSERT INTO PENSION_PIC_TB 
+VALUES      ('대나무방', 
+             '/Image/room/104_10.jpg', 
+             'N'); 
+
+INSERT INTO PENSION_PIC_TB 
+VALUES      ('대나무방', 
+             '/Image/room/104_11.jpg', 
+             'N'); 
+
+INSERT INTO PENSION_PIC_TB 
+VALUES      ('대나무방', 
+             '/Image/room/104_12.jpg', 
+             'N'); 
+
+INSERT INTO PENSION_PIC_TB 
+VALUES      ('레몬방', 
+             '/Image/room/201_01.jpg', 
+             'Y'); 
+
+INSERT INTO PENSION_PIC_TB 
+VALUES      ('레몬방', 
+             '/Image/room/201_02.jpg', 
+             'N'); 
+
+INSERT INTO PENSION_PIC_TB 
+VALUES      ('레몬방', 
+             '/Image/room/201_03.jpg', 
+             'N'); 
+
+INSERT INTO PENSION_PIC_TB 
+VALUES      ('레몬방', 
+             '/Image/room/201_04.jpg', 
+             'N'); 
+
+INSERT INTO PENSION_PIC_TB 
+VALUES      ('레몬방', 
+             '/Image/room/201_05.jpg', 
+             'N'); 
+
+INSERT INTO PENSION_PIC_TB 
+VALUES      ('레몬방', 
+             '/Image/room/201_06.jpg', 
+             'N'); 
+
+INSERT INTO PENSION_PIC_TB 
+VALUES      ('레몬방', 
+             '/Image/room/201_07.jpg', 
+             'N'); 
+
+INSERT INTO PENSION_PIC_TB 
+VALUES      ('레몬방', 
+             '/Image/room/201_08.jpg', 
+             'N'); 
+
+INSERT INTO PENSION_PIC_TB 
+VALUES      ('레몬방', 
+             '/Image/room/201_09.jpg', 
+             'N'); 
+
+INSERT INTO PENSION_PIC_TB 
+VALUES      ('레몬방', 
+             '/Image/room/201_10.jpg', 
+             'N'); 
+
+INSERT INTO PENSION_PIC_TB 
+VALUES      ('레몬방', 
+             '/Image/room/201_11.jpg', 
+             'N'); 
+
+INSERT INTO PENSION_PIC_TB 
+VALUES      ('레몬방', 
+             '/Image/room/201_12.jpg', 
+             'N'); 
+
+INSERT INTO PENSION_PIC_TB 
+VALUES      ('레몬방', 
+             '/Image/room/201_13.jpg', 
+             'N'); 
+
+INSERT INTO PENSION_PIC_TB 
+VALUES      ('레몬방', 
+             '/Image/room/201_14.jpg', 
+             'N'); 
+
+INSERT INTO PENSION_PIC_TB 
+VALUES      ('레몬방', 
+             '/Image/room/201_15.jpg', 
+             'N'); 
+
+INSERT INTO PENSION_PIC_TB 
+VALUES      ('햄버거방', 
+             '/Image/room/202_01.jpg', 
+             'Y'); 
+
+INSERT INTO PENSION_PIC_TB 
+VALUES      ('햄버거방', 
+             '/Image/room/202_02.jpg', 
+             'N'); 
+
+INSERT INTO PENSION_PIC_TB 
+VALUES      ('햄버거방', 
+             '/Image/room/202_03.jpg', 
+             'N'); 
+
+INSERT INTO PENSION_PIC_TB 
+VALUES      ('햄버거방', 
+             '/Image/room/202_04.jpg', 
+             'N'); 
+
+INSERT INTO PENSION_PIC_TB 
+VALUES      ('햄버거방', 
+             '/Image/room/202_05.jpg', 
+             'N'); 
+
+INSERT INTO PENSION_PIC_TB 
+VALUES      ('햄버거방', 
+             '/Image/room/202_06.jpg', 
+             'N'); 
+
+INSERT INTO PENSION_PIC_TB 
+VALUES      ('햄버거방', 
+             '/Image/room/202_07.jpg', 
+             'N'); 
+
+INSERT INTO PENSION_PIC_TB 
+VALUES      ('햄버거방', 
+             '/Image/room/202_08.jpg', 
+             'N'); 
+
+INSERT INTO PENSION_PIC_TB 
+VALUES      ('햄버거방', 
+             '/Image/room/202_09.jpg', 
+             'N'); 
+
+INSERT INTO PENSION_PIC_TB 
+VALUES      ('햄버거방', 
+             '/Image/room/202_10.jpg', 
+             'N'); 
+
+INSERT INTO PENSION_PIC_TB 
+VALUES      ('햄버거방', 
+             '/Image/room/202_11.jpg', 
+             'N'); 
+
+INSERT INTO PENSION_PIC_TB 
+VALUES      ('햄버거방', 
+             '/Image/room/202_12.jpg', 
+             'N'); 
+
+-- 관리자 계정 thepension / Thepension1!  
+INSERT INTO MEMBER_TB 
+VALUES      ('thepension', 
+             'ba78181ad6ce8fe814dd84b8899f19e45038ed5dfcf8aba700d24366052eb309', 
+             '90/01/01', 
+             '@thepension.com', 
+             '010-0000-0000', 
+             'M', 
+             '관리자', 
+             SYSDATE, 
+             '더펜션'); 
+
+-- 게시판 샘플 데이터  
+INSERT INTO BOARD_TB VALUES(BD_NO_SEQ.NEXTVAL, '더펜션 공지입니다', '오늘 쉽니다', 'thepension', SYSDATE, DEFAULT, DEFAULT, '공지');  
+INSERT INTO BOARD_TB VALUES(BD_NO_SEQ.NEXTVAL, '더펜션 공지', '제곧내', 'thepension', SYSDATE+1, DEFAULT, DEFAULT, '공지');  
+INSERT INTO BOARD_TB VALUES(BD_NO_SEQ.NEXTVAL, '공지임', '할말없음', 'thepension', SYSDATE+2, DEFAULT, DEFAULT, '공지');  
+INSERT INTO BOARD_TB VALUES(BD_NO_SEQ.NEXTVAL, '오늘 쉽니다', '일 안해', 'thepension', SYSDATE+2, DEFAULT, DEFAULT, '공지');  
+INSERT INTO BOARD_TB VALUES(BD_NO_SEQ.NEXTVAL, '내일도 쉽니다', '쉴꺼야', 'thepension', SYSDATE+3, DEFAULT, DEFAULT, '공지');  
+INSERT INTO BOARD_TB VALUES(BD_NO_SEQ.NEXTVAL, '모레도 쉽니다', '집가고 싶다', 'thepension', SYSDATE+5, DEFAULT, DEFAULT, '공지');  
+INSERT INTO BOARD_TB VALUES(BD_NO_SEQ.NEXTVAL, '펜션 팝니다', '제발 좀 사셈', 'thepension', SYSDATE+5, DEFAULT, DEFAULT, '공지');  
+INSERT INTO BOARD_TB VALUES(BD_NO_SEQ.NEXTVAL, '오늘 점심 뭐 먹지', '배고파', 'thepension', SYSDATE+5, DEFAULT, DEFAULT, '공지');  
+INSERT INTO BOARD_TB VALUES(BD_NO_SEQ.NEXTVAL, '오늘 저녁 뭐먹지', '배불러', 'thepension', SYSDATE+5, DEFAULT, DEFAULT, '공지');  
+INSERT INTO BOARD_TB VALUES(BD_NO_SEQ.NEXTVAL, '오늘 왜캐 덥지', '넘나 더운것..ㅎㅎ', 'thepension', SYSDATE+5, DEFAULT, DEFAULT, '공지');  
+
+-- 1:1 문의 샘플 데이터  
+--INSERT INTO QUESTION_TB VALUES(1, '문의1', '문의입니다', 'thepension', SYSDATE, DEFAULT);  
+--INSERT INTO QUESTION_TB VALUES(2, '문의2', '문의입니다', 'thepension', SYSDATE, DEFAULT);  
+--INSERT INTO QUESTION_TB VALUES(3, '문의3', '문의입니다', 'thepension', SYSDATE, DEFAULT);  
+--INSERT INTO QUESTION_TB VALUES(4, '문의4', '문의입니다', 'thepension', SYSDATE, DEFAULT);  
+--INSERT INTO QUESTION_TB VALUES(5, '문의5', '문의입니다', 'thepension', SYSDATE, DEFAULT);  
+--INSERT INTO QUESTION_TB VALUES(6, '문의6', '문의입니다', 'thepension', SYSDATE, DEFAULT);  
+--INSERT INTO QUESTION_TB VALUES(7, '문의7', '문의입니다', 'thepension', SYSDATE, DEFAULT);  
+--INSERT INTO QUESTION_TB VALUES(8, '문의8', '문의입니다', 'thepension', SYSDATE, DEFAULT);  
+--INSERT INTO QUESTION_TB VALUES(9, '문의9', '문의입니다', 'thepension', SYSDATE, DEFAULT);  
+--INSERT INTO QUESTION_TB VALUES(10, '문의10', '문의입니다', 'thepension', SYSDATE, DEFAULT);  
+--INSERT INTO QUESTION_TB VALUES(11, '문의11', '문의입니다', 'thepension', SYSDATE, DEFAULT);  
+--INSERT INTO QUESTION_TB VALUES(12, '문의12', '문의입니다', 'thepension', SYSDATE, DEFAULT);  
+--INSERT INTO QUESTION_TB VALUES(13, '문의13', '문의입니다', 'thepension', SYSDATE, DEFAULT);  
+--INSERT INTO QUESTION_TB VALUES(14, '문의14', '문의입니다', 'thepension', SYSDATE, DEFAULT);  
+--INSERT INTO QUESTION_TB VALUES(15, '문의15', '문의입니다', 'thepension', SYSDATE, DEFAULT);  
+--INSERT INTO QUESTION_TB VALUES(16, '문의16', '문의입니다', 'thepension', SYSDATE, DEFAULT);  
+--INSERT INTO QUESTION_TB VALUES(17, '문의17', '문의입니다', 'thepension', SYSDATE, DEFAULT);  
+--INSERT INTO QUESTION_TB VALUES(18, '문의18', '문의입니다', 'thepension', SYSDATE, DEFAULT);  
+--INSERT INTO QUESTION_TB VALUES(19, '문의19', '문의입니다', 'thepension', SYSDATE, DEFAULT);  
+--INSERT INTO QUESTION_TB VALUES(20, '문의20', '문의입니다', 'thepension', SYSDATE, DEFAULT);  
+--INSERT INTO QUESTION_TB VALUES(21, '문의21', '문의입니다', 'thepension', SYSDATE, DEFAULT);  
+--INSERT INTO QUESTION_TB VALUES(22, '문의22', '문의입니다', 'thepension', SYSDATE, DEFAULT);  
+
+COMMIT; 
