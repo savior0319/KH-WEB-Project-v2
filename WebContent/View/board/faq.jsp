@@ -19,7 +19,7 @@ pageEncoding="UTF-8"%>
   gtag('config', 'UA-120156974-1');
 </script>
 <jsp:include page="/View/main/layout/cssjs.jsp"></jsp:include>
-<title>자주묻는 질문(FAQ)</title>
+<title>자주 묻는 질문(FAQ)</title>
 </head>
 
 <style>
