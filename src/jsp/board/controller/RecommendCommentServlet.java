@@ -1,13 +1,13 @@
 package jsp.board.controller;
 
 import java.io.IOException;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import jsp.board.model.service.BoardService;
 import jsp.board.model.service.CommentService;
 import jsp.board.model.vo.Comment;
 
@@ -15,6 +15,7 @@ import jsp.board.model.vo.Comment;
  * Servlet implementation class RecommendCommentServlet
  */
 @WebServlet(name = "RecommendComment", urlPatterns = { "/recommendComment" })
+@SuppressWarnings("all")
 public class RecommendCommentServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        

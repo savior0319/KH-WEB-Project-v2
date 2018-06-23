@@ -1,7 +1,6 @@
 package jsp.board.controller;
 
 import java.io.IOException;
-import java.util.ArrayList;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -11,7 +10,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import jsp.board.model.service.BoardService;
-import jsp.board.model.vo.BoardVo;
 import jsp.board.model.vo.Page;
 
 /**

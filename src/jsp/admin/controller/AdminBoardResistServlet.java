@@ -23,7 +23,7 @@ import jsp.board.model.vo.BoardVo;
 import jsp.board.model.vo.DataFile;
 import jsp.common.MyFileRenamePolicy;
 import jsp.member.model.vo.MemberVo;
-
+@SuppressWarnings("all")
 /**
  * Servlet implementation class AdminBoardResistServlet
  */

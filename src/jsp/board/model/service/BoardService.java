@@ -274,7 +274,7 @@ public class BoardService {
 		Connection conn = null;
 		conn = JDBCTemplate.getConnect(conn);
 		boolean totalResult = false;
-		int sucess = 0;
+		// int sucess = 0;
 		//1. 게시판 등록
 		boolean boardResult = new BoardDao().reViewInsert(conn,btlv.getBv());
 		//2. 게시판 파일 등록

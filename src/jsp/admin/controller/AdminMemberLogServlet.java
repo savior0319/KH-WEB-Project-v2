@@ -1,7 +1,6 @@
 package jsp.admin.controller;
 
 import java.io.IOException;
-import java.util.ArrayList;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -12,7 +11,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import jsp.admin.model.service.AdminService;
 import jsp.admin.model.vo.LoginLogPageVo;
-import jsp.admin.model.vo.MemberLoginLogVo;
 
 /**
  * Servlet implementation class AdminMemberLogServlet

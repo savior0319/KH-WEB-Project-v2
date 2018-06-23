@@ -1,7 +1,6 @@
 package jsp.board.controller;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -16,6 +15,7 @@ import jsp.board.model.vo.BoardVo;
  * Servlet implementation class RecommentBoardServlet
  */
 @WebServlet(name = "RecommendBoard", urlPatterns = { "/recommendBoard" })
+@SuppressWarnings("all")
 public class RecommendBoardServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
