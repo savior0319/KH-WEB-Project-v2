@@ -75,7 +75,9 @@ Date date = new Date(writeDay.getTime());
 			
 			<div class="ui medium header">후기내용</div>
 				<div class="ui form">
+				<%if(btlv.getBv().getBdContents()!=null){ %>
 					<textarea rows="20" readonly style="resize: none;"><%=btlv.getBv().getBdContents()%></textarea>
+					<%} %>
 					<% for(int i = 0 ; i <btlv.getList().size(); i++){ %>
 	    			<img class="ui image" src="<%= btlv.getList().get(i).getBdFilePath()%>" ><br>
 	    			<% } %>
