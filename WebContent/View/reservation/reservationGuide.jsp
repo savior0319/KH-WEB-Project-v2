@@ -11,7 +11,7 @@
 <%
 @SuppressWarnings("all")
 ArrayList<PensionVo> pvList = (ArrayList<PensionVo>)request.getAttribute("pensionInfoList");
-   // DescriptionTb desList = (DescriptionTb)request.getAttribute("descriptionInfo");
+DescriptionTb desList = (DescriptionTb)request.getAttribute("descriptionInfo");
 @SuppressWarnings("all")
 ArrayList<PensionPicTb> picList = (ArrayList<PensionPicTb>)request.getAttribute("pensionRoomPic");
 %>
@@ -47,17 +47,19 @@ ArrayList<PensionPicTb> picList = (ArrayList<PensionPicTb>)request.getAttribute(
 	<!-- 본문 시작 -->
 	<br>
 	<div class="ui container">
+	
 
 		<div class="ui icon message">
 			<i class="info icon"></i>
 			<div class="content">
 				<div class="header" style="text-align: center;">
 					<h1>
-						예약안내
+						예약 안내
 					</h1>
 				</div>
 			</div>
 		</div>
+
 
 		<div class="ui two column grid">
 
@@ -124,8 +126,40 @@ ArrayList<PensionPicTb> picList = (ArrayList<PensionPicTb>)request.getAttribute(
 
 	</div>
 	
+	
+<!-- 이부분 추가했습니당 : 지은  -->
 
-
+		<div class="ui one column grid">
+			<div class="column">
+				<div class="ui segment" align="center">
+					<table class="ui table" id="calendar" border="0" align="center">
+						<thead>
+							<tr align="center">
+								<th colspan="2" style="color:red;"><h3>예약 전 꼭 확인 부탁드립니다.</h3></th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr align="center">
+								<td width="20%" style="font-weight:bold;">예약 시 주의사항</td>
+								<td><%=desList.getDesAttention()%></td>
+							</tr>
+							<tr align="center">
+								<td width="20%" style="font-weight:bold;">예약 취소 시 주의사항</td>
+								<td><%=desList.getDesRefund()%></td>
+							</tr>
+							<tr align="center">
+								<td width="20%" style="font-weight:bold;">환불 관련 주의사항</td>
+								<td><%=desList.getDesAccount()%></td>
+							</tr>
+							<tr align="center">
+								<td width="20%" style="font-weight:bold;">기타 안내사항</td>
+								<td><%=desList.getDesEtc()%></td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
 
 
 
