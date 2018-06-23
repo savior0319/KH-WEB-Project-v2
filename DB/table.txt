@@ -575,17 +575,17 @@ VALUES      ('옥수수방',
 
 INSERT INTO PENSION_PIC_TB 
 VALUES      ('옥수수방', 
-             '/Image/room/101_010.jpg', 
+             '/Image/room/101_10.jpg', 
              'N'); 
 
 INSERT INTO PENSION_PIC_TB 
 VALUES      ('옥수수방', 
-             '/Image/room/101_011.jpg', 
+             '/Image/room/101_11.jpg', 
              'N'); 
 
 INSERT INTO PENSION_PIC_TB 
 VALUES      ('옥수수방', 
-             '/Image/room/101_012.jpg', 
+             '/Image/room/101_12.jpg', 
              'N'); 
 
 INSERT INTO PENSION_PIC_TB 
