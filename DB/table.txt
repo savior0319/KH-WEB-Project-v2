@@ -883,7 +883,7 @@ INSERT INTO MEMBER_TB
 VALUES      ('thepension', 
              'ba78181ad6ce8fe814dd84b8899f19e45038ed5dfcf8aba700d24366052eb309', 
              '90/01/01', 
-             '@thepension.com', 
+             'admin@thepension.com', 
              '010-0000-0000', 
              'M', 
              '관리자', 
@@ -905,28 +905,31 @@ INSERT INTO BOARD_TB VALUES(BD_NO_SEQ.NEXTVAL, '하이루', 'ㅎㅇㅎㅇ', 'the
 INSERT INTO BOARD_TB VALUES(BD_NO_SEQ.NEXTVAL, '더펜션 오픈', '할까?', 'thepension', SYSDATE+7, DEFAULT, DEFAULT, '공지사항');  
 INSERT INTO BOARD_TB VALUES(BD_NO_SEQ.NEXTVAL, '더펜션 관리자입니다', '일 안합니다', 'thepension', SYSDATE+7, DEFAULT, DEFAULT, '공지사항');  
 
--- 1:1 문의 샘플 데이터  
---INSERT INTO QUESTION_TB VALUES(1, '문의1', '문의입니다', 'thepension', SYSDATE, DEFAULT);  
---INSERT INTO QUESTION_TB VALUES(2, '문의2', '문의입니다', 'thepension', SYSDATE, DEFAULT);  
---INSERT INTO QUESTION_TB VALUES(3, '문의3', '문의입니다', 'thepension', SYSDATE, DEFAULT);  
---INSERT INTO QUESTION_TB VALUES(4, '문의4', '문의입니다', 'thepension', SYSDATE, DEFAULT);  
---INSERT INTO QUESTION_TB VALUES(5, '문의5', '문의입니다', 'thepension', SYSDATE, DEFAULT);  
---INSERT INTO QUESTION_TB VALUES(6, '문의6', '문의입니다', 'thepension', SYSDATE, DEFAULT);  
---INSERT INTO QUESTION_TB VALUES(7, '문의7', '문의입니다', 'thepension', SYSDATE, DEFAULT);  
---INSERT INTO QUESTION_TB VALUES(8, '문의8', '문의입니다', 'thepension', SYSDATE, DEFAULT);  
---INSERT INTO QUESTION_TB VALUES(9, '문의9', '문의입니다', 'thepension', SYSDATE, DEFAULT);  
---INSERT INTO QUESTION_TB VALUES(10, '문의10', '문의입니다', 'thepension', SYSDATE, DEFAULT);  
---INSERT INTO QUESTION_TB VALUES(11, '문의11', '문의입니다', 'thepension', SYSDATE, DEFAULT);  
---INSERT INTO QUESTION_TB VALUES(12, '문의12', '문의입니다', 'thepension', SYSDATE, DEFAULT);  
---INSERT INTO QUESTION_TB VALUES(13, '문의13', '문의입니다', 'thepension', SYSDATE, DEFAULT);  
---INSERT INTO QUESTION_TB VALUES(14, '문의14', '문의입니다', 'thepension', SYSDATE, DEFAULT);  
---INSERT INTO QUESTION_TB VALUES(15, '문의15', '문의입니다', 'thepension', SYSDATE, DEFAULT);  
---INSERT INTO QUESTION_TB VALUES(16, '문의16', '문의입니다', 'thepension', SYSDATE, DEFAULT);  
---INSERT INTO QUESTION_TB VALUES(17, '문의17', '문의입니다', 'thepension', SYSDATE, DEFAULT);  
---INSERT INTO QUESTION_TB VALUES(18, '문의18', '문의입니다', 'thepension', SYSDATE, DEFAULT);  
---INSERT INTO QUESTION_TB VALUES(19, '문의19', '문의입니다', 'thepension', SYSDATE, DEFAULT);  
---INSERT INTO QUESTION_TB VALUES(20, '문의20', '문의입니다', 'thepension', SYSDATE, DEFAULT);  
---INSERT INTO QUESTION_TB VALUES(21, '문의21', '문의입니다', 'thepension', SYSDATE, DEFAULT);  
---INSERT INTO QUESTION_TB VALUES(22, '문의22', '문의입니다', 'thepension', SYSDATE, DEFAULT);  
+--테스트 계정 test / test
+INSERT INTO MEMBER_TB VALUES('test', '9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08', '92/03/19', 'test@thepension.kr', '010-1485-5917', 'M', '테스트', '18/06/01', '인천 계양구 작전동');
 
+-- 1:1 문의 샘플 데이터  
+INSERT INTO QUESTION_TB VALUES(Q_NO_SEQ.NEXTVAL, '이 펜션 얼마죠1?', '30원에 삽니다', 'test', SYSDATE, DEFAULT);  
+INSERT INTO QUESTION_TB VALUES(Q_NO_SEQ.NEXTVAL, '이 펜션 얼마죠2?', '40원에 삽니다', 'test', SYSDATE, DEFAULT);  
+INSERT INTO QUESTION_TB VALUES(Q_NO_SEQ.NEXTVAL, '이 펜션 얼마죠3?', '50원에 삽니다', 'test', SYSDATE, DEFAULT);  
+INSERT INTO QUESTION_TB VALUES(Q_NO_SEQ.NEXTVAL, '이 펜션 얼마죠4?', '60원에 삽니다', 'test', SYSDATE, DEFAULT);  
+INSERT INTO QUESTION_TB VALUES(Q_NO_SEQ.NEXTVAL, '이 펜션 얼마죠5?', '70원에 삽니다', 'test', SYSDATE, DEFAULT);  
+INSERT INTO QUESTION_TB VALUES(Q_NO_SEQ.NEXTVAL, '이 펜션 얼마죠6?', '80원에 삽니다', 'test', SYSDATE, DEFAULT);  
+INSERT INTO QUESTION_TB VALUES(Q_NO_SEQ.NEXTVAL, '이 펜션 얼마죠7?', '90원에 삽니다', 'test', SYSDATE, DEFAULT);  
+INSERT INTO QUESTION_TB VALUES(Q_NO_SEQ.NEXTVAL, '이 펜션 얼마죠8?', '100원에 삽니다', 'test', SYSDATE, DEFAULT);  
+INSERT INTO QUESTION_TB VALUES(Q_NO_SEQ.NEXTVAL, '이 펜션 얼마죠9?', '110원에 삽니다', 'test', SYSDATE, DEFAULT);  
+INSERT INTO QUESTION_TB VALUES(Q_NO_SEQ.NEXTVAL, '이 펜션 얼마죠10?', '120원에 삽니다', 'test', SYSDATE, DEFAULT);  
+INSERT INTO QUESTION_TB VALUES(Q_NO_SEQ.NEXTVAL, '이 펜션 얼마죠11?', '130원에 삽니다', 'test', SYSDATE, DEFAULT);  
+INSERT INTO QUESTION_TB VALUES(Q_NO_SEQ.NEXTVAL, '이 펜션 얼마죠12?', '140원에 삽니다', 'test', SYSDATE, DEFAULT);  
+INSERT INTO QUESTION_TB VALUES(Q_NO_SEQ.NEXTVAL, '이 펜션 얼마죠13?', '150원에 삽니다', 'test', SYSDATE, DEFAULT);  
+INSERT INTO QUESTION_TB VALUES(Q_NO_SEQ.NEXTVAL, '이 펜션 얼마죠14?', '160원에 삽니다', 'test', SYSDATE, DEFAULT);  
+INSERT INTO QUESTION_TB VALUES(Q_NO_SEQ.NEXTVAL, '이 펜션 얼마죠15?', '170원에 삽니다', 'test', SYSDATE, DEFAULT);  
+INSERT INTO QUESTION_TB VALUES(Q_NO_SEQ.NEXTVAL, '이 펜션 얼마죠16?', '180원에 삽니다', 'test', SYSDATE, DEFAULT); 
+INSERT INTO QUESTION_TB VALUES(Q_NO_SEQ.NEXTVAL, '이 펜션 얼마죠17?', '190원에 삽니다', 'test', SYSDATE, DEFAULT); 
+INSERT INTO QUESTION_TB VALUES(Q_NO_SEQ.NEXTVAL, '이 펜션 얼마죠18?', '200원에 삽니다', 'test', SYSDATE, DEFAULT); 
+INSERT INTO QUESTION_TB VALUES(Q_NO_SEQ.NEXTVAL, '이 펜션 얼마죠19?', '210원에 삽니다', 'test', SYSDATE, DEFAULT); 
+INSERT INTO QUESTION_TB VALUES(Q_NO_SEQ.NEXTVAL, '이 펜션 얼마죠20?', '220원에 삽니다', 'test', SYSDATE, DEFAULT); 
+INSERT INTO QUESTION_TB VALUES(Q_NO_SEQ.NEXTVAL, '이 펜션 얼마죠21?', '230원에 삽니다', 'test', SYSDATE, DEFAULT); 
+INSERT INTO QUESTION_TB VALUES(Q_NO_SEQ.NEXTVAL, '이 펜션 얼마죠22?', '240원에 삽니다', 'test', SYSDATE, DEFAULT); 
+INSERT INTO QUESTION_TB VALUES(Q_NO_SEQ.NEXTVAL, '이 펜션 얼마죠23?', '안사', 'test', SYSDATE, DEFAULT); 
 COMMIT; 

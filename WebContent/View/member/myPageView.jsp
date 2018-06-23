@@ -35,9 +35,22 @@
 		$('#myPage').hide();
 		$('#pwdChange').hide();
 		$('#withDraw').hide();
+		$('#basicSpace').hide();
 		$('#space').css('padding', '100px');
 	});
+</script>
+</div>
+</c:if>
 
+<!-- 관리자 체크 -->
+<c:set value="${requestScope.mypage.mbId}" var="id"></c:set>
+<c:if test="${id == 'thepension'}">
+<script type="text/javascript">
+	$(document).ready(function() {
+		$('#adminMessage').show();
+		$('#withdrawMessage').html("<div class='ui medium header'>※ 관리자는 탈퇴가 불가능합니다</div>");
+		$('#adminHide').hide();
+	});
 </script>
 </div>
 </c:if>
@@ -47,29 +60,37 @@
 	<jsp:include page="/View/main/layout/header.jsp"></jsp:include>
 	<!-- 헤더 끝 -->
 	<!-- 본문 시작 -->
-	<br>
 	<div class="ui container">
 		<!-- 여기에 본문 내용 작성하면 됨 -->
-		<div class="ui red message" id="naverLogin" style="display: none;"><div class="ui small header">※ 네이버 아이디로 로그인했습니다(회원 정보 수정 및 탈퇴는 네이버에서 해주세요.)</div></div>
-		<h1>
-			<div class="ui large red leaderboard test ad" id="title" data-text="마이페이지" style="width: 100%;"></div>
-		</h1>
+		<div class="ui red message" id="naverLogin" style="display: none; margin-top: 15px;"><div class="ui small header">※ 네이버 아이디로 로그인했습니다(회원 정보 수정 및 탈퇴는 네이버에서 해주세요.)</div></div>
+		<div class="ui red message" id="adminMessage" style="display: none;"><div class="ui small header">※ 관리자 계정입니다.</div></div>
+		<div class="ui icon message">
+			<i id="myPageTitleIcon" class="user icon"></i>
+			<div class="content">
+				<div class="header" style="text-align: center;">
+					<h1 id="myPageTitle">
+						마이페이지
+					</h1>
+				</div>
+			</div>
+		</div>
 		<div class="ui grid">
 			<div class="four wide column">
 				<div class="ui vertical fluid tabular menu">
 					<a class="item" id="myPage"> 회원 정보 수정 </a> <a class="item" id="pwdChange"> 비밀번호 변경 </a> <a class="item" id="reservationInfo"> 예약 조회 및 취소 </a> <a class="item" id="reservationHistory"> 지난 예약 정보
 					</a> <a class="item" id="question"> 1:1 문의 </a> </a> <a class="item" id="withDraw"> 회원 탈퇴 </a>
 					<div id="space"></div>
+					<div id="basicSpace" style="padding: 50px;"></div>
 				</div>
 			</div>
 			<div class="twelve wide stretched column">
-				<%-- 마이페이지 기본 (추가할 것)--%>
+				<%-- 마이페이지 기본 --%>
 				<div class="ui segment" id="default">
 					<h1>
 						<div class="ui secondary basic segment">
 							<div class="ui small header" style="text-align: center">더 펜션 마이페이지입니다.</div>
 						</div>
-						<img src="Image/main/m01.jpg" width="100%" style="opacity: 0.8">
+						<img src="Image/myPage.jpg" width="100%" style="opacity: 0.8">
 					</h1>  
 				</div>
 				<%-- 회원 정보 수정 메뉴 --%>
@@ -86,7 +107,7 @@
 					<h5>
 						이메일
 						<div class="ui input">
-							<input type="text" value="<c:out value='${requestScope.mypage.mbEmail}'></c:out>" readonly>
+							<input type="text" value="<c:out value='${requestScope.mypage.mbEmail}'></c:out>" readonly size="60">
 						</div>
 					</h5>
 					<h5>
@@ -104,7 +125,7 @@
 					<h5>
 						* 주소
 						<div class="ui input">
-							<input id='findAddress' type="text" value="<c:out value='${requestScope.mypage.mbAddress}'></c:out>" size="50" readonly="readonly">
+							<input id='findAddress' type="text" value="<c:out value='${requestScope.mypage.mbAddress}'></c:out>" size="70" readonly="readonly">
 						</div>
 					</h5>
 					<h5>
@@ -247,7 +268,7 @@
 				<div class="ui orange segment" id="withDrawView" style="display: none;">
 					<br>
 					<br>
-					<div class="ui red message" style="width : 60%; margin: 0 auto;">
+					<div class="ui red message" style="width : 60%; margin: 0 auto;" id="withdrawMessage">
 						<h5>탈퇴 시 The Pension 이용권한 및 관련기록이 모두 삭제 됩니다.<br>
 							또한 가입 시 입력한 개인정보 또한 일괄 삭제되어 복구될 수 없으므로<br>
 						탈퇴 시 이점 유의 해주시기 바랍니다.</h5>
@@ -258,16 +279,18 @@
 					</div>
 					<br>
 					<br>
-					<div class="ui centered grid">
-						<h4>
-							탈퇴하시려면 비밀번호를 입력해주세요
-							<br>
-							<br>
-							<div class="ui input">
-								<input type="password" id="pwdChk" name="pwd" placeholder="비밀번호 입력" maxlength="16" onkeypress="myFunction();">
-							</div>
-							<div id="pwdChkBtn" class="ui blue button" style="margin-left: 5px;">탈퇴하기</div>
-						</h4>
+					<div id="adminHide">
+						<div class="ui centered grid">
+							<h4>
+								탈퇴하시려면 비밀번호를 입력해주세요
+								<br>
+								<br>
+								<div class="ui input">
+									<input type="password" id="pwdChk" name="pwd" placeholder="비밀번호 입력" maxlength="16" onkeypress="myFunction();">
+								</div>
+								<div id="pwdChkBtn" class="ui blue button" style="margin-left: 5px;">탈퇴하기</div>
+							</h4>
+						</div>
 					</div>
 					<br>
 					<br>
@@ -302,7 +325,7 @@
 		</div> 
 		<div class="ui form" style="margin-top: 15px;">
 			<label style="font-weight: 600;">문의내용</label>
-			<textarea id="questionContent" placeholder="문의 내용 입력" style="margin-top: 10px;" maxlength="1000"></textarea>
+			<textarea id="questionContent" placeholder="문의 내용 입력" style="margin-top: 10px; resize: none;" maxlength="1000"></textarea>
 		</div>
 		<div class="ui right aligned basic segment" style="margin-top: 0px;">
 			<div class="actions">
@@ -325,13 +348,13 @@
 
 		<div class="ui form" style="margin-top: 15px;">
 			<label style="font-weight: 600;">문의내용</label>
-			<textarea id="myQuestionContent" readonly>
+			<textarea id="myQuestionContent" readonly style="resize: none;">
 			</textarea>
 		</div>
 
 		<div class="ui form" style="margin-top: 15px;">
 			<label style="font-weight: 600;">답변내용</label>
-			<textarea id="myQuestionAnswer" readonly>
+			<textarea id="myQuestionAnswer" readonly style="resize: none;">
 			</textarea>
 		</div>
 
@@ -358,7 +381,9 @@
 					removeContent();
 					revmoveBtn();
 					$('#myPage').addClass('active');
-					$('#title').attr('data-text', '회원 정보 수정');
+					$('#myPageTitleIcon').removeClass();
+					$('#myPageTitleIcon').addClass('edit icon');
+					$('#myPageTitle').html('회원 정보 수정');
 					$('#myPageView').show();
 					$('#myPageBtn').show();
 				}
@@ -370,7 +395,9 @@
 			removeContent();
 			revmoveBtn();
 			$('#pwdChange').addClass('active');
-			$('#title').attr('data-text', '비밀번호 변경');
+			$('#myPageTitleIcon').removeClass();
+			$('#myPageTitleIcon').addClass('lock icon');
+			$('#myPageTitle').html('비밀번호 변경');
 			$('#pwdChangeView').show();
 			$('#pwdChangeBtn').show();
 		});
@@ -390,7 +417,9 @@
 			removeContent();
 			revmoveBtn();
 			$('#reservationInfo').addClass('active');
-			$('#title').attr('data-text', '예약 조회 및 취소');
+			$('#myPageTitleIcon').removeClass();
+			$('#myPageTitleIcon').addClass('calendar alternate outline icon');
+			$('#myPageTitle').html('예약 조회 및 취소');
 			$('#reservationInfoView').show();
 
 			// 예약 중인 정보 출력
@@ -572,7 +601,9 @@ var ajaxLoadNowHis = ajaxLoadHis;
 			removeContent();
 			revmoveBtn();
 			$('#reservationHistory').addClass('active');
-			$('#title').attr('data-text', '지난 예약 정보');
+			$('#myPageTitleIcon').removeClass();
+			$('#myPageTitleIcon').addClass('calendar alternate icon');
+			$('#myPageTitle').html('지난 예약 정보');
 			$('#reservationHistoryView').show();
 			
 			
@@ -646,7 +677,9 @@ var ajaxLoadNowHis = ajaxLoadHis;
 			removeContent();
 			revmoveBtn();
 			$('#question').addClass('active');
-			$('#title').attr('data-text', '1:1 문의');
+			$('#myPageTitleIcon').removeClass();
+			$('#myPageTitleIcon').addClass('question icon');
+			$('#myPageTitle').html('1:1 문의');
 			$('#questionListView').show();
 
 			$.ajax({
@@ -722,7 +755,7 @@ var ajaxLoadNowHis = ajaxLoadHis;
 
 						for (i = startVal; i < test; i++) { //i = startVal; i < items; i++
 
-							var tr = $('<tr>');
+							var tr = $("<tr align='center'>");
 							var qNo = $("<td name='count'>").text(data[i].qNo);
 							var qName = $('<td>').html("<a href='#' id='test" + (i + 1)+ "'>" + data[i].qName + "</a>");
 							var qWriteDate = $('<td>').text(data[i].qWriteDate);
@@ -774,7 +807,9 @@ var ajaxLoadNowHis = ajaxLoadHis;
 			removeContent();
 			revmoveBtn();
 			$('#withDraw').addClass('active');
-			$('#title').attr('data-text', '회원 탈퇴');
+			$('#myPageTitleIcon').removeClass();
+			$('#myPageTitleIcon').addClass('sign out alternate icon');
+			$('#myPageTitle').html('회원 탈퇴');
 			$('#withDrawView').show();
 		});
 		/* 회원 탈퇴- 비밀번호 확인 후 삭제 (버튼) */
@@ -803,6 +838,7 @@ var ajaxLoadNowHis = ajaxLoadHis;
 				alert('탈퇴 내용에 동의해주세요');
 			}
 		});
+
 		/* 회원 탈퇴- 비밀번호 확인 후 삭제 (엔터키) */
 		$('#pwdChk').keydown(function(key) {
 			if (key.keyCode == 13) {
