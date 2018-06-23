@@ -19,7 +19,7 @@ pageEncoding="UTF-8"%>
 		gtag('config', 'UA-120156974-1');
 	</script>
 	<jsp:include page="/View/main/layout/cssjs.jsp"></jsp:include>
-	<title>The Pension</title>
+	<title>후기게시판 - 글작성</title>
 </head>
 
 <style>

@@ -20,7 +20,7 @@
 		gtag('config', 'UA-120156974-1');
 	</script>
 	<jsp:include page="/View/main/layout/cssjs.jsp"></jsp:include>
-	<title>The Pension</title>
+	<title>후기게시판 - 검색결과</title>
 </head>
 
 <style>
