@@ -34,10 +34,7 @@ public class FindIdServlet extends HttpServlet {
 			MemberVo mv = new MemberService().findId(email, name);
 			String id = mv.getMbId();
 			Date entDate = mv.getMbEntDate();
-			
-			
-//			String dateConvert = String.valueOf(entDate);
-//			System.out.println(dateConvert);
+
 			FindIdVo fv = new FindIdVo();
 
 			fv.setId(id);

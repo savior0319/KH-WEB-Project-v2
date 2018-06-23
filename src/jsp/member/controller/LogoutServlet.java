@@ -20,17 +20,17 @@ public class LogoutServlet extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		
+
 		HttpSession session = request.getSession(false);
-		MemberVo mv = (MemberVo)session.getAttribute("member");
-		
-		if(mv != null) {
+		MemberVo mv = (MemberVo) session.getAttribute("member");
+
+		if (mv != null) {
 			session.invalidate();
 			response.sendRedirect("/index.jsp");
 		} else {
 			response.sendRedirect("/View/error/logoutFail.jsp");
 		}
-		
+
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)

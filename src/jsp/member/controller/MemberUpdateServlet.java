@@ -37,7 +37,7 @@ public class MemberUpdateServlet extends HttpServlet {
 		}
 
 		int result = new MemberService().memberUpdate(id, phone, fullAddress);
-		
+
 		response.getWriter().print(result);
 		response.getWriter().close();
 	}
