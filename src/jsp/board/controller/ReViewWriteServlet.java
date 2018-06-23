@@ -28,6 +28,7 @@ import jsp.member.model.vo.MemberVo;
  * Servlet implementation class ReViewWriteServlet
  */
 @WebServlet(name = "ReViewWrite", urlPatterns = { "/reViewWrite" })
+@SuppressWarnings("all")
 public class ReViewWriteServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 

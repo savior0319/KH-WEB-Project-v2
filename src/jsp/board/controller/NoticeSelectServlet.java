@@ -13,7 +13,6 @@ import javax.servlet.http.HttpServletResponse;
 import jsp.admin.model.service.AdminService;
 import jsp.admin.model.vo.BoardTotalInfoVo;
 import jsp.board.model.service.BoardService;
-import jsp.board.model.vo.BoardVo;
 import jsp.board.model.vo.Comment;
 
 /**

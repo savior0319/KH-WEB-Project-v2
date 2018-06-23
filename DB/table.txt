@@ -891,16 +891,19 @@ VALUES      ('thepension',
              '더펜션'); 
 
 -- 게시판 샘플 데이터  
-INSERT INTO BOARD_TB VALUES(BD_NO_SEQ.NEXTVAL, '더펜션 공지입니다', '오늘 쉽니다', 'thepension', SYSDATE, DEFAULT, DEFAULT, '공지');  
-INSERT INTO BOARD_TB VALUES(BD_NO_SEQ.NEXTVAL, '더펜션 공지', '제곧내', 'thepension', SYSDATE+1, DEFAULT, DEFAULT, '공지');  
-INSERT INTO BOARD_TB VALUES(BD_NO_SEQ.NEXTVAL, '공지임', '할말없음', 'thepension', SYSDATE+2, DEFAULT, DEFAULT, '공지');  
-INSERT INTO BOARD_TB VALUES(BD_NO_SEQ.NEXTVAL, '오늘 쉽니다', '일 안해', 'thepension', SYSDATE+2, DEFAULT, DEFAULT, '공지');  
-INSERT INTO BOARD_TB VALUES(BD_NO_SEQ.NEXTVAL, '내일도 쉽니다', '쉴꺼야', 'thepension', SYSDATE+3, DEFAULT, DEFAULT, '공지');  
-INSERT INTO BOARD_TB VALUES(BD_NO_SEQ.NEXTVAL, '모레도 쉽니다', '집가고 싶다', 'thepension', SYSDATE+5, DEFAULT, DEFAULT, '공지');  
-INSERT INTO BOARD_TB VALUES(BD_NO_SEQ.NEXTVAL, '펜션 팝니다', '제발 좀 사셈', 'thepension', SYSDATE+5, DEFAULT, DEFAULT, '공지');  
-INSERT INTO BOARD_TB VALUES(BD_NO_SEQ.NEXTVAL, '오늘 점심 뭐 먹지', '배고파', 'thepension', SYSDATE+5, DEFAULT, DEFAULT, '공지');  
-INSERT INTO BOARD_TB VALUES(BD_NO_SEQ.NEXTVAL, '오늘 저녁 뭐먹지', '배불러', 'thepension', SYSDATE+5, DEFAULT, DEFAULT, '공지');  
-INSERT INTO BOARD_TB VALUES(BD_NO_SEQ.NEXTVAL, '오늘 왜캐 덥지', '넘나 더운것..ㅎㅎ', 'thepension', SYSDATE+5, DEFAULT, DEFAULT, '공지');  
+INSERT INTO BOARD_TB VALUES(BD_NO_SEQ.NEXTVAL, '더펜션 공지입니다', '오늘 쉽니다', 'thepension', SYSDATE, DEFAULT, DEFAULT, '공지사항');  
+INSERT INTO BOARD_TB VALUES(BD_NO_SEQ.NEXTVAL, '더펜션 공지', '제곧내', 'thepension', SYSDATE+1, DEFAULT, DEFAULT, '공지사항');  
+INSERT INTO BOARD_TB VALUES(BD_NO_SEQ.NEXTVAL, '공지임', '할말없음', 'thepension', SYSDATE+2, DEFAULT, DEFAULT, '공지사항');  
+INSERT INTO BOARD_TB VALUES(BD_NO_SEQ.NEXTVAL, '오늘 쉽니다', '일 안해', 'thepension', SYSDATE+2, DEFAULT, DEFAULT, '공지사항');  
+INSERT INTO BOARD_TB VALUES(BD_NO_SEQ.NEXTVAL, '내일도 쉽니다', '쉴꺼야', 'thepension', SYSDATE+3, DEFAULT, DEFAULT, '공지사항');  
+INSERT INTO BOARD_TB VALUES(BD_NO_SEQ.NEXTVAL, '모레도 쉽니다', '집가고 싶다', 'thepension', SYSDATE+3, DEFAULT, DEFAULT, '공지사항');  
+INSERT INTO BOARD_TB VALUES(BD_NO_SEQ.NEXTVAL, '펜션 팝니다', '제발 좀 사셈', 'thepension', SYSDATE+3, DEFAULT, DEFAULT, '공지사항');  
+INSERT INTO BOARD_TB VALUES(BD_NO_SEQ.NEXTVAL, '오늘 점심 뭐 먹지', '배고파', 'thepension', SYSDATE+4, DEFAULT, DEFAULT, '공지사항');  
+INSERT INTO BOARD_TB VALUES(BD_NO_SEQ.NEXTVAL, '오늘 저녁 뭐먹지', '배불러', 'thepension', SYSDATE+4, DEFAULT, DEFAULT, '공지사항');  
+INSERT INTO BOARD_TB VALUES(BD_NO_SEQ.NEXTVAL, '오늘 왜캐 덥지', '넘나 더운것..ㅎㅎ', 'thepension', SYSDATE+6, DEFAULT, DEFAULT, '공지사항');  
+INSERT INTO BOARD_TB VALUES(BD_NO_SEQ.NEXTVAL, '하이루', 'ㅎㅇㅎㅇ', 'thepension', SYSDATE+6, DEFAULT, DEFAULT, '공지사항');  
+INSERT INTO BOARD_TB VALUES(BD_NO_SEQ.NEXTVAL, '더펜션 오픈', '할까?', 'thepension', SYSDATE+7, DEFAULT, DEFAULT, '공지사항');  
+INSERT INTO BOARD_TB VALUES(BD_NO_SEQ.NEXTVAL, '더펜션 관리자입니다', '일 안합니다', 'thepension', SYSDATE+7, DEFAULT, DEFAULT, '공지사항');  
 
 -- 1:1 문의 샘플 데이터  
 --INSERT INTO QUESTION_TB VALUES(1, '문의1', '문의입니다', 'thepension', SYSDATE, DEFAULT);  

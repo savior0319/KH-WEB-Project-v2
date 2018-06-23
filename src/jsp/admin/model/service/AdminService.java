@@ -31,7 +31,7 @@ import jsp.reservation.model.vo.ReservationCancelVo;
 import jsp.reservation.model.vo.ReservationHistoryVo;
 import jsp.reservation.model.vo.ReservationVo;
 import jsp.reservation.model.vo.SalesVo;
-
+@SuppressWarnings("all")
 public class AdminService {
 	public AdminService() {
 	}
