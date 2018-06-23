@@ -7,27 +7,27 @@
 BoardTotalInfoVo btlv = (BoardTotalInfoVo)request.getAttribute("review");
 BoardVo bv = null;
 ArrayList<DataFile> list = null;
-		if (btlv != null) {
-			 bv = btlv.getBv();
-			 list = btlv.getList();
-		}
-	%>
+if (btlv != null) {
+bv = btlv.getBv();
+list = btlv.getList();
+}
+%>
 <!DOCTYPE html>
 <html>
 
 <head>
-<!-- Global site tag (gtag.js) - Google Analytics -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=UA-120156974-1"></script>
-<script>
-	window.dataLayer = window.dataLayer || [];
-	function gtag() {
-		dataLayer.push(arguments);
-	}
-	gtag('js', new Date());
-	gtag('config', 'UA-120156974-1');
-</script>
-<jsp:include page="/View/main/layout/cssjs.jsp"></jsp:include>
-<title>The Pension</title>
+	<!-- Global site tag (gtag.js) - Google Analytics -->
+	<script async src="https://www.googletagmanager.com/gtag/js?id=UA-120156974-1"></script>
+	<script>
+		window.dataLayer = window.dataLayer || [];
+		function gtag() {
+			dataLayer.push(arguments);
+		}
+		gtag('js', new Date());
+		gtag('config', 'UA-120156974-1');
+	</script>
+	<jsp:include page="/View/main/layout/cssjs.jsp"></jsp:include>
+	<title>The Pension</title>
 </head>
 
 <style>
@@ -43,60 +43,58 @@ ArrayList<DataFile> list = null;
 	<br>
 	<div class="ui container">
 		<!-- 여기에 본문 내용 작성하면 됨 -->
-		
-		<%=bv.getBdName() %>
+		<div class="ui red message"><div class="ui small header">※ 사진을 수정하려면 수정 버튼을 누르고 수정할 이미지 아래의 수정 버튼을 누르세요</div></div>
 		<div class="ui grid">
-				<% for(int i = 0 ; i < list.size() ; i++){ %>
-					<div class="four wide column">
-						<form action="/reviewImageUpdate" method="post"
-							enctype="Multipart/form-data" style="display: inline;">
-							<input type="hidden" value="<%=bv.getBdNo()%>" name="bdNo"/>
-							<div id='image<%= i %>'>
-								<img src="<%=list.get(i).getBdFilePath()%>" style="width: 100%; height: 100%;">
-							</div>
-							<input type="hidden" name="image_path"
-								value="<%=list.get(i).getBdFilePath()%>">
+			<% for(int i = 0 ; i < list.size() ; i++){ %>
+			<div class="four wide column">
+				<form action="/reviewImageUpdate" method="post"
+				enctype="Multipart/form-data" style="display: inline;">
+				<input type="hidden" value="<%=bv.getBdNo()%>" name="bdNo"/>
+				<div id='image<%= i %>'>
+					<img src="<%=list.get(i).getBdFilePath()%>" style="width: 100%; height: 100%;">
+				</div>
+				<input type="hidden" name="image_path"
+				value="<%=list.get(i).getBdFilePath()%>">
 
-							<input type="hidden" name="img" id="update<%= i %>"
-								accept="image/*" required /><br> <br> <input
-								type="hidden" id="update<%= i %>_submit" value="수정"
-								class="ui button">
-							<button type="button" id="update<%= i %>_btn"
-								onclick="update('update<%= i %>');" class="ui button">수정</button>
-							<button type="button" id="update<%= i %>_reBtn"
-								style="display: none;"
-								onclick="imageCancle('update<%= i %>');" class="ui button">취소</button>
-						</form>
-					</div>
+				<input type="hidden" name="img" id="update<%= i %>"
+				accept="image/*" required /><br> <br> <input
+				type="hidden" id="update<%= i %>_submit" value="수정"
+				class="ui small red button">
+				<button type="button" id="update<%= i %>_btn"
+					onclick="update('update<%= i %>');" class="ui small red button">수정</button>
+					<button type="button" id="update<%= i %>_reBtn"
+						style="display: none;"
+						onclick="imageCancle('update<%= i %>');" class="ui small blue button">취소</button>
+					</form>
+				</div>
 				<%} %>
 			</div>
-			<br>
-			<br>
-			<button onclick="back()" class="ui button">취소</button>
-	</div>
-	<!-- 본문 끝 -->
+			<br><br><br><br>
+			<button onclick="back()" class="ui tiny small teal button">뒤로가기</button>
+		</div>
+		<!-- 본문 끝 -->
 
-	<!-- 푸터 시작  -->
-	<jsp:include page="/View/main/layout/footer.jsp"></jsp:include>
-	<!-- 푸터 끝 -->
-</body>
+		<!-- 푸터 시작  -->
+		<jsp:include page="/View/main/layout/footer.jsp"></jsp:include>
+		<!-- 푸터 끝 -->
+	</body>
 
-<script>
-function back() {
-	history.go(-1);
-}
-function update(id){
-	document.getElementById(id).type="file";
-	document.getElementById(id+"_btn").style="display:none";
-	document.getElementById(id+"_submit").type="submit";
-	document.getElementById(id+"_reBtn").style="display:inline";
-}
-function imageCancle(id) {
-	document.getElementById(id).type="hidden";
-	document.getElementById(id+"_btn").style="display:inline";
-	document.getElementById(id+"_submit").type="hidden";
-	document.getElementById(id+"_reBtn").style="display:none";
-}
-</script>
+	<script>
+		function back() {
+			history.go(-1);
+		}
+		function update(id){
+			document.getElementById(id).type="file";
+			document.getElementById(id+"_btn").style="display:none";
+			document.getElementById(id+"_submit").type="submit";
+			document.getElementById(id+"_reBtn").style="display:inline";
+		}
+		function imageCancle(id) {
+			document.getElementById(id).type="hidden";
+			document.getElementById(id+"_btn").style="display:inline";
+			document.getElementById(id+"_submit").type="hidden";
+			document.getElementById(id+"_reBtn").style="display:none";
+		}
+	</script>
 
-</html>
+	</html>
