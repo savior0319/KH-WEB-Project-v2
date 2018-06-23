@@ -36,7 +36,7 @@ public class AdminRoomDeleteServlet extends HttpServlet {
 		request.setCharacterEncoding("utf-8");
 		String roomName = request.getParameter("roomName");
 		
-		ArrayList<PensionPicTb> list = new AdminService();
+	/*	ArrayList<PensionPicTb> list = new AdminService();*/
 	}
 
 	/**
