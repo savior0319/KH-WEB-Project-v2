@@ -830,7 +830,7 @@ var ajaxLoadNowHis = ajaxLoadHis;
 							alert(data);
 						} else {
 							alert(data);
-							location.href = "/";
+							location.reload();
 						}
 					}
 				});
@@ -858,7 +858,7 @@ var ajaxLoadNowHis = ajaxLoadHis;
 								alert(data);
 							} else {
 								alert(data);
-								location.href = "/";
+								location.reload();
 							}
 						}
 					});
