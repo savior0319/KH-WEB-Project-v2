@@ -18,12 +18,29 @@
 	<jsp:include page="/View/main/layout/cssjs.jsp"></jsp:include>
 	<title>마이페이지</title>
 </head>
+
 <style>
 #questionTitle {
 	font-weight: 600;
 	font-size: 18px;
 }
 </style>
+
+<!-- 네아로 체크 -->
+<c:set value="${sessionScope.member.mbAddress}" var="id"></c:set>
+<c:if test="${id == '네이버회원'}">
+<script type="text/javascript">
+	$(document).ready(function() {
+		$('#myPage').hide();
+		$('#pwdChange').hide();
+		$('#withDraw').hide();
+		$('#space').css('padding', '100px');
+	});
+
+</script>
+</div>
+</c:if>
+
 <body>
 	<!-- 헤더 시작  -->
 	<jsp:include page="/View/main/layout/header.jsp"></jsp:include>
@@ -40,6 +57,7 @@
 				<div class="ui vertical fluid tabular menu">
 					<a class="item" id="myPage"> 회원 정보 수정 </a> <a class="item" id="pwdChange"> 비밀번호 변경 </a> <a class="item" id="reservationInfo"> 예약 조회 및 취소 </a> <a class="item" id="reservationHistory"> 지난 예약 정보
 					</a> <a class="item" id="question"> 1:1 문의 </a> </a> <a class="item" id="withDraw"> 회원 탈퇴 </a>
+					<div id="space"></div>
 				</div>
 			</div>
 			<div class="twelve wide stretched column">
@@ -182,7 +200,7 @@
 				<%-- 지난 예약 정보 --%> <%-- 지은2 작성 노력 중2 --%>
 				<div class="ui orange segment" id="reservationHistoryView" style="display: none">
 					<div class="ui basic segment">
-					<h3>지난 예약 정보</h3>
+						<h3>지난 예약 정보</h3>
 						<table class="ui table">
 							<thead> 
 								<tr align="center">
@@ -392,9 +410,9 @@
 					} else {
 
 						for(var i=0; i<resList.length; i++) {
-						
+
 							var tr = $("<tr align='center'>");
-						
+
 							var roomNameTd = $("<td>").text(resList[i].resRoomName); // 방이름
 							var tempDate = (resList[i].resInDate).split(',');
 							var temp = tempDate[0].split('월 ');
@@ -408,13 +426,13 @@
 							var paymentDateTd = $("<td>");
 							var paymentOneLabel = $("<label>").text(tempDate[0]+' '+tempDate[1]+' '+tempDate[2]);
 							var paymentTwoLabel = $("<label>").text(tempDate[3]+' '+tempDate[4]);
-						
+
 							var buttonTd = $("<td>");
 							var buttonTag = $("<button class='ui inverted red button' id='cancelCall"+i+"' value='"+resList[i].resNo
-											  +"' onclick='return reallyCancel();'>").text('예약취소');
-						
+								+"' onclick='return reallyCancel();'>").text('예약취소');
 
-						
+
+
 							tr.append(roomNameTd);
 							tr.append(inDateTd);
 							tr.append(outDateTd);
@@ -424,28 +442,28 @@
 							paymentDateTd.append(paymentOneLabel);
 							paymentDateTd.append($("<br>"));
 							paymentDateTd.append(paymentTwoLabel);
-						
+
 							tr.append(buttonTd);
 							buttonTd.append(buttonTag);
-						
+
 							$("#resListInfo").append(tr);
 
-						
+
 							$('#cancelCall'+i).click(function() {
-							
-							 	var resNo = $(this).attr('value');
-							 
+
+								var resNo = $(this).attr('value');
+
 								$.ajax({
-								 	url : '/reservationCancelCall',
-								 	data : { res_no : resNo },
-								 	type : 'get',
-								 	success : function() {
-									 	alert("예약 취소가 접수되었습니다.");
-									 	window.location.reload();
-								 	},
-								 	error : function() {
-									 	console.log("cancelCall:실패");
-								 	}
+									url : '/reservationCancelCall',
+									data : { res_no : resNo },
+									type : 'get',
+									success : function() {
+										alert("예약 취소가 접수되었습니다.");
+										window.location.reload();
+									},
+									error : function() {
+										console.log("cancelCall:실패");
+									}
 								});
 							});
 						} // for문 종료
@@ -526,7 +544,7 @@
 							tr.append(cancelLabelTd);
 							cancelLabelTd.append(cancelLabel);
 							
-						
+
 							$("#ccListInfo").append(tr);
 							
 						} // for문 종료
@@ -538,14 +556,14 @@
 			}); // 취소된 예약 정보 출력 ajax 종료
 
 		});
-		
-		
-		/* Ajax 중복 호출 방지 용*/
-		var ajaxLoadHis = 0;
-		var ajaxLoadNowHis = ajaxLoadHis;
-		
-		
-		
+
+
+/* Ajax 중복 호출 방지 용*/
+var ajaxLoadHis = 0;
+var ajaxLoadNowHis = ajaxLoadHis;
+
+
+
 		/* 지난 예약 정보 */ /////////////// 지은2 작업 노력 중2
 		$('#reservationHistory').click(function() {
 			removeMenu();
@@ -576,36 +594,36 @@
 					if(ajaxLoadNowCc != ajaxLoadCc - 1){ 
 						console.log("중복출력방지");
 					} else {
-					
+
 						for(var i=0; i<hisList.length; i++) {
-						
-					
+
+
 							var tr = $("<tr align='center'>");
-					
+
 							var tempDate = (hisList[i].resHisInDate).split(',');
 							var temp = tempDate[0].split('월 ');
 							var inDateTd = $("<td>").text(tempDate[1]+'-'+temp[0]+'-'+temp[1]); // 입실일
-					
+
 							tempDate = (hisList[i].resHisOutDate).split(',');
 							temp = tempDate[0].split('월 ');
 							var outDateTd = $("<td>").text(tempDate[1]+'-'+temp[0]+'-'+temp[1]); // 퇴실일
-						
+
 							var roomNameTd = $("<td>").text(hisList[i].resHisRoomName); // 방이름
-					
+
 							var personnelTd = $("<td>").text(hisList[i].resHisPersonnel); // 예약인원
-					
+
 							var priceTd = $("<td>").text(hisList[i].resHisPrice+'원'); // 요금
-					
+
 							tr.append(inDateTd);
 							tr.append(outDateTd);
 							tr.append(roomNameTd);
 							tr.append(personnelTd);
 							tr.append(priceTd);
-					
+
 							$("#resHistoryListInfo").append(tr);
-						
+
 						} // for문 종료
-					
+
 					} // else문 종료
 				},
 				error : function() {
