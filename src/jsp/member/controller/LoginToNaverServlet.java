@@ -50,6 +50,31 @@ public class LoginToNaverServlet extends HttpServlet {
 			HttpSession session = request.getSession();
 			session.setAttribute("member", mv);
 
+			String logBrowser = new String();
+			String accessInfo = request.getHeader("User-Agent");
+
+			if (accessInfo.indexOf("Trident") > 0 || accessInfo.indexOf("MSIE") > 0) {
+				logBrowser = "IE";
+			} else if (accessInfo.indexOf("Opera") > 0) {
+				logBrowser = "Opera";
+			} else if (accessInfo.indexOf("Firefox") > 0) {
+				logBrowser = "Firefox";
+			} else if (accessInfo.indexOf("Safari") > 0) {
+				if (accessInfo.indexOf("Chrome") > 0) {
+					logBrowser = "Chrome";
+				} else {
+					logBrowser = "Safari";
+				}
+			} else {
+				logBrowser = "etc";
+			}
+
+			String logId = mv.getMbId();
+			String logIp = request.getRemoteHost();
+			String logLocale = String.valueOf(request.getLocale());
+
+			new MemberService().memberLog(logId, logBrowser, logIp, logLocale);
+
 			if (result > 0) {
 				response.getWriter().print("1");
 				response.getWriter().close();
