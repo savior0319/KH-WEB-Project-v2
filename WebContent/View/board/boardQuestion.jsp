@@ -58,14 +58,14 @@ pageEncoding="UTF-8"%>
     정원을 초과한 인원이 있는 경우 추가요금은 얼마인가요?
   </div>
   <div class="content">
-    <p>- 객실 안내에 각 객실에 대한 추가 요금안내가 되어있습니다</p>
+    <p>- <a href="/roomIntroduce">객실 안내</a>에 페이지에 각 객실에 대한 추가 요금 및 안내가 되어있습니다</p>
   </div>
   <div class="title">
     <i class="dropdown icon"></i>
     와이파이 있나요?
   </div>
   <div class="content">
-    <p>- 네. 빵빵합니다.</p>
+    <p>- 네. 빵빵합니다^^.</p>
   </div>
   <div class="title">
     <i class="dropdown icon"></i>
@@ -94,7 +94,7 @@ pageEncoding="UTF-8"%>
     더 궁금한 것은 어디에 문의하면 되나요?
   </div>
   <div class="content">
-    <p>- 추가적으로 궁금하신 사항은 1:1문의에 댓글로 남겨주시거나 대표전화(010-3787-5606)로 전화 부탁드립니다.</p>
+    <p>- 추가적으로 궁금하신 사항은 <a href="/View/member/question.jsp">1:1문의</a>를 해주시거나 <span style="font-weight: 600">대표전화(010-3787-5606)</span>로 연락 부탁드립니다.</p>
   </div>
 </div>
 <br><br>
