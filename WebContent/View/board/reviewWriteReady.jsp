@@ -39,13 +39,13 @@
 		<form action="/reViewWrite" method="post" enctype="Multipart/form-data" style="display:inline;">
 			<br> 글제목:<input
 				type="text" size=90 name="bd_Name" required/><br>
-			<textarea rows="20" cols="100" name="bd_Contents"
+			<textarea rows="20" cols="100" name="bd_Contents" id="text"
 				style="resize: none;"></textarea>
 			<br> <input type="file" name="img" id="img" accept="image/*" multiple><br><br>
 			<div id="image">
 			
 			</div><br>
-						<input type="submit" value="작성하기" class="ui button">
+						<input type="submit"value="작성하기" class="ui button" onclick="return check();" >
 		</form>
 		<button type="button" class="ui button" onclick="back();">목록</button>
 
@@ -59,9 +59,11 @@
 
 <script>
 	var uploadfile = document.getElementById('img');
+	var fileslength = 0;
 	uploadfile.onchange = function(e){
 	var files = e.target.files;
-	for(var i=0; i<files.length; i++){
+	fileslength = files.length;
+	for(var i=0; i<fileslength; i++){
 		if(i===0)
 			{
 				document.getElementById('image').innerHTML = "";
@@ -74,9 +76,19 @@
 		}
 	}
 }
+	function check() {
+		var text = document.getElementById('text').value;
+		console.log(fileslength);
+		console.log(text);
+		if(text=="" && fileslength==0)
+			{
+			alert("내용을 작성해주세요");
+			return false;
+			}
+	}
 	function back() {
 		history.back(-1);
-	};
+	}
 
 </script>
 </body>
