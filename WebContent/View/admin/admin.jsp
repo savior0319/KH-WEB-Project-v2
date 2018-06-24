@@ -34,54 +34,46 @@
     	
       	<div class="ui left align segment">
       		<h3 class="ui header">펜션 현황</h3>
-      		<div class="ui six column relaxed grid list">
+      		<!-- <div class="ui six column relaxed grid list"> -->
+      		<div class="ui three column relaxed grid list">
 	      		<div class="ui column">
 					<i class="ui map marker icon"></i>
 				    <div class="ui content">
-				      <a class="header">오늘 주문</a>
-				      <div class="ui description">0</div>
+				      <a class="header">오늘 예약 수</a>
+				      <div class="ui description" id="countReserve">0</div>
 				    </div>
 	      		</div>
 	      		
-	      		<div class="column">
+	      		<!-- <div class="column">
 					<i class="map marker icon"></i>
 				    <div class="content">
 				      <a class="header">오늘의 매출</a>
 				      <div class="description">0</div>
 				    </div>
-	      		</div>
+	      		</div> -->
 	      		
-	      		<div class="column">
+	      		<!-- <div class="column">
 					<i class="map marker icon"></i>
 				    <div class="content">
 				      <a class="header">무통장 입금</a>
 				      <div class="description">0</div>
 				    </div>
-	      		</div>
+	      		</div> -->
 	      		<div class="column">
 					<i class="map marker icon"></i>
 				    <div class="content">
-				      <a class="header">신규 QnA 등록 </a>
-				      <div class="description">0</div>
+				      <a class="header">미 답변 질문 </a>
+				      <div class="description" id="countQuestion">0</div>
 				    </div>
 	      		</div>
 	      		
 	      		<div class="column">
 					<i class="map marker icon"></i>
 				    <div class="content">
-				      <a class="header">신규 회원</a>
-				      <div class="description">0</div>
+				      <a class="header">이달의 신규 회원</a>
+				      <div class="description" id="countMember">0</div>
 				    </div>
 	      		</div>
-	      		
-	      		<div class="column">
-					<i class="map marker icon"></i>
-				    <div class="content">
-				      <a class="header">오늘의 방문자 </a>
-				      <div class="description">0</div>
-				    </div>
-	      		</div>
-	      		
 	      		
       		</div>
       		
@@ -92,7 +84,7 @@
     	<div class="ui right align fluid segment">
     			공지사항
     			<!-- 관리자가 공지사항을 등록하는 페이지로 이동  -->
-      			<a>more</a>
+      			<a href="/adminBoardList">more</a>
       			
     			<table class="ui selectable inverted table">
 				  <thead>
@@ -119,7 +111,7 @@
     	
     	<div class="ui center align segment">
     		
-      			<h3 class="ui header">QnA</h3>
+      			<h3 class="ui header"> 1 : 1 질문 </h3>
     			<table class="ui selectable inverted table">
 				  <thead>
 				    <tr>

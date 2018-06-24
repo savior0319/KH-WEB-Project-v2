@@ -140,31 +140,38 @@ ArrayList<PensionPicTb> list = rtiv.getList();
 			})
 			.sidebar('hide')
 			;
-		});
+		})
 // 수정 가능하게 바꿈..
 function ableChange(){
 
 	var $file = $('.ableChange[type=file]');
 	var $noFile = $('.ableChange').not('[type=file]');
 	var $submit = $('input.button').not('.ableChange');
-
-	
-	
-	$noFile.each(function(){
-		
+	$noFile.each(function(){	
 		$(this).attr("readonly",false);
 	});
-	
 	$file.each(function(){
 		$(this).attr("disable",false);
 	});
-	
 	$submit.each(function(){
 		$(this).css('display','');
 	});
 	
 }
-
+function disableChange(){
+	var $file = $('.ableChange[type=file]');
+	var $noFile = $('.ableChange').not('[type=file]');
+	var $submit = $('input.button').not('.ableChange');
+	$noFile.each(function(){	
+		$(this).attr("readonly",true);
+	});
+	$file.each(function(){
+		$(this).attr("disable",true);
+	});
+	$submit.each(function(){
+		$(this).css('display','none');
+	});
+}
 function mainImgPreview(input){
 	 if (input.files && input.files[0]) {           //파일존재할시 
 	 	var reader = new FileReader();          
@@ -175,6 +182,9 @@ function mainImgPreview(input){
 	 	reader.readAsDataURL(input.files[0]);
 	 }
 	}
+function goBack(){
+	history.back();
+}
 </script>
 </body>
 </html>

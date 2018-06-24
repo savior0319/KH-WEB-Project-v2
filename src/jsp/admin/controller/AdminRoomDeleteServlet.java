@@ -1,5 +1,6 @@
 package jsp.admin.controller;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -35,8 +36,21 @@ public class AdminRoomDeleteServlet extends HttpServlet {
 		//response.getWriter().append("Served at: ").append(request.getContextPath());
 		request.setCharacterEncoding("utf-8");
 		String roomName = request.getParameter("roomName");
+		// 1. 디비의 사진 가져오기
+		ArrayList<PensionPicTb> list = new AdminService().delPicList(roomName);
+		// 2. 디비 지우기
+		boolean result = new AdminService().roomDeleteFinal(roomName,list.size());
 		
-		//ArrayList<PensionPicTb> list = new AdminService();
+		// 3. 파일 삭제
+		if(result) {
+			for(PensionPicTb ppt:list) {
+			 File file = new File(getServletContext().getRealPath("/")+ppt.getPsPicPath());
+			 file.delete();
+			}
+			response.sendRedirect("/adminRoomManager");
+		}else {
+			response.sendRedirect("/View/error/errorPage.jsp");
+		}
 	}
 
 	/**

@@ -2915,4 +2915,66 @@ public class AdminDao {
 		}
 		return list;
 	}
+
+	public ArrayList<PensionPicTb> delPicList(Connection conn, String roomName) {
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		String query = "SELECT * FROM PENSION_PIC_TB WHERE PS_PIC_NAME=?";
+		ArrayList<PensionPicTb> list = new ArrayList<PensionPicTb>();
+		try {
+			pstmt = conn.prepareStatement(query);
+			pstmt.setString(1, roomName);
+			rs = pstmt.executeQuery();
+			while(rs.next()) {
+				PensionPicTb ppt = new PensionPicTb(rs.getString("PS_PIC_NAME"),rs.getString("PS_PIC_PATH"),rs.getString("PS_PIC_MAIN"));
+				list.add(ppt);
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally {
+			JDBCTemplate.close(rs);
+			JDBCTemplate.close(pstmt);
+		}
+		
+		return list;
+	}
+
+	public int roomDeletePics(Connection conn,String roomName) {
+		PreparedStatement pstmt = null;
+		int row = 0 ; 
+		String query = "delete from pension_pic_tb where ps_pic_name=?";
+		try {
+			pstmt = conn.prepareStatement(query);
+			pstmt.setString(1, roomName);
+			row = pstmt.executeUpdate();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally {
+			JDBCTemplate.close(pstmt);
+		}
+		return row;
+	}
+
+	public boolean roomDeleteFinal(Connection conn, String roomName) {
+		PreparedStatement pstmt = null;
+		int row = 0 ; 
+		boolean result = false;
+		String query = "delete from pension_tb where ps_name=?";
+		try {
+			pstmt = conn.prepareStatement(query);
+			pstmt.setString(1, roomName);
+			row = pstmt.executeUpdate();
+			if(row>0) {
+				result = true;
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally {
+			JDBCTemplate.close(pstmt);
+		}
+		return result;
+	}
 }
