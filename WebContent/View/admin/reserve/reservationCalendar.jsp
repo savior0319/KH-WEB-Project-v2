@@ -36,13 +36,21 @@
     <h3 class="ui header">예약 관리</h3>
   </div>
   <!-- 본문 내용 시작-->
-  <div class="ui container">
-   <h1>
-     <div class="ui large red leaderboard test ad" data-text="예약날짜 선택" style="width: 100%;"></div>
-   </h1>
-   
+  <div class="ui container" style="margin-bottom: 50px;">
+    <div class="ui red message"><div class="ui small header">※ 현재 예약 중인 정보를 달력형식으로 확인합니다</div></div>
+    <div class="ui icon message">
+      <i class="calendar outline icon"></i>
+      <div class="content">
+        <div class="header" style="text-align: center;">
+          <h1>
+            현재 예약 목록
+          </h1>
+        </div>
+      </div>
+    </div>
 
-   <div class="ui center aligned segment">
+
+    <div class="ui center aligned segment">
      <table class="ui table" id="calendar" border="1" align="center" width="800" height="500">
       <tr align="center">
        <td>
@@ -115,8 +123,8 @@
     
     
     function buildCalendar() {
-      
-      
+
+
       var psNameArr = new Array(<%=pvList.size()%>); // 이름들만 담는 배열 선언
       var index=0;
       <%
@@ -167,9 +175,9 @@
          }
          
          for (var i = 1; i <= lastDate.getDate(); i++) {
-          
+
            for(var j=0; j<<%=pvList.size()%>; j++) { // 객실 정보 테이블의 총 객실 수 만큼 반복(지금은 일단 6개로 지정) -> 수정 완료
-            
+
              <%
                for(ReservationVo r : rvList) { // 모든 체크인 날짜와 체크아웃 날짜를 알기 위해 모든 예약 정보를 불러옴
                     Calendar calIn = Calendar.getInstance(); // 체크인 날짜
@@ -182,7 +190,7 @@
                // 각 해당 날짜의 방과 체크인 날짜가 겹치는 경우
                if(<%=calIn.get(Calendar.YEAR)%> == today.getFullYear() && <%=(calIn.get(Calendar.MONTH)+1)%> == (today.getMonth()+1) 
                 && <%=calIn.get(Calendar.DATE)%> == i && "<%=r.getResRoomName()%>" == psNameArr[j]) {
-                
+
                     // 예약된 날짜가 월말 ~ 다음달 월초를 걸치지 않는 경우
                     if(lastDate.getDate()-i >= 6) { // 최대 예약 날짜가 6박 7일이기 때문에 마지막날과 해당날짜의 차이가 6이상이어야 함 
                      for(var p=i; p < i+<%=r.getResPeriod()%>; p++) {
@@ -191,9 +199,9 @@
                     } else { // 예약된 날짜가 월말 ~ 다음달 월초를 걸치는 경우
                        for(var p=i; p <= lastDate.getDate(); p++) { // 1. 월말
                     	   	   //console.log("월말: "+p);
-                            arr[p-1][j] = 1;
-                            if(p==(<%=calOut.get(Calendar.DATE)%>-1)) {
-                              
+                             arr[p-1][j] = 1;
+                             if(p==(<%=calOut.get(Calendar.DATE)%>-1)) {
+
                               break;
                             }
                           }
@@ -210,19 +218,19 @@
                         console.log("월초: "+p);
                         arr[p-1][j] = 1;
                     	   continue; // 다음 예약 정보로 넘어가기
-                       }
-                       
-                     }
-                     
-                   }
-                   
-                   <% } %>
-                   
-                   
-                   
-                 }
-               }
-               
+                      }
+
+                    }
+
+                  }
+
+                  <% } %>
+
+
+
+                }
+              }
+
        // 지난 날짜인 경우
        for (var i = 1; i <= lastDate.getDate(); i++) {
          for(var j=0; j<<%=pvList.size()%>; j++) {
@@ -234,14 +242,14 @@
       
        // 출력
        for (i = 1; i <= lastDate.getDate(); i++) {
-        
+
         cell = row.insertCell();
         
         var str = "";
         
         
           for(var j=0; j<<%=pvList.size()%>; j++) { // 객실 정보 테이블의 총 객실 수 만큼 반복(지금은 일단 6개로 지정) -> 수정
-            
+
            if(arr[i-1][j] == 2) {
              str += "<button class='ui black basic button' style='margin-bottom:3px; width:100%;opacity:0;cursor:default;'>기간만료</button><br>";
             	 // 이 부분을 클릭하면 예약한 정보를 보는 페이지로 넘어가게 하자. (detail 페이지로...)
@@ -255,16 +263,16 @@
                  } else if(arr[i-1][j] == 1) {
                   /* str += "<button class='ui black basic button' style='margin-bottom:3px; width:100%;'>기간만료</button><br>"; */
               	 // 이 부분을 클릭하면 예약한 정보를 보는 페이지로 넘어가게 하자. (detail 페이지로...)
-                 str += "<form action='/adminReservationDetail' method='post'>"
-                 + "<input type='hidden' name='year' value="+ today.getFullYear() +">"
-                 + "<input type='hidden' name='month' value="+ (today.getMonth()+1) +">"
-                 + "<input type='hidden' name='day' value="+ i +">"
-                 + "<input type='hidden' name='roomName' value="+psNameArr[j]+">"
-                 + "<input type='submit' class='ui red basic button' value='"+psNameArr[j]+" O' style='margin-bottom:3px; width:100%;'>"
-                 + "</form>";
-                 
-               } else {
-                
+                str += "<form action='/adminReservationDetail' method='post'>"
+                + "<input type='hidden' name='year' value="+ today.getFullYear() +">"
+                + "<input type='hidden' name='month' value="+ (today.getMonth()+1) +">"
+                + "<input type='hidden' name='day' value="+ i +">"
+                + "<input type='hidden' name='roomName' value="+psNameArr[j]+">"
+                + "<input type='submit' class='ui red basic button' value='"+psNameArr[j]+" O' style='margin-bottom:3px; width:100%;'>"
+                + "</form>";
+
+              } else {
+
             	  /*  str += "<form action='/adminReservationDetail' method='post'>"
                        + "<input type='hidden' name='year' value="+ today.getFullYear() +">"
                        + "<input type='hidden' name='month' value="+ (today.getMonth()+1) +">"
@@ -290,15 +298,15 @@
    /* function loginPlease() {
 	   alert("로그인 후 이용해주세요.");
 	   location.href="/View/member/login.jsp";
-  } */
+   } */
 
 
-</script>
+ </script>
 
-<script type="text/javascript">
+ <script type="text/javascript">
 
- buildCalendar();
+   buildCalendar();
 
-</script>
+ </script>
 </body>
 </html>

@@ -26,31 +26,33 @@ String searchOption = request.getParameter("searchOption");
 		<!-- 본문 내용 시작-->
 		<div class="ui container">
 			<!-- 테이블 시작 -->
+			<div class="ui red message"><div class="ui small header">※ 공지사항 확인 및 등록이 가능합니다</div></div>
 			<h1>공지사항</h1>
 			
 			<form action="/adminBoardList" method="post"
 			style="display: inline;">
 			<input type="hidden" name="searchOption" value="<%=searchOption %>">
-			<input type="text" name="searchData" 
-			<%if(searchData != null){ %>
-			value=<%=searchData %> 
-			<% }%>
-			> 
-			<input type="submit" value="검색">
+			<div class="ui input">
+				<input type="text" name="searchData" 
+				<%if(searchData != null){ %>
+				value=<%=searchData %> 
+				<% }%>
+				> 
+			</div>
+			<input type="submit" class="ui blue button" value="검색" style="margin-left: 10px;">
 		</form>
 		<!--  글 등록  -->
-		<button>
-			<a href="/View/admin/board/boardResist.jsp">공지 등록</a>
+		<button class="ui orange button">
+			<a style="color:white;" href="/View/admin/board/boardResist.jsp">공지 등록</a>
 		</button>
 		<table class="ui celled table">
 
 			<thead>
-				<tr>
+				<tr align="center">
 					<th>게시글 번호</th>
 					<th>제목</th>
 					<th>작성일</th>
 					<th>조회수</th>
-					<th>추천수</th>
 					<th>상세보기</th>
 				</tr>
 			</thead>
@@ -67,16 +69,15 @@ String searchOption = request.getParameter("searchOption");
 							if (blist != null && !blist.isEmpty()) {
 							%>
 							<%for(BoardVo b : blist){ %>
-							<tr>
-								<td><%= b.getBdNo() %></td>
-								<td><%= b.getBdName() %></td>
-								<td><%= b.getBdWriteDate() %></td>
-								<td><%= b.getBdViewCount() %></td>
-								<td><%= b.getBdRecommendCount() %></td>
+							<tr align="center">
+								<td><div class="ui samll header>"<%= b.getBdNo() %></div></td>
+								<td><div class="ui samll header>"<%= b.getBdName() %></div></td>
+								<td><div class="ui samll header>"<%= b.getBdWriteDate() %></div></td>
+								<td><div class="ui samll header>"<%= b.getBdViewCount() %></div></td>
 								<td>
 									<form action="/adminBoardDetail" method="post">
 										<input type="hidden" name="bdNo" value="<%=b.getBdNo() %>">
-										<input type="submit" value="상세보기">
+										<input type="submit" class="ui orange button" value="상세보기">
 									</form>
 								</td>
 
@@ -88,7 +89,7 @@ String searchOption = request.getParameter("searchOption");
 						<tfoot>
 							<tr>
 								<th colspan="8">
-									<div class="ui segment">
+									<div class="ui basic segment">
 										<%= pageNavi %>
 									</div>
 								</th>

@@ -16,21 +16,24 @@
 		</div>
 		<!-- 본문 내용 시작-->
 		<div class="ui container">
+			<div class="ui red message"><div class="ui small header">※ 펜션 이용이 끝난 회원들의 지난 예약 정보입니다</div></div>
 			<!-- 테이블 시작 -->
 			<h1>지난 예약 보기</h1>
 			
 			<form action="/adminReserveHistory" method="post" style="display: inline;">
-				<select name="searchOption">
+				<select class="ui dropdown" name="searchOption">
 					<option value="RES_HIS_ROOM_NAME">객실이름</option>
 					<option value="RES_HIS_ID">아이디</option>
 				</select>
-				<input type="text" name="searchData" >
-				<input type="submit" value="검색">
+				<div class="ui input">
+					<input type="text" name="searchData" >
+				</div>
+				<input type="submit" value="검색" style="margin-left: 10px;" class="ui blue button">
 			</form>
 
 			<table class="ui celled table">
 				<thead>
-					<tr>
+					<tr align="center">
 						<th>번호</th>
 						<th>아이디</th>
 						<th>객실명</th>
@@ -56,14 +59,14 @@
 			 		if(rhlist != null && !rhlist.isEmpty()){ 
 			 		%>
 			 		<%for(ReservationHistoryVo rh : rhlist){ %>
-			 		<tr>
-			 			<td><%=rh.getResHisNo()%></td>
-			 			<td><%=rh.getResHisId()%></td>
-			 			<td><%=rh.getResHisRoomName()%></td>
-			 			<td><%=rh.getResHisInDate()%></td>
-			 			<td><%=rh.getResHisOutDate()%></td>
-			 			<td><%=rh.getResHisPrice()%></td>
-			 			<td><%=rh.getResHisPaymentDate()%></td>
+			 		<tr align="center">
+			 			<td><div class="ui small header"><%=rh.getResHisNo()%></div></td>
+			 			<td><div class="ui small header"><%=rh.getResHisId()%></div></td>
+			 			<td><div class="ui small header"><%=rh.getResHisRoomName()%></div></td>
+			 			<td><div class="ui small header"><%=rh.getResHisInDate()%></div></td>
+			 			<td><div class="ui small header"><%=rh.getResHisOutDate()%></div></td>
+			 			<td><div class="ui small header"><%=rh.getResHisPrice()%></div></td>
+			 			<td><div class="ui small header"><%=rh.getResHisPaymentDate()%></div></td>
 			 		</tr>
 			 		<% } %>
 			 		<%} %>

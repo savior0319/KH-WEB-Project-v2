@@ -39,7 +39,7 @@ import="java.util.*,jsp.admin.model.vo.*,jsp.main.model.vo.*,jsp.reservation.mod
 		<div class="ui pusher">
 			<!-- 헤더 부분  -->
 			<div class="ui segment">
-				<h3 class="ui header">Home</h3>
+				<h3 class="ui header">사진수정</h3>
 			</div>
 			<!-- 헤더 끝 -->
 
@@ -61,19 +61,19 @@ import="java.util.*,jsp.admin.model.vo.*,jsp.main.model.vo.*,jsp.reservation.mod
 						<input type="hidden" name="img" id="update<%= i %>"
 						accept="image/*" required /><br> <br> <input
 						type="hidden" id="update<%= i %>_submit" value="수정"
-						class="ui button">
+						class="ui orange button">
 						<button type="button" id="update<%= i %>_btn"
-							onclick="update('update<%= i %>');" class="ui button">수정</button>
+							onclick="update('update<%= i %>');" class="ui orange button">수정</button>
 							<button type="button" id="update<%= i %>_reBtn"
 								style="display: none;"
-								onclick="imageCancle('update<%= i %>');" class="ui button">취소</button>
+								onclick="imageCancle('update<%= i %>');" class="ui red button">취소</button>
 							</form>
 						</div>
 						<%} %>
 					</div>
 					<br>
 					<br>
-					<button onclick="back()" class="ui button">취소</button>
+					<button onclick="back()" class="ui blue button">뒤로가기</button>
 				</div>
 			</div>
 

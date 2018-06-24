@@ -17,8 +17,9 @@
 		</div>
 		<!-- 본문 내용 시작-->
 		<div class="ui container">
+			<div class="ui red message"><div class="ui small header">※ 펜션을 현재 예약한 회원들의 정보입니다<br>예약 취소 버튼 클릭 시 해당 예약이 취소 됩니다.<br>다운로드 버튼 클릭 시 엑셀 파일로 목록이 다운로드 됩니다</div></div>
 			<!-- 테이블 시작 -->
-			<h1>예약 리스트</h1>
+			<h1>예약 목록</h1>
 			<%
 			ReservePageVo rpv = (ReservePageVo)request.getAttribute("ReservePage");
 			String searchData = request.getParameter("searchData");
@@ -26,7 +27,7 @@
 			%> 	
 			
 			<form action="/adminReserveManager" method="post" style="display: inline;">
-				<select name="searchOption">
+				<select class="ui dropdown" name="searchOption">
 					<% if(searchOption==null||searchOption.equals("RES_ROOM_NAME")){ %>
 					<option value="RES_ROOM_NAME" selected="selected">객실이름</option>
 					<option value="RES_ID">아이디</option>
@@ -35,27 +36,25 @@
 					<option value="RES_ID" selected="selected">아이디</option>
 					<%} %>
 				</select>
-				<input type="text" name="searchData" 
-				<%if(searchData != null){ %>
-				value=<%=searchData %>
-				<% }%>
-				>
-				<input type="submit" value="검색">
+				<div class="ui input">	
+					<input type="text" name="searchData" <% if(searchData != null){ %> value=<%=searchData %> <% }%>>
+				</div>
+				<input type="submit" class="ui blue button" value="검색" style="margin-left: 10px;">
 				
 			</form>
 			<form  method="post" action="/reservationListDown" style="display:inline" >
-				<input class="ui buton" type="submit" value="다운">
+				<input class="ui orange button" type="submit" value="다운로드">
 			</form>
 			<table class="ui celled table">
 				<thead>
-					<tr>
+					<tr align="center">
 						<th>예약번호</th>
 						<th>객실이름</th>
 						<th>아이디</th>
 						<th>예약인원</th>
 						<th>입실일</th>
 						<th>퇴실일</th>
-						<th>요금</th>
+						<th>요금(단위 원)</th>
 						<th>예약 취소</th>
 						<!-- 상세보기를 넣을까? -->
 						<!-- <th>블랙 리스트 선정</th> -->
@@ -71,15 +70,15 @@
 		 	String pageNavi = rpv.getPageNavi();	// navi 리스트 
 		 	if(rlist != null && !rlist.isEmpty()){ %>
 		 	<%for(ReservationVo r : rlist){ %>
-		 	<tr>
-		 		<td><%= r.getResNo() %></td>
-		 		<td><%= r.getResRoomName() %></td>
-		 		<td><%= r.getResId() %></td>
-		 		<td><%= r.getResPersonnel() %></td>
-		 		<td><%= r.getResInDate()%></td>
-		 		<td><%= r.getResOutDate() %></td>
-		 		<td><%= r.getResPrice() %></td>
-		 		<td><button class="ui button" value="<%=r.getResNo()%>">예약취소</button></td>
+		 	<tr align="center">
+		 		<td><div class="ui small header"><%= r.getResNo() %></div></td>
+		 		<td><div class="ui small header"><%= r.getResRoomName() %></div></td>
+		 		<td><div class="ui small header"><%= r.getResId() %></div></td>
+		 		<td><div class="ui small header"><%= r.getResPersonnel() %></div></td>
+		 		<td><div class="ui small header"><%= r.getResInDate()%></div></td>
+		 		<td><div class="ui small header"><%= r.getResOutDate() %></div></td>
+		 		<td><div class="ui small header"><%= r.getResPrice() %></div></td>
+		 		<td><button class="ui red button" value="<%=r.getResNo()%>">예약취소</button></td>
 		 	</tr>
 		 	<%} %>
 		 	<%} %>
@@ -89,7 +88,7 @@
 		 <tfoot>
 		 	<tr>
 		 		<th colspan="8">
-		 			<div class="ui segment">
+		 			<div class="ui basic segment">
 		 				<%= pageNavi %>
 		 			</div>
 		 		</th>

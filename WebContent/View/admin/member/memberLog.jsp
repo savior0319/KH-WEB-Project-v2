@@ -37,17 +37,17 @@ String searchOption = request.getParameter("searchOption");
 	<div class="ui pusher">
 		<!-- 헤더 부분  -->
 		<div class="ui segment">
-			<h3 class="ui header">회원 로그인 내역</h3>
+			<h3 class="ui header">회원 로그 내역</h3>
 		</div>
 		<!-- 본문 내용 시작-->
 		<div class="ui container">
 			<!-- 테이블 시작 -->
-			<h1>로그인 내역</h1>
-
+			<div class="ui red message"><div class="ui small header">※ 회원들의 로그인 접속 기록 목록입니다<br>다운로드 버튼 클릭 시 엑셀 파일로 목록이 다운로드 됩니다</div></div>
+			<h1>회원 로그인 내역</h1>
 
 			<form  action="/adminMemberLog" method="post"
 			style="display: inline;">
-			<select name="searchOption">
+			<select class="ui dropdown" name="searchOption">
 				<% if(searchOption==null||searchOption.equals("MB_LOG_ID")){ %>
 				<option value="MB_LOG_ID" selected="selected">아이디</option>
 				<option value="MB_LOG_IP" >주소</option>			
@@ -56,18 +56,20 @@ String searchOption = request.getParameter("searchOption");
 				<option value="MB_LOG_IP" selected="selected">주소</option>	
 				<% } %>
 			</select> 
-			<input type="text" name="searchData" 
-			<%if(searchData != null){ %>
-			value=<%=searchData %>
-			<% }%> >
-			<input type="submit" value="검색">
+			<div class="ui input">
+				<input type="text" name="searchData" 
+				<%if(searchData != null){ %>
+				value=<%=searchData %>
+				<% }%> >
+			</div>
+			<input type="submit" value="검색" style="margin-left: 10px;" class="ui blue button">
 		</form>
 		<form  method="post" action="/memberLogListDown" style="display:inline" >
-			<input class="ui buton" type="submit" value="다운">
+			<input class="ui orange button" type="submit" value="다운로드">
 		</form>
 		<table class="ui celled table">
 			<thead>
-				<tr>
+				<tr align="center">
 					<th>회원 아아디</th>
 					<th>로그인 시간</th>
 					<th>접속 브라우저</th>
@@ -86,12 +88,12 @@ String searchOption = request.getParameter("searchOption");
 			 	<tbody>
 			 		<%if( mlist != null && !mlist.isEmpty()){ %>
 			 		<%for(MemberLoginLogVo mllv : mlist){ %>
-			 		<tr>
-			 			<td><%= mllv.getMbLogId() %></td>
-			 			<td><%= mllv.getMbLogTime() %></td>
-			 			<td><%= mllv.getMbLogBrowser() %></td>
-			 			<td><%= mllv.getMbLogIp() %></td>
-			 			<td><%= mllv.getMbLogLocale() %></td>
+			 		<tr align="center">
+			 			<td><div class="ui small header"><%= mllv.getMbLogId() %></div></td>
+			 			<td><div class="ui small header"><%= mllv.getMbLogTime() %></div></td>
+			 			<td><div class="ui small header"><%= mllv.getMbLogBrowser() %></div></td>
+			 			<td><div class="ui small header"><%= mllv.getMbLogIp() %></div></td>
+			 			<td><div class="ui small header"><%= mllv.getMbLogLocale() %></div></td>
 			 			<!--  성별을 남여로  -->
 			 		</tr>
 			 		<%} %>
@@ -100,7 +102,7 @@ String searchOption = request.getParameter("searchOption");
 			 	<tfoot>
 			 		<tr>
 			 			<th colspan="5">
-			 				<div class="ui segment">
+			 				<div class="ui basic segment">
 			 					<%= pageNavi %>
 			 				</div>
 			 			</th>

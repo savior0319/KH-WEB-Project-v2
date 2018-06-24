@@ -33,6 +33,7 @@ pageEncoding="UTF-8"%>
 	%>
 	<!-- 본문 내용 시작-->
 	<div class="ui container">
+		<div class="ui red message"><div class="ui small header">※ 1:1문의에 대한 내용 확인 후 답변을 할 수 있습니다</div></div>
 		<!-- 테이블 시작 -->
 		<div class="ui segment">
 			<h1>1 : 1 문의 내용</h1>
@@ -40,31 +41,36 @@ pageEncoding="UTF-8"%>
 			<div class="ui form">
 				<div class="five fields">
 					<div class="field">
+						<span class="ui small header">문의번호</span>
 						<input readonly="readonly" type="text" value="<%=qv.getqNo()%>" />
 					</div>
 					<div class="field">
+						<span class="ui small header">문의제목</span>
 						<input readonly="readonly" type="text" value="<%=qv.getqName() %>">
 					</div>
 					<div class="field">
+						<span class="ui small header">작성자</span>
 						<input readonly="readonly" type="text" value="<%=qv.getqWriter()%>">
 					</div>
 					<div class="field">
+						<span class="ui small header">질문날짜</span>
 						<input readonly="readonly" type="text" value="<%=qv.getqWriteDate()%>">
 					</div>
 					<div class="field">
+						<span class="ui small header">답변여부</span>
 						<input readonly="readonly" type="text" value="<%=qv.getqAnswerCheck()%>" >
 					</div>
 				</div>
 				<div class="field">
-					<label>문의 내용</label>
+					<span class="ui small header">문의내용</span>
 					<textarea readonly="readonly" style="resize: none"><%= qv.getqContents() %></textarea>
 				</div>
 			</div>
 			
-			<button class="ui button" onclick="goBack();" >목록으로</button>
+			<button class="ui orange button" onclick="goBack();" style="margin-top: 15px;">목록으로</button>
 			<!--  답변 작성 -->
 			<% if(qnav.getAsv()==null ){ %>
-			<button class="ui button" onclick="onCommnet();" >답변 작성 </button>
+			<button class="ui blue button" onclick="onCommnet();" >답변 작성 </button>
 			<%}else{ 
 			AnswerVo asv = qnav.getAsv();%>
 			<!--  답변이 완료되었을 경우  -->
@@ -73,20 +79,21 @@ pageEncoding="UTF-8"%>
 		<!-- 답변이 되었다면 답변 내용도 불러오도록 하자... -->
 
 		<div class="ui segment">
-			<h1>1 : 1 문의 내용</h1>
-			<div class="filed ui form">
-				<label>답변 내용</label>
-				<textarea  readonly="readonly" style="resize: none"><%= asv.getaContents()  %></textarea>
+			<span class="ui small header">답변내용</span>
+			<div class="ui form">
+				<textarea  readonly="readonly" style="resize: none"><%= asv.getaContents() %></textarea>
 			</div>
 		</div>		
 		<%} %>
 		<!-- -->
-		<div id="answer" class="ui segment" style="display: none">
+		<div id="answer" class="ui basic segment" style="display: none">
 			<form  action="/adminInsertAnswer" method="post" class="ui form" >
 				<input type="hidden" name="qNo" value="<%=qv.getqNo()%>">
-				<textarea style="resize: none" name="aContents" required="required"></textarea>
-				<input type="submit" value="답변 등록">
-				<input type="reset" value="초기화">
+				<div class="ui form">
+					<textarea style="resize: none" name="aContents" required="required" placeholder="답변 내용을 작성하세요"></textarea>
+				</div>
+				<input type="submit" class="ui blue button" value="답변 등록" style="margin-top: 10px;">
+				<input type="reset" class="ui green button" value="초기화">
 			</form>
 		</div>
 		
