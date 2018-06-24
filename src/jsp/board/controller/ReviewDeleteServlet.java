@@ -30,46 +30,48 @@ public class ReviewDeleteServlet extends HttpServlet {
 	}
 
 	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
+	 *      response)
 	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		int bdNo = Integer.parseInt(request.getParameter("bdNo"));
 
-		//2.비즈니스 로직
+		// 2.비즈니스 로직
 
-		HttpSession session = request.getSession(false); 
+		HttpSession session = request.getSession(false);
 
 		ArrayList<DataFile> list = new BoardService().deleteImageFile(bdNo);
 
-		for(int i=0; i<list.size(); i++)
-		{
-			File file = new File(getServletContext().getRealPath("/")+list.get(i).getBdFilePath());
+		for (int i = 0; i < list.size(); i++) {
+			File file = new File(getServletContext().getRealPath("/") + list.get(i).getBdFilePath());
 			file.delete();
 		}
 		int result = 0; // 게시글 삭제
 		int result1 = new BoardService().deleteCommentNotice(bdNo); // 댓글 삭제
-		if(session.getAttribute("member")!=null) {
+		if (session.getAttribute("member") != null) {
 
-			if(result1>-1) { // 댓글 삭제가 성공하면
+			if (result1 > -1) { // 댓글 삭제가 성공하면
 				result = new BoardService().deleteReview(bdNo); // 글 삭제 진행
-				if(result>0) { //게시글삭제가 성공하면
+				if (result > 0) { // 게시글삭제가 성공하면
 					response.sendRedirect("/review");
-				}else {//게시글 삭제가 실패하면
+				} else {// 게시글 삭제가 실패하면
 					response.sendRedirect("/View/error/error.jsp");
 
 				}
 			} else {
 				response.sendRedirect("/View/error/error.jsp");
-				System.out.println("댓글삭제 실패");
 			}
 		}
 
 	}
 
 	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
+	 *      response)
 	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		doGet(request, response);
 	}

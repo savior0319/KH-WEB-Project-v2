@@ -96,7 +96,7 @@ h5 {
 
 <script type="text/javascript">
 	$('#loginPage').click(function(){
-		location.href="/View/member/login.jsp";
+		location.href="/loginpage";
 	});
 </script>
 

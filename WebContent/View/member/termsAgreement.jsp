@@ -339,7 +339,7 @@
 
 						if ($agreement1 == true
 							&& $agreement2 == true) {
-							window.location.href = "/View/member/signUp.jsp"
+							window.location.href = "/join";
 					} else {
 						$('#radioCheckModal').modal(
 							'show');

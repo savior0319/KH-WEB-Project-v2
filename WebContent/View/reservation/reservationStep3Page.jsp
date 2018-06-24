@@ -193,9 +193,9 @@ MemberVo mv = (MemberVo)request.getAttribute("memberInfo");
                 				},
                 				type : 'post',
                 				success : function(){
-                					alert('결제완료');
+                					alert('결제완료.\n더 펜션 예약이 완료되었습니다.');
                 					/*	console.log("결제 성공");*/
-                					location.href="/View/reservation/reservationStep4Page.jsp";
+                					location.href="/reservationsuccess";
                 				},
                 				error : function() {
                 					alert('서버오류(잠시 후 다시 시도 해주세요');

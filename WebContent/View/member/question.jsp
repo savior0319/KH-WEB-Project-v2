@@ -46,10 +46,10 @@
 
 <script type="text/javascript">
 	$('#confirm1').click(function(){
-		location.href = '/View/member/myPage.jsp';
+		location.href = '/mypagelogin';
 	});
 	$('#confirm2').click(function(){
-		location.href = '/View/member/login.jsp';
+		location.href = '/loginpage';
 	});
 </script>
 
