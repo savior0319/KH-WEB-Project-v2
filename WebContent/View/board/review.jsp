@@ -96,7 +96,14 @@ MemberVo m = (MemberVo) session.getAttribute("member");
 						<td><%=b.getBdNo()%></td>
 						<td><a href="/reviewSelect?bdNo=<%=b.getBdNo()%>"
 							style="font-weight: 600;">[후기] <%=b.getBdName()%></a></td>
-							<td><%=b.getBdWriter()%></td>
+							<%if(b.getBdWriter() != null) {%>
+								<td><%=b.getBdWriter()%></td>
+							<%} else { %>
+								<td>탈퇴회원</td>
+							<%
+							}
+							%>
+							
 							<td><%=date%></td>
 							<td><%=b.getBdRecommendCount()%></td>
 							<td><%=b.getBdViewCount()%></td>

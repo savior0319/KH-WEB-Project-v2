@@ -118,7 +118,7 @@
 
 	</table>
 
-	<form action="/search" method="get" style="display:inline;">
+	<form action="/reviewSearch" method="get" style="display:inline;">
 		<select class="ui dropdown" name="searchOption" style="width:80px;">
 			<option value="title" selected>제목</option>
 			<option value="contents">내용</option>
