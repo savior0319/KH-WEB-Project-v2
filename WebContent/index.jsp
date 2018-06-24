@@ -54,7 +54,9 @@
 
 	<!-- 본문 시작 -->
 	<div class="ui container">
-		<div class="ui center aligned segment" id="mainComment" style="font-family: 'Jua', sans-serif; font-size: 24px; line-height: 50px; "></div>
+		<div class="ui center aligned basic segment">
+			<div class="ui message" id="mainComment" style="font-family: 'Jua', sans-serif; font-size: 24px; line-height: 50px; margin-top: 20px;"></div> 
+		</div>
 		<!-- 본문 끝 -->
 	</div>
 

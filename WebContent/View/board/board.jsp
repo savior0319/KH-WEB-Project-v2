@@ -34,6 +34,7 @@
 
 	<!-- 본문 시작 -->
 	<div class="ui container">
+		<br>
 		<!-- 여기에 본문 내용 작성하면 됨 -->
 		<div class="ui center aligned basic segment">
 			<div class="ui icon message">
@@ -46,7 +47,7 @@
 					</div>
 				</div>
 			</div>
-			<div id="board" style="width: 100%; height: 500px;">
+			<div id="board" style="width: 100%; padding-bottom: 60px;">
 				<table class="ui table" width="100%" cellpadding="0" cellspacing="0" border="0">
 
 					<thead>
@@ -68,16 +69,16 @@
 						</tr>
 					</tbody>
 					<%
-					} else {
-						Page pagev = (Page) request.getAttribute("Page");
-						ArrayList<BoardVo> list = pagev.getList();
-						String getPageCount = pagev.getPageCount();
+				} else {
+				Page pagev = (Page) request.getAttribute("Page");
+				ArrayList<BoardVo> list = pagev.getList();
+					String getPageCount = pagev.getPageCount();
 
-						for (BoardVo b : list) {
-		
-						Timestamp writeDay = b.getBdWriteDate();
-						Timestamp stamp = new Timestamp(Calendar.getInstance().getTimeInMillis());
-						Date date = new Date(writeDay.getTime());
+					for (BoardVo b : list) {
+
+					Timestamp writeDay = b.getBdWriteDate();
+					Timestamp stamp = new Timestamp(Calendar.getInstance().getTimeInMillis());
+					Date date = new Date(writeDay.getTime());
 					%>
 					<tbody> 
 						<tr>
@@ -92,40 +93,40 @@
 					</tbody>
 					
 					<%
-						}
-					%>
-					<tfoot>
-   						<tr><th colspan="6">
-      					<div class="ui right floated pagination menu">
-					        <%=getPageCount%>
-					    </div>
-			    		</th>
-			 			 </tr>
-			 		</tfoot>
-					<%
-					}
-					%>
-					
-			</table>
-			
-			<form action="/search" method="get" style="display:inline;">
-				<select name="searchOption" style="width:80px;">
-               		<option value="title" selected>제목</option>
-               		<option value="contents">내용</option>
-               		<option value="writer">작성자</option>
-                </select> 
-				<div class="ui input" style="margin-top: 15px;">
-					<input type="text" name="search" placeholder="검색" style="margin-right: 5px;" id="searchVal">
-					<input class="ui blue button" type="submit" value="검색" style="margin-left: 5px;" onclick="return blankCheck();">
-				</div>
-			</form>
-			
-			<br><br>
-			
-			
-			
-			<%-- 공지사항 글쓰기 관리자 페이지로 이동 --%>
-				<!--  -->
+				}
+				%>
+				<tfoot>
+					<tr><th colspan="6">
+						<div class="ui right floated pagination menu">
+							<%=getPageCount%>
+						</div>
+					</th>
+				</tr>
+			</tfoot>
+			<%
+		}
+		%>
+
+	</table>
+	<br>	<br>
+	<form action="/search" method="get" style="display:inline;">
+		<select name="searchOption" style="width:80px;">
+			<option value="title" selected>제목</option>
+			<option value="contents">내용</option>
+			<option value="writer">작성자</option>
+		</select> 
+		<div class="ui input" style="margin-top: 15px;">
+			<input type="text" name="search" placeholder="검색" style="margin-right: 5px;" id="searchVal">
+			<input class="ui blue button" type="submit" value="검색" style="margin-left: 5px;" onclick="return blankCheck();">
+		</div>
+	</form>
+
+	<br><br>
+
+
+
+	<%-- 공지사항 글쓰기 관리자 페이지로 이동 --%>
+	<!--  -->
 </div>
 </div>
 
