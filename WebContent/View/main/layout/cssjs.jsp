@@ -19,7 +19,6 @@
 <link rel="stylesheet" type="text/css" href="/SementicUI/semantic.min.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Swiper/4.3.3/css/swiper.min.css">
 <link rel="stylesheet" type="text/css" href="/CSS/main.css">
-<!--<link rel="stylesheet" type="text/css" href="/CSS/dark.css">-->
 
 <!-- Favicon -->
 <link rel="shortcut icon" href="/Image/favicon/favicon.ico" />

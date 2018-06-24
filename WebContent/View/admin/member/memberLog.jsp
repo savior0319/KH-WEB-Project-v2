@@ -1,32 +1,33 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ page import="java.util.*,jsp.admin.model.vo.*"%>
+<jsp:include page="/View/main/layout/preventurl.jsp"></jsp:include>
 <%
-	LoginLogPageVo llpv = (LoginLogPageVo) request.getAttribute("allMemberLog");
-	String searchData = request.getParameter("searchData");
-	String searchOption = request.getParameter("searchOption");
+LoginLogPageVo llpv = (LoginLogPageVo) request.getAttribute("allMemberLog");
+String searchData = request.getParameter("searchData");
+String searchOption = request.getParameter("searchOption");
 %>
 <!DOCTYPE html>
 <html>
 
 <head>
 
-<!-- Global site tag (gtag.js) - Google Analytics -->
-<script async
+	<!-- Global site tag (gtag.js) - Google Analytics -->
+	<script async
 	src="https://www.googletagmanager.com/gtag/js?id=UA-120156974-1"></script>
-<script>
-	window.dataLayer = window.dataLayer || [];
-	function gtag() {
-		dataLayer.push(arguments);
-	}
-	gtag('js', new Date());
-	gtag('config', 'UA-120156974-1');
-</script>
+	<script>
+		window.dataLayer = window.dataLayer || [];
+		function gtag() {
+			dataLayer.push(arguments);
+		}
+		gtag('js', new Date());
+		gtag('config', 'UA-120156974-1');
+	</script>
 
-<jsp:include page="/View/main/layout/cssjs.jsp"></jsp:include>
+	<jsp:include page="/View/main/layout/cssjs.jsp"></jsp:include>
 
-<title>관리자</title>
+	<title>관리자</title>
 </head>
 
 <body>
@@ -45,78 +46,78 @@
 
 
 			<form  action="/adminMemberLog" method="post"
-				style="display: inline;">
-				<select name="searchOption">
-					<% if(searchOption==null||searchOption.equals("MB_LOG_ID")){ %>
-					<option value="MB_LOG_ID" selected="selected">아이디</option>
-					<option value="MB_LOG_IP" >주소</option>			
-					<%}else{%>
-					<option value="MB_LOG_ID" >아이디</option>
-					<option value="MB_LOG_IP" selected="selected">주소</option>	
-					<% } %>
-				</select> 
-				<input type="text" name="searchData" 
-			 	<%if(searchData != null){ %>
-			 	 value=<%=searchData %>
-			 	<% }%> >
-			 <input type="submit" value="검색">
-			</form>
-			<form  method="post" action="/memberLogListDown" style="display:inline" >
-    	  		<input class="ui buton" type="submit" value="다운">
-    	 	</form>
-			<table class="ui celled table">
-				<thead>
-					<tr>
-						<th>회원 아아디</th>
-						<th>로그인 시간</th>
-						<th>접속 브라우저</th>
-						<th>접속 아이피</th>
-						<th>접속 지역</th>
-					</tr>
-				</thead>
-				<!--  객실 관리   -->
-				<!--  이 부분에 추가  -->
-				<% if(llpv != null){
-			 	ArrayList<MemberLoginLogVo> mlist = llpv.getList();
+			style="display: inline;">
+			<select name="searchOption">
+				<% if(searchOption==null||searchOption.equals("MB_LOG_ID")){ %>
+				<option value="MB_LOG_ID" selected="selected">아이디</option>
+				<option value="MB_LOG_IP" >주소</option>			
+				<%}else{%>
+				<option value="MB_LOG_ID" >아이디</option>
+				<option value="MB_LOG_IP" selected="selected">주소</option>	
+				<% } %>
+			</select> 
+			<input type="text" name="searchData" 
+			<%if(searchData != null){ %>
+			value=<%=searchData %>
+			<% }%> >
+			<input type="submit" value="검색">
+		</form>
+		<form  method="post" action="/memberLogListDown" style="display:inline" >
+			<input class="ui buton" type="submit" value="다운">
+		</form>
+		<table class="ui celled table">
+			<thead>
+				<tr>
+					<th>회원 아아디</th>
+					<th>로그인 시간</th>
+					<th>접속 브라우저</th>
+					<th>접속 아이피</th>
+					<th>접속 지역</th>
+				</tr>
+			</thead>
+			<!--  객실 관리   -->
+			<!--  이 부분에 추가  -->
+			<% if(llpv != null){
+			ArrayList<MemberLoginLogVo> mlist = llpv.getList();
 			 	String pageNavi = llpv.getPageNavi();	// navi 리스트 
 			 	
-		 		%>
+			 	%>
 
-				<tbody>
-					<%if( mlist != null && !mlist.isEmpty()){ %>
-					<%for(MemberLoginLogVo mllv : mlist){ %>
-					<tr>
-						<td><%= mllv.getMbLogId() %></td>
-						<td><%= mllv.getMbLogTime() %></td>
-						<td><%= mllv.getMbLogBrowser() %></td>
-						<td><%= mllv.getMbLogIp() %></td>
-						<td><%= mllv.getMbLogLocale() %></td>
-						<!--  성별을 남여로  -->
-					</tr>
-					<%} %>
+			 	<tbody>
+			 		<%if( mlist != null && !mlist.isEmpty()){ %>
+			 		<%for(MemberLoginLogVo mllv : mlist){ %>
+			 		<tr>
+			 			<td><%= mllv.getMbLogId() %></td>
+			 			<td><%= mllv.getMbLogTime() %></td>
+			 			<td><%= mllv.getMbLogBrowser() %></td>
+			 			<td><%= mllv.getMbLogIp() %></td>
+			 			<td><%= mllv.getMbLogLocale() %></td>
+			 			<!--  성별을 남여로  -->
+			 		</tr>
+			 		<%} %>
 
-				</tbody>
-				<tfoot>
-					    <tr>
-					     <th colspan="5">
-					      <div class="ui segment">
-					       <%= pageNavi %>
-					      </div>
-					    </th>
-					  </tr>
-				  </tfoot>
-			</table>
+			 	</tbody>
+			 	<tfoot>
+			 		<tr>
+			 			<th colspan="5">
+			 				<div class="ui segment">
+			 					<%= pageNavi %>
+			 				</div>
+			 			</th>
+			 		</tr>
+			 	</tfoot>
+			 </table>
 
-			<% }else{ %>
-			<hr />
-			<h3>기록이 없습니다.</h3>
-			<hr />
-			<% } %>
-		<% } %>
+			 <% }else{ %>
+			 <hr />
+			 <h3>기록이 없습니다.</h3>
+			 <hr />
+			 <% } %>
+			 <% } %>
+			</div>
+			<!-- 본문 내용 끝  -->
 		</div>
-		<!-- 본문 내용 끝  -->
-	</div>
 
-	<script>
-</script>
-</html>
+		<script>
+		</script>
+		</html>

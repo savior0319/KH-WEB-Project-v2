@@ -2,7 +2,7 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ page errorPage="/View/error/error.jsp"%>
-
+<jsp:include page="/View/main/layout/preventurl.jsp"></jsp:include>
 <!DOCTYPE html>
 <html>
 

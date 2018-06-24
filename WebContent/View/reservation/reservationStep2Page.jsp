@@ -2,12 +2,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-
-
 <%@page import="java.text.SimpleDateFormat"%>
 <%@page import="java.util.*"%>
 <%@page import="jsp.reservation.model.vo.*"%>
 <%@page import="jsp.member.model.vo.*"%>
+<jsp:include page="/View/main/layout/preventurl.jsp"></jsp:include>
 <% 
 String loginId = ((MemberVo)session.getAttribute("member")).getMbId();
 %>

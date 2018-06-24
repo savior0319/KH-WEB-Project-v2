@@ -186,29 +186,29 @@ body {
 	<!-- 메뉴 끝 -->
 
 	<!-- 마우스 우클릭 방지-->
-<!-- 	<script type="text/javascript">
-	document.addEventListener('mousedown', function() {
-		if ((event.button == 2) || (event.which == 3)) {
-			alert('마우스 오른쪽 버튼은 사용 불가능 합니다');
+	<script type="text/javascript">
+		document.addEventListener('mousedown', function() {
+			if ((event.button == 2) || (event.which == 3)) {
+				alert('마우스 오른쪽 버튼은 사용 불가능 합니다');
+			}
+		});
+	</script>
+	<script type="text/javascript">
+		window.onload = function() {
+			$('#load').hide();
 		}
-	});
-</script> -->
-<script type="text/javascript">
-	window.onload = function() {
-		$('#load').hide();
-	}
 
-	/* 드롭 다운 메뉴 */
-	$('.ui.dropdown.item').dropdown();
+		/* 드롭 다운 메뉴 */
+		$('.ui.dropdown.item').dropdown();
 
-	/* 메뉴 hover */
-	$('.ui.menu a.item').on('mouseenter', function() {
-		$(this).addClass('active');
-	}).on('mouseleave', function() {
-		$(this).removeClass('active');
-	});
+		/* 메뉴 hover */
+		$('.ui.menu a.item').on('mouseenter', function() {
+			$(this).addClass('active');
+		}).on('mouseleave', function() {
+			$(this).removeClass('active');
+		});
 
-	$('.wholemenu').click(function() {
-		$('.ui.sidebar').sidebar('toggle');
-	});
-</script>
+		$('.wholemenu').click(function() {
+			$('.ui.sidebar').sidebar('toggle');
+		});
+	</script>
