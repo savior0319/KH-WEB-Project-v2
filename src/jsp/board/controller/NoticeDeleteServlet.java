@@ -51,7 +51,7 @@ public class NoticeDeleteServlet extends HttpServlet {
 			}
 		} else {
 			response.sendRedirect("/View/error/error.jsp");
-			System.out.println("댓글삭제 실패");
+				/* System.out.println("댓글삭제 실패"); */
 		}
 		
 	}

@@ -28,7 +28,7 @@ public class SearchServlet extends HttpServlet {
 		String search = request.getParameter("search");
 		String searchOption = request.getParameter("searchOption");
 
-		//System.out.println("searchOption값 : "+searchOption);
+		// System.out.println("searchOption값 : "+searchOption);
 
 		int currentPage;
 		if(request.getParameter("currentPage")==null) {

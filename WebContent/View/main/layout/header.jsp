@@ -68,7 +68,7 @@ body {
 		var $loginBtn = $('.loginBtn');
 		$loginBtn.html('로그아웃').attr('href', '/logout');
 		var $signupBtn = $('.signupBtn');
-		$signupBtn.html('마이페이지').attr('href', '/View/member/myPage.jsp');
+		$signupBtn.html('마이페이지').attr('href', '/mypagelogin');
 	});
 </script>
 </c:if>
@@ -113,10 +113,10 @@ body {
 			<a class="item wholemenu">더보기</a>
 			<div class="right menu">
 				<div class="item" style="padding-left: 0px">
-					<a class="ui inverted blue button loginBtn" href="/View/member/login.jsp">로그인</a>
+					<a class="ui inverted blue button loginBtn" href="/loginpage">로그인</a>
 				</div>
 				<div class="item" style="padding-right: 30px; padding-left: 0px">
-					<a class="ui inverted red button signupBtn" href="/View/member/termsAgreement.jsp">회원가입</a>
+					<a class="ui inverted red button signupBtn" href="/termsagreement">회원가입</a>
 				</div>
 			</div>
 		</div>
@@ -133,14 +133,14 @@ body {
 		<br>
 
 		<a class="item" href="/board">공지사항</a>
-		<a class="item" href="/View/board/faq.jsp">자주 묻는 질문</a>
+		<a class="item" href="/faq">자주 묻는 질문</a>
 		<a class="item" href="/review">후기 게시판</a>
-		<a class="item" href="/View/member/question.jsp">1:1 문의</a>
+		<a class="item" href="/questionmove">1:1 문의</a>
 
 		<br>
-		<a class="item" href="/View/location/loc.jsp">오시는 길</a>
+		<a class="item" href="/location">오시는 길</a>
 		<br>
-		<a class="item loginBtn" href="/View/member/login.jsp">로그인</a> <a class="item signupBtn" href="/View/member/termsAgreement.jsp">회원가입</a>
+		<a class="item loginBtn" href="/loginpage">로그인</a> <a class="item signupBtn" href="/termsagreement">회원가입</a>
 	</div>
 	<!-- 사이드 메뉴 끝 -->
 
@@ -169,16 +169,16 @@ body {
 					고객센터 <i class="dropdown icon"></i>
 					<div class="menu">
 						<a class="item" href="/board">공지사항</a>
-						<a class="item" href="/View/board/faq.jsp">자주 묻는 질문</a>
-						<a class="item" href="/View/member/question.jsp">1:1 문의</a>
+						<a class="item" href="/faq">자주 묻는 질문</a>
+						<a class="item" href="/questionmove">1:1 문의</a>
 						<a class="item" href="/review">후기 게시판</a>
 					</div>
 				</div>
 				<!-- 고객센터 메뉴 끝-->
 
-				<a class="item" href="/View/location/loc.jsp">오시는 길</a>
+				<a class="item" href="/location">오시는 길</a>
 				<div class="right item">
-					<a class="ui inverted blue button loginBtn" href="/View/member/login.jsp">로그인</a> <a class="ui inverted red button signupBtn" href="/View/member/termsAgreement.jsp" id="btnMargin">회원가입</a>
+					<a class="ui inverted blue button loginBtn" href="/loginpage">로그인</a> <a class="ui inverted red button signupBtn" href="/termsagreement" id="btnMargin">회원가입</a>
 				</div>
 			</div>
 		</div>

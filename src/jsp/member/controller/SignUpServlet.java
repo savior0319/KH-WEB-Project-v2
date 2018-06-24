@@ -3,6 +3,7 @@ package jsp.member.controller;
 import java.io.IOException;
 import java.sql.Date;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -51,7 +52,8 @@ public class SignUpServlet extends HttpServlet {
 		int result = new MemberService().signUp(mv);
 
 		if (result > 0) {
-			response.sendRedirect("/View/member/signUpSuccess.jsp");
+			RequestDispatcher dispatcher = request.getRequestDispatcher("/View/member/signUpSuccess.jsp");
+			dispatcher.forward(request, response);
 		} else {
 			response.sendRedirect("/View/error/error.jsp");
 		}

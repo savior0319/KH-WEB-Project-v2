@@ -102,7 +102,7 @@
 
 <script>
 	$('#mypage').click(function(){
-		location.href = "/View/member/myPage.jsp";
+		location.href = "/mypagelogin";
 	});
 
 	$('#main').click(function(){

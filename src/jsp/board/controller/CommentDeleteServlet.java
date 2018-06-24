@@ -51,7 +51,7 @@ public class CommentDeleteServlet extends HttpServlet {
 			}
 
 		} else {
-			System.out.println("test");
+			// System.out.println("test");
 		}
 	}
 
