@@ -20,9 +20,8 @@
 <title>펜션소개</title>
 
 <!-- 웹 폰트 적용 -->
-<link href="https://fonts.googleapis.com/css?family=Song+Myung" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css?family=Nanum+Myeongjo" rel="stylesheet">
-
+<link href="https://fonts.googleapis.com/css?family=Nanum+Brush+Script" rel="stylesheet">
 
 </head>
 
@@ -38,12 +37,7 @@
 	opacity: 0.85;
 }
 
-/* 웹 폰트 적용 */
-/*
-font-family: 'Nanum Myeongjo', serif;
-font-size: 25px;
-*/
-/*여기는 부분부분 적용해야하는거같아서 이따가 해보께영~*/
+
 
 </style>
 
@@ -59,8 +53,8 @@ font-size: 25px;
 		<div style="border :0px; padding: 0px; margin: 0px;"> <img src="${requestScope.dTb.desImagePath }" class="swiperImg" style="opacity: 0.8;"> </div>
 		<div style="background:url('/Image/title/pattern01a.png'); border :0px; padding: 0px; margin: 0px;">
 		<div class="ui center aligned basic segment"
-		style="letter-spacing: 5px;">
-		바다여행의 아름다운 추억을 더 펜션에서 만들어 가세요.
+		style="letter-spacing: 5px; font-family: 'Nanum Brush Script', cursive; font-size: 35px;">
+		여행의 아름다운 추억을 더 펜션에서 만들어 가세요.
 		</div>
 		</div>
 		</div>
@@ -69,7 +63,7 @@ font-size: 25px;
 	
 	<!-- 본문 시작 -->
 	<br>
-	<div class="ui container">
+	<div class="ui container" style="font-family: 'Nanum Myeongjo', serif; font-size: 15px;">
 		<!-- 여기에 본문 내용 작성하면 됨 -->
 		
 		${requestScope.dTb.desPensionAbout }

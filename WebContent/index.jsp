@@ -19,6 +19,10 @@
 	</script>
 	<jsp:include page="/View/main/layout/cssjs.jsp"></jsp:include>
 	<title>더 펜션</title>
+	
+	<!-- 웹 폰트 적용 -->
+	<link href="https://fonts.googleapis.com/css?family=Nanum+Myeongjo" rel="stylesheet">
+
 </head>
 
 <style>
@@ -51,7 +55,7 @@
 
 	<!-- 본문 시작 -->
 	<div class="ui container">
-		<div class="ui center aligned segment" id="mainComment"></div>
+		<div class="ui center aligned segment" id="mainComment" style="font-family: 'Nanum Myeongjo', serif;"></div>
 		<!-- 본문 끝 -->
 	</div>
 
