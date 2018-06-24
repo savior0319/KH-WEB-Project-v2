@@ -21,8 +21,7 @@
 	<title>더 펜션</title>
 	
 	<!-- 웹 폰트 적용 -->
-	<link href="https://fonts.googleapis.com/css?family=Nanum+Myeongjo" rel="stylesheet">
-
+	<link href="https://fonts.googleapis.com/css?family=Jua|Nanum+Gothic" rel="stylesheet">
 </head>
 
 <style>
@@ -55,7 +54,7 @@
 
 	<!-- 본문 시작 -->
 	<div class="ui container">
-		<div class="ui center aligned segment" id="mainComment" style="font-family: 'Nanum Myeongjo', serif;"></div>
+		<div class="ui center aligned segment" id="mainComment" style="font-family: 'Jua', sans-serif; font-size: 24px; line-height: 50px; "></div>
 		<!-- 본문 끝 -->
 	</div>
 

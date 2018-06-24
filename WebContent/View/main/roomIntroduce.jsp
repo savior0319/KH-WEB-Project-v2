@@ -27,8 +27,8 @@ ArrayList<PensionPicTb> list = (ArrayList<PensionPicTb>) request.getAttribute("P
 	
 	<!-- 웹 폰트 적용 -->
 	<link href="https://fonts.googleapis.com/css?family=Nanum+Brush+Script" rel="stylesheet">
-	
-	
+	<link href="https://fonts.googleapis.com/css?family=Jua|Nanum+Gothic" rel="stylesheet">
+
 </head>
 
 <style>
@@ -58,7 +58,7 @@ ArrayList<PensionPicTb> list = (ArrayList<PensionPicTb>) request.getAttribute("P
 			</div>
 			<div style="background: url('/Image/title/pattern01a.png'); border: 0px; padding: 0px; margin: 0px;">
 				<div class="ui center aligned basic segment" style="letter-spacing: 5px; font-family: 'Nanum Brush Script', cursive; font-size: 35px;">
-				여행의 아름다운 추억을 더 펜션에서 만들어 가세요.
+					여행의 아름다운 추억을 더 펜션에서 만들어 가세요.
 				</div>
 			</div>
 		</div>
@@ -69,61 +69,21 @@ ArrayList<PensionPicTb> list = (ArrayList<PensionPicTb>) request.getAttribute("P
 	<br>
 	<div class="ui container">
 		<!-- 여기에 본문 내용 작성하면 됨 -->
-		${requestScope.dTb.desRoom }
-		<br>
-		<br>
+		<div class="ui center aligned basic segment" style="font-family: 'Jua', sans-serif; font-size: 20px;">
+			${requestScope.dTb.desRoom }
+		</div>
 
 
-
-		<!-- JSTL 수정 해야하긴 하는데.... 하...
-<div class="ui three column grid">
-  <div class="column">
-    <div class="ui segment">
-      <img src="${requestScope.PensionPicTb[0].psPicPath }" style="width: 100%;">
-    </div>
-  </div>
-  <div class="column">
-    <div class="ui segment">
-      <img src="${requestScope.PensionPicTb[1].psPicPath }" style="width: 100%;">
-    </div>
-  </div>
-  <div class="column">
-    <div class="ui segment">
-      <img src="${requestScope.PensionPicTb[2].psPicPath }" style="width: 100%;">
-    </div>
-  </div>
-</div>
-
-<div class="ui three column grid">
-  <div class="column">
-    <div class="ui segment">
-      <img src="${requestScope.PensionPicTb[3].psPicPath }" style="width: 100%;">
-    </div>
-  </div>
-  <div class="column">
-    <div class="ui segment">
-      <img src="${requestScope.PensionPicTb[4].psPicPath }" style="width: 100%;">
-    </div>
-  </div>
-  <div class="column">
-    <div class="ui segment">
-      <img src="${requestScope.PensionPicTb[5].psPicPath }" style="width: 100%;">
-    </div>
-  </div>
-</div>
--->
-
-
-<!-- 사진 시작 -->
-<%
-int pageIndex = 0;
-int row = 0;
-int count=0;
-if (list.size() % 3 > 0) {
-pageIndex = list.size() / 3 + 1;
-}
-else {
-pageIndex = list.size() / 3;
+		<!-- 사진 시작 -->
+		<%
+		int pageIndex = 0;
+		int row = 0;
+		int count=0;
+		if (list.size() % 3 > 0) {
+		pageIndex = list.size() / 3 + 1;
+	}
+	else {
+	pageIndex = list.size() / 3;
 }
 for (int i = 0; i < pageIndex; i++) {
 if(list.size()-count>=3)
