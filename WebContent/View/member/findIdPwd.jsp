@@ -37,7 +37,7 @@
 	<br>
 	<div class="ui container" id="containerCenter">
 		<div class="ui icon message">
-			<i class="map outline icon"></i>
+			<i class="user icon"></i>
 			<div class="content">
 				<div class="header" style="text-align: center;">
 					<h1>
