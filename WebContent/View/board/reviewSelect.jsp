@@ -189,15 +189,17 @@ if (m != null && m.getMbId().equals(btlv.getBv().getBdWriter())) {
 	<input type="submit" class="ui tiny brown button" value="글 수정">
 </form>
 
-<form action="/reviewUpdateImageReady" style="display:inline;">
-	<input type="hidden" name="bdNo" value="<%=btlv.getBv().getBdNo()%>" />
-	<input type="submit" class="ui tiny brown button" value="사진 수정">
-</form>
-
-<form action="/reviewDeleteImageReady" style="display:inline;">
-	<input type="hidden" name="bdNo" value="<%=btlv.getBv().getBdNo()%>" />
-	<input type="submit" class="ui tiny red button" value="사진 삭제">
-</form>
+	<% if(!btlv.getList().isEmpty()){ %>
+				<form action="/reviewUpdateImageReady" style="display:inline;">
+					<input type="hidden" name="bdNo" value="<%=btlv.getBv().getBdNo()%>" />
+					<input type="submit" class="ui orange button" value="사진 수정">
+				</form>
+				
+				<form action="/reviewDeleteImageReady" style="display:inline;">
+					<input type="hidden" name="bdNo" value="<%=btlv.getBv().getBdNo()%>" />
+					<input type="submit" class="ui orange button" value="사진 삭제">
+				</form>
+				<%} %>
 
 <form action="/reviewDelete" method="post" style="display:inline;">
 	<input type="hidden" name="bdNo" value="<%=btlv.getBv().getBdNo()%>" />
