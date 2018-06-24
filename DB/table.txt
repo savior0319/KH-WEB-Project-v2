@@ -932,4 +932,12 @@ INSERT INTO QUESTION_TB VALUES(Q_NO_SEQ.NEXTVAL, '이 펜션 얼마죠20?', '220
 INSERT INTO QUESTION_TB VALUES(Q_NO_SEQ.NEXTVAL, '이 펜션 얼마죠21?', '230원에 삽니다', 'test', SYSDATE, DEFAULT); 
 INSERT INTO QUESTION_TB VALUES(Q_NO_SEQ.NEXTVAL, '이 펜션 얼마죠22?', '240원에 삽니다', 'test', SYSDATE, DEFAULT); 
 INSERT INTO QUESTION_TB VALUES(Q_NO_SEQ.NEXTVAL, '이 펜션 얼마죠23?', '안사', 'test', SYSDATE, DEFAULT); 
+
+-- 예약 안내 데이터
+UPDATE DESCRIPTION_TB 
+SET DES_ATTENTION = '주의사항입니다.', 
+    DES_REFUND = '환불정보입니다.', 
+    DES_ACCOUNT = '계좌정보입니다.', 
+    DES_ETC = '기타정보입니다.';
+    
 COMMIT; 
