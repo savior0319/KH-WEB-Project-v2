@@ -7,9 +7,11 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import jsp.board.model.service.CommentService;
 import jsp.board.model.vo.Comment;
+import jsp.member.model.vo.MemberVo;
 
 /**
  * Servlet implementation class RecommendCommentServlet
@@ -35,7 +37,8 @@ public class RecommendCommentServlet extends HttpServlet {
 		
 		int cmNo = Integer.parseInt(request.getParameter("cmNo"));
 		
-		String recommendId = request.getParameter("recommendId");
+		HttpSession session = request.getSession(false);
+		String recommendId = ((MemberVo) session.getAttribute("member")).getMbId();
 		
 		// false 이면 해당 게시글에 로그인한 계정이 추천을 누른적이 없는 경우, true이면 해당 게시글에 로그인한 계정이 추천을 누른적이 있는 경우
 		boolean recommendInquiry = new CommentService().recommendInquiry(cmNo, recommendId);

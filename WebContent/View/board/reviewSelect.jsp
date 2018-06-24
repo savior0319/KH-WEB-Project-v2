@@ -58,7 +58,6 @@ Date date = new Date(writeDay.getTime());
 				%>
 				<form id="rmBd" method="get" style="display:inline;">
 					<!-- 추천수 중복되는 걸 막기위해서 아이디 당 한번씩밖에 안되도록 설정 -->
-					<input type="hidden" name="recommendId" value="<%=m.getMbId() %>" />
 					<input type="hidden" name="bdNo" value="<%=btlv.getBv().getBdNo() %>" />
 					<!-- <input type="button" id="submitRmBd" class="ui icon button" value="추천" /> -->
 					<button type="button" class="ui icon red tiny button" id="submitRmBd">
@@ -70,7 +69,11 @@ Date date = new Date(writeDay.getTime());
 			}
 			%>
 			<div class="ui divider"></div>
+			<%if(btlv.getBv().getBdWriter() != null) { %>
 			<span class="ui small header" style="margin-right: 15px;"><i class="user icon"></i>작성자</span><span style="display: inline-block; width: 15%;"><%=btlv.getBv().getBdWriter()%></span>
+			<%} else { %>
+			<span class="ui small header" style="margin-right: 15px;"><i class="user icon"></i>작성자</span><span style="display: inline-block; width: 15%;">탈퇴회원</span>
+			<%} %>
 			<span class="ui small header" style="margin-right: 15px;"><i class="calendar icon"></i>작성일</span><span style="display: inline-block; width: 15%;"><%=date%></span>
 			<span class="ui small header" style="margin-right: 15px;"><i class="eye icon"></i>조회수</span><span style="display: inline-block; width: 15%;"><%=btlv.getBv().getBdViewCount() %></span>
 			<span class="ui small header" style="margin-right: 15px;"><i class="thumbs up outline icon"></i>추천수</span><span id="spanRmBd"style="display: inline-block; width: 15%;"><%=btlv.getBv().getBdRecommendCount() %></span>
@@ -110,7 +113,11 @@ Date date = new Date(writeDay.getTime());
 					<a class="avatar" style="padding-right: 5px;">
 						<img src="/Image/user.JPG">
 					</a>
-					<a class="author"><%=c.getCmWriter() %></a>
+					<%if(c.getCmWriter() != null) {%>
+						<a class="author"><%=c.getCmWriter() %></a>
+					<%} else { %>
+						<a class="author">탈퇴회원</a>
+					<%} %>
 					<div class="metadata">
 						<div class="date"><%=c.getCmWriteDate()%></div>
 						<div class="rating" >
@@ -143,7 +150,6 @@ Date date = new Date(writeDay.getTime());
 					<%-- 댓글 추천 --%>
 					<form action="/recommendComment" id="rmCm<%=index %>" method="get" style="display:inline;">
 						<!-- 추천수 중복되는 걸 막기위해서 아이디 당 한번씩밖에 안되도록 설정 -->
-						<input type="hidden" name="recommendId" value="<%=m.getMbId() %>" />
 						<input type="hidden" name="cmNo" value="<%=c.getCmNo()%>" />
 
 						<button type="button" class="ui icon red tiny button" id="submitCmBd<%=index %>">
@@ -224,7 +230,7 @@ if (m != null && m.getMbId().equals(btlv.getBv().getBdWriter())) {
 		document.getElementById(id+"_reBtn").style="display:inline";
 	}
 	function cancle(id){
-		document.getElementById(id+"_input_show").style="display:inline";
+		document.getElementById(id+"_input_show").style="display:block";
 		document.getElementById(id+"_input").type="hidden";
 		document.getElementById(id+"_btn").style="display:inline";
 		document.getElementById(id+"_submit").type="hidden";

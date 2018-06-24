@@ -1104,6 +1104,7 @@ public class AdminDao {
 				bv.setBdWriteDate(rs.getTimestamp("BD_WRITE_DATE"));
 				bv.setBdViewCount(rs.getInt("BD_VIEW_COUNT"));
 				bv.setBdNo(bdNo);
+				bv.setBdRecommendCount(rs.getInt("BD_RECOMMEND_COUNT"));
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
