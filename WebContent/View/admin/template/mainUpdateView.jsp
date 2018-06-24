@@ -51,15 +51,15 @@
 	</div> --%>
 	<input type="hidden" name="img" id="update${i.count }" accept="image/*" required/><br>
 	<br>
-	<input type="hidden" id="update${i.count }_submit" value="수정" class="ui button">
-	<button type="button" id="update${i.count }_btn" onclick="update('update${i.count }');" class="ui button">수정</button>
-	<button type="button" id="update${i.count }_reBtn" style="display:none;" onclick="imageCancle('update${i.count }');" class="ui button">취소</button>
+	<input type="hidden" id="update${i.count }_submit" value="수정" class="ui orange button">
+	<button type="button" id="update${i.count }_btn" onclick="update('update${i.count }');" class="ui orange button">수정</button>
+	<button type="button" id="update${i.count }_reBtn" style="display:none;" onclick="imageCancle('update${i.count }');" class="ui red button">취소</button>
 	</form>
  </div>
 </c:forEach>
 </div>
 <br><br>
-<button onclick="back()" class="ui button">취소</button>
+<button onclick="back()" class="ui blue button">취소</button>
 	</div>
 	<!-- 본문 끝 -->
 

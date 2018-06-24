@@ -18,17 +18,15 @@
 		<div class="ui segment">
 			<h3 class="ui header">객실 등록</h3>
 		</div>
-		
 		<!-- 본문 내용 시작-->
-		<br>
-		<br>
 		<div class="ui container">
+		<div class="ui red message"><div class="ui small header">※ 객실을 등록하려면 아래 모든 항목을 입력하세요</div></div>
 			<form class="ui form segment" action="/adminRoomInsert" method="post" enctype="multipart/form-data">
-				<h4 class="ui dividing header">객실 정보</h4>
+				<h2 class="ui dividing header">객실 정보</h2>
 				<div class="field">
 					<label>객실명</label>
 					<div class="ui input">
-						<input type="text" placeholder="방 이름" name="PS_Name" maxlength="16" required>
+						<input type="text" placeholder="객실명 입력" name="PS_Name" maxlength="16" required>
 					</div>
 				</div>
 				<div class="fields">
@@ -43,7 +41,7 @@
 					
 				</div>
 				<!--  객실 요금  -->
-				<h4 class="ui dividing header">객실 요금 정보</h4>
+				<h2 class="ui dividing header">객실 요금 정보</h2>
 				<div class="fields">
 					<div class="three wide field">
 						<label> 주말 요금</label>
@@ -60,8 +58,9 @@
 				</div>
 				<div class="field">
 					<label>객실 소개</label>
+					<div class="ui red message">※ 최대 1333자(한글기준)까지 입력가능합니다</div>
 					<div class="ui input">
-						<textarea rows="10" name="PS_Contents" maxlength="1333" required></textarea>
+						<textarea rows="10" name="PS_Contents" maxlength="1333" required placeholder="객실 소개 글 입력"></textarea>
 					</div>
 				</div>
 				<h4>객실 사진 정보</h4>
@@ -88,10 +87,11 @@
 					
 				</div>
 				<!--  -->
-				<input  type="submit" class="ui button" value="등록" onclick="return Check();" >
-				<input  type="reset" class="ui button" value="리셋">
+				<input  type="submit" class="ui orange button" value="등록" onclick="return Check();" >
+				<input  type="reset" class="ui green button" value="초기화">
 			</form>
-			<button class="ui button" onclick="goBack();" >취소</button>
+			<button class="ui blue button" onclick="goBack();" >뒤로가기</button>
+			<br><br><br><br>
 		</div>
 		<!-- 본문 내용 끝  -->
 	</div>

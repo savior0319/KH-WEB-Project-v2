@@ -110,7 +110,7 @@
 	</table>
 	<br>	<br>
 	<form action="/search" method="get" style="display:inline;">
-		<select name="searchOption" style="width:80px;">
+		<select class="ui dropdown" name="searchOption" style="width:80px;">
 			<option value="title" selected>제목</option>
 			<option value="contents">내용</option>
 			<option value="writer">작성자</option>

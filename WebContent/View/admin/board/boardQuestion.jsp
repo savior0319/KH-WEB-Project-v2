@@ -33,10 +33,11 @@ pageEncoding="UTF-8"%>
 	<!-- 본문 내용 시작-->
 	<div class="ui container">
 		<!-- 테이블 시작 -->
+		<div class="ui red message"><div class="ui small header">※ 1:1문의에 대한 조회 검색 및 답변등록을 할 수 있습니다</div></div>
 		<h1>1 : 1 질문 관리</h1>
 		<form  action="/adminQuestionList" method="post"
 		style="display: inline;">
-		<select name="searchOption">
+		<select class="ui dropdown" name="searchOption">
 			<% if(searchOption==null||searchOption.equals("Q_NAME")){ %>
 			<option value="Q_NAME" selected="selected">제목</option>
 			<option value="Q_WRITER">작성자</option>
@@ -45,18 +46,20 @@ pageEncoding="UTF-8"%>
 			<option value="Q_WRITER" selected="selected">작성자</option>
 			<% } %>
 		</select>
-		<input type="text" name="searchData" 
-		<%if(searchData != null){ %>
-		value=<%=searchData %>
-		<% }%>
-		>
-		<input type="submit" value="검색">
+		<div class="ui input">
+			<input type="text" name="searchData" 
+			<%if(searchData != null){ %>
+			value=<%=searchData %>
+			<% }%>
+			>
+		</div>
+		<input type="submit" value="검색" class="ui blue button" style="margin-left: 10px;">
 	</form>
-	
+
 	<table class="ui celled table">
 
 		<thead>
-			<tr>
+			<tr align="center">
 				<th>문의 번호</th>
 				<th>제목</th>
 				<th>작성자</th>
@@ -78,19 +81,19 @@ pageEncoding="UTF-8"%>
 						 		if (list != null && !list.isEmpty()) {
 						 		for (QuestionVo q : list) {
 						 		%>
-						 		<tr>
+						 		<tr align="center">
 						 			<!-- 객실 정보 -->
 
-						 			<td><%=q.getqNo()%></td>
-						 			<td><%=q.getqName()%></td>
-						 			<td><%=q.getqWriter()%></td>
+						 			<td><div class="ui small header"><%=q.getqNo()%></div></td>
+						 			<td><div class="ui small header"><%=q.getqName()%></div></td>
+						 			<td><div class="ui small header"><%=q.getqWriter()%></div></td>
 						 			<!-- 요금 정보 -->
-						 			<td><%=q.getqWriteDate()%></td>
-						 			<td><%=q.getqAnswerCheck()%></td>
+						 			<td><div class="ui small header"><%=q.getqWriteDate()%></div></td>
+						 			<td><div class="ui small header"><%=q.getqAnswerCheck()%></div></td>
 						 			<td>
 						 				<form action="/adminQuestionDetail" method="post">
 						 					<input type="hidden" name="qNo" value="<%=q.getqNo()%>">
-						 					<input type="submit" value="상세보기" />
+						 					<input type="submit" class="ui orange button" value="상세보기" />
 						 				</form>
 						 			</tr>
 						 			<%}%>
@@ -99,7 +102,7 @@ pageEncoding="UTF-8"%>
 						 		<tfoot>
 						 			<tr>
 						 				<th colspan="8">
-						 					<div class="ui segment">
+						 					<div class="ui basic segment">
 						 						<%= pageNavi %>
 						 					</div>
 						 				</th>

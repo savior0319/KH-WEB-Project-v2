@@ -26,10 +26,11 @@ String searchOption = request.getParameter("searchOption");
 		<!-- 본문 내용 시작-->
 		<div class="ui container">
 			<!-- 테이블 시작 -->
+			<div class="ui red message"><div class="ui small header">※ 현재 가입중인 회원 목록입니다<br>네이버로 로그인한 회원은 주소에 네이버회원으로 표시됩니다<br>다운로드 버튼 클릭 시 엑셀 파일로 목록이 다운로드 됩니다</div></div>
 			<h1>회원 리스트</h1>
 			
 			<form action="/adminMemberList" method="post" style="display: inline;">
-				<select name="searchOption">
+				<select class="ui dropdown" name="searchOption">
 					<% if(searchOption==null||searchOption.equals("MB_ID")){ %>
 					<option value="MB_ID" selected="selected">아이디</option>
 					<option value="MB_ADDRESS">주소</option>
@@ -44,19 +45,21 @@ String searchOption = request.getParameter("searchOption");
 					<option value="MB_NAME" selected="selected">이름</option>
 					<% } %>
 				</select>
-				<input type="text" name="searchData" 
-				<%if(searchData != null){ %>
-				value=<%=searchData %>
-				<% }%>
-				>
-				<input type="submit" value="검색">
+				<div class="ui input">
+					<input type="text" name="searchData" 
+					<%if(searchData != null){ %>
+					value=<%=searchData %>
+					<% }%>
+					>
+				</div>
+				<input type="submit" value="검색" class="ui blue button" style="margin-left: 10px;">
 			</form>
 			<form  method="post" action="/memberListDown" style="display:inline" >
-				<input class="ui buton" type="submit" value="다운">
+				<input class="ui orange button" type="submit" value="다운로드">
 			</form>
 			<table class="ui celled table">
 				<thead>
-					<tr>
+					<tr align="center">
 						<th>아이디</th>
 						<th>이름</th>
 						<th>생년월일</th>
@@ -81,23 +84,23 @@ String searchOption = request.getParameter("searchOption");
 			 	<tbody>
 			 		<%if(mlist != null && !mlist.isEmpty()){ %>
 			 		<%for(MemberVo m : mlist){ %>
-			 		<tr>
-			 			<td><%= m.getMbId() %></td>
-			 			<td><%= m.getMbName() %></td>
-			 			<td><%= m.getMbBirth() %></td>
-			 			<td><%= m.getMbEmail() %></td>
-			 			<td><%= m.getMbPhone() %></td>
+			 		<tr align="center">
+			 			<td><div class="ui small header"><%= m.getMbId() %></div></td>
+			 			<td><div class="ui small header"><%= m.getMbName() %></div></td>
+			 			<td><div class="ui small header"><%= m.getMbBirth() %></div></td>
+			 			<td><div class="ui small header"><%= m.getMbEmail() %></div></td>
+			 			<td><div class="ui small header"><%= m.getMbPhone() %></div></td>
 			 			<!--  성별을 남여로  -->
-			 			<td><%= m.getMbGender() %></td>
-			 			<td><%= m.getMbEntDate() %></td>
-			 			<td><%= m.getMbAddress() %></td>
+			 			<td><div class="ui small header"><%= m.getMbGender() %></div></td>
+			 			<td><div class="ui small header"><%= m.getMbEntDate() %></div></td>
+			 			<td style="text-align: left"><div class="ui small header"><%= m.getMbAddress() %></div></td>
 			 		</tr>
 			 		<%} %>
 			 		<%} %>
 			 		<tfoot>
 			 			<tr>
 			 				<th colspan="8">
-			 					<div class="ui segment">
+			 					<div class="ui basic segment">
 			 						<%= pageNavi %>
 			 					</div>
 			 				</th>

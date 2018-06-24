@@ -40,32 +40,32 @@ pageEncoding="UTF-8"%>
 		<!-- 본문 내용 시작-->
 		<div class="ui container">
 			<!-- 테이블 시작 -->
+			<div class="ui red message"><div class="ui small header">※ 공지사항을 등록 할 수 있습니다<br>내용은 한글기준(최대 1333자)</div></div>
 			<h1>공지사항</h1>
 			<div class="ui segment">
 				
 				<form class="ui form" method="post" action="/adminBoardResist" enctype="multipart/form-data">
-					<label>제목</label>
-					<input type="text" name="bdName" required>
-					<label>내용</label>	
-					<textarea style="resizw:none" name="bdcontents" ></textarea>
-					<label>첨부 사진</label>
-					<input type="file" class="ui button" id="imglist" name="imglist" multiple="multiple" />
-					<label>미리보기</label>
+					<span class="ui small header">제목</span>
+					<input type="text" name="bdName" required style="margin-bottom: 15px;" placeholder="제목을 입력하세요">
+					<span class="ui small header">내용</span>	
+					<textarea style="resizw:none" name="bdcontents" style="margin-bottom: 15px;" maxlength="1333" placeholder="내용을 입력하세요"></textarea>
+					<br><br>
+					<span class="ui small header">첨부 사진</span>
+					<input type="file" class="ui button" id="imglist" name="imglist" multiple="multiple" style="margin-bottom: 15px;" />
+					<br>
+					<span class="ui small header">미리보기</span>
 					<div id="preview"class="ui tiny images">
 						
 					</div>
 					
-					<input type="submit" class="ui button" value="공지사항 등록" >
-					<input type="reset" class="ui button" value="취소">
-					
+					<input type="submit" class="ui orange button" value="공지사항 등록" >
+					<input type="reset" class="ui red button" value="취소">
 				</form>
-				
-				
 			</div>
 			<!--  테이블 끝 -->
 			
-			<div class="ui button">
-				<a href="/adminBoardList">목록으로</a>
+			<div class="ui blue button">
+				<a style="color:white;" href="/adminBoardList">목록으로</a>
 			</div>
 		</div>
 		<!-- 본문 내용 끝  -->

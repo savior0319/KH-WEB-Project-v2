@@ -17,20 +17,23 @@
 		<!-- 본문 내용 시작-->
 		<div class="ui container">
 			<!-- 테이블 시작 -->
+			<div class="ui red message"><div class="ui small header">※ 펜션을 예약을 취소 요청한 목록입니다<br>예약 취소를 완료하려면 환불 여부와 촤종취소를 확인해주세요 </div></div>
 			<h1>예약 취소 요청</h1>
 			
 			<form action="/adminReserveCancel" method="post" style="display: inline;">
-				<select name="searchOption">
+				<select class="ui dropdown" name="searchOption">
 					<option value="RC_RES_ROOM_NAME">객실이름</option>
 					<option value="RC_RES_ID">아이디</option>
 				</select>
-				<input type="text" name="searchData" >
-				<input type="submit" value="검색">
+				<div class="ui input">
+					<input type="text" name="searchData" >
+				</div>
+				<input type="submit" value="검색" class="ui blue button" style="margin-left: 10px;">
 			</form>
 
 			<table class="ui celled table">
 				<thead>
-					<tr>
+					<tr align="center">
 						<th>취소요청일</th>
 						<th>아이디</th>
 						<th>객실명</th>
@@ -38,7 +41,7 @@
 						<th>퇴실일</th>
 						<th>요금</th>
 						<th>결제일</th>
-						<th>환불</th>
+						<th>환불 여부</th>
 						<th>최종 취소</th>
 					</tr>
 				</thead>
@@ -58,34 +61,34 @@
 			 		if(rclist != null && !rclist.isEmpty()){ 
 			 		%>
 			 		<%for(ReservationCancelVo rc : rclist){ %>
-			 		<tr>
-			 			<td><%=rc.getRcDate()%></td>
-			 			<td><%=rc.getRcResId()%></td>
-			 			<td><%=rc.getRcResRoomName()%></td>
-			 			<td><%=rc.getRcResInDate()%></td>
-			 			<td><%=rc.getRcResOutDate()%></td>
-			 			<td><%=rc.getRcResPrice()%></td>
-			 			<td><%=rc.getRcResPaymentDate()%></td>
+			 		<tr align="center">
+			 			<td><div class="ui small header"><%=rc.getRcDate()%></div></td>
+			 			<td><div class="ui small header"><%=rc.getRcResId()%></div></td>
+			 			<td><div class="ui small header"><%=rc.getRcResRoomName()%></div></td>
+			 			<td><div class="ui small header"><%=rc.getRcResInDate()%></div></td>
+			 			<td><div class="ui small header"><%=rc.getRcResOutDate()%></div></td>
+			 			<td><div class="ui small header"><%=rc.getRcResPrice()%></div></td>
+			 			<td><div class="ui small header"><%=rc.getRcResPaymentDate()%></div></td>
 			 			<td>
 			 				<% if(rc.getRcRefundCheck().equals("N")) { %>
 			 				<form action="/refundReservation" method="post">
 			 					<input type="hidden" name="rc_no" value="<%=rc.getRcNo()%>" />
-			 					<input type="submit" value="환불" onclick="refundCheck();">
+			 					<input type="submit" class="ui blue button" value="환불수락" onclick="refundCheck();">
 			 				</form>
 			 				<% } else { %>
-			 				완료
+			 				<div class="ui small header" style="color:blue; font-weight: 600;">완료</div>
 			 				<% } %>
 			 			</td>
 			 			<td>
 			 				<% if(rc.getRcCancelCheck().equals("N")&&rc.getRcRefundCheck().equals("Y")) { %>
 			 				<form action="/cancelReservation" method="post">
 			 					<input type="hidden" name="rc_no" value="<%=rc.getRcNo()%>" />
-			 					<input type="submit" value="취소" onclick="return cancelCheck();">
+			 					<input type="submit" class="ui red button" value="취소수락" onclick="return cancelCheck();">
 			 				</form>
 			 				<% } else if(rc.getRcRefundCheck().equals("N")) { %>
-			 				환불 필요
+			 				<div class="ui small header" style="color:red; font-weight: 600;">환불 필요</div>
 			 				<% } else { %>
-			 				완료
+			 				<div class="ui small header" style="color:blue; font-weight: 600;">완료</div>
 			 				<% } %>
 			 			</td>
 			 		</tr>
@@ -97,7 +100,7 @@
 			 	<tfoot>
 			 		<tr>
 			 			<th colspan="9">
-			 				<div class="ui segment">
+			 				<div class="ui basic segment">
 			 					<%= pageNavi %>
 			 				</div>
 			 			</th>

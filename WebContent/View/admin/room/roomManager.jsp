@@ -37,17 +37,16 @@ ArrayList<PensionVo> list = (ArrayList<PensionVo>) request.getAttribute("roomlis
 		<!-- 일단은 이 부분에서 데이터를 가져오도록 해보자.-->
 		<!-- 객실 리스트를 가져오자. -->
 		<h1>객실 리스트</h1>
+		<div class="ui red message"><div class="ui small header">※ 객실 정보를 보려면 해당 객실에 해당 하는 상세보기 버튼을 클릭하고<br>객실을 추가하려면 아래 객실 추가 버튼을 클릭하세요</div></div>
 		<table class="ui celled table">
-
 			<thead>
-				<tr>
-
+				<tr align="center">
 					<th>객실명</th>
 					<th>기준인원</th>
 					<th>최대인원</th>
-					<th>주말요금</th>
-					<th>주중요금</th>
-					<th>추가요금</th>
+					<th>주말요금(단위 원)</th>
+					<th>주중요금(단위 원)</th>
+					<th>추가요금(단위 원)</th>
 					<th>상세보기</th>
 				</tr>
 			</thead>
@@ -74,16 +73,16 @@ ArrayList<PensionVo> list = (ArrayList<PensionVo>) request.getAttribute("roomlis
 		<%
 		for (PensionVo p : list) {
 		%>
-		<tr>
+		<tr align="center">
 			<!-- 객실 정보 -->
 
-			<td><%=p.getPsName()%></td>
-			<td><%=p.getPsPersonnel()%></td>
-			<td><%=p.getPsMaxPersonnel()%></td>
+			<td><div class="ui small header"><%=p.getPsName()%></div></td>
+			<td><div class="ui small header"><%=p.getPsPersonnel()%></div></td>
+			<td><div class="ui small header"><%=p.getPsMaxPersonnel()%></div></td>
 			<!-- 요금 정보 -->
-			<td><%=p.getPsWeekend()%></td>
-			<td><%=p.getPsWeekday()%></td>
-			<td><%=p.getPsAddtionalPrice()%></td>
+			<td><div class="ui small header"><%=p.getPsWeekend()%></div></td>
+			<td><div class="ui small header"><%=p.getPsWeekday()%></div></td>
+			<td><div class="ui small header"><%=p.getPsAddtionalPrice()%></div></td>
 			<!-- 상세보기 버튼 -->
 			<!--  이 부분은 나중에... -->
 						<%-- <td>
@@ -92,7 +91,7 @@ ArrayList<PensionVo> list = (ArrayList<PensionVo>) request.getAttribute("roomlis
 						<td>
 							<form method="post" action="/adminRoomDetail">
 								<input type="hidden" name="psName" value="<%= p.getPsName()%>">
-								<input type="submit" value="상세보기" >
+								<input type="submit" class="ui orange button " value="상세보기" >
 							</form>
 						</td>
 					</tr>
@@ -128,8 +127,8 @@ ArrayList<PensionVo> list = (ArrayList<PensionVo>) request.getAttribute("roomlis
 		</tfoot> -->
 	</table>
 
-	<div class="ui button">
-		<a href="/View/admin/room/roomResist.jsp">객실 추가</a>
+	<div class="ui blue button">
+		<a style="color:white;" href="/View/admin/room/roomResist.jsp">객실 추가</a>
 	</div>
 
 	<!--  테이블 끝 -->
