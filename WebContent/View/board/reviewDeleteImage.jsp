@@ -2,7 +2,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ page errorPage="/View/error/error.jsp"%>
 <%@ page import="jsp.board.model.vo.*" import="jsp.member.model.vo.*" import="java.util.*" import="jsp.admin.model.vo.*"%>
-
+<jsp:include page="/View/main/layout/preventurl.jsp"></jsp:include>
 <%
 BoardTotalInfoVo btlv = (BoardTotalInfoVo)request.getAttribute("review");
 BoardVo bv = null;

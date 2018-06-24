@@ -3,7 +3,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ page errorPage="/View/error/error.jsp"%>
 <%@ page import="jsp.board.model.vo.*" import="java.util.*"%>
-
+<jsp:include page="/View/main/layout/preventurl.jsp"></jsp:include>
 <!DOCTYPE html>
 <html>
 

@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ page import="java.util.*,jsp.admin.model.vo.*,jsp.reservation.model.vo.*" %>
+<jsp:include page="/View/main/layout/preventurl.jsp"></jsp:include>
 <%
 	SalesPageVo spv = (SalesPageVo)request.getAttribute("SalesPage");
 	String searchData = request.getParameter("searchData"); 

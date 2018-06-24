@@ -4,6 +4,7 @@
 <%@page import="java.sql.Date"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ page import="jsp.board.model.vo.*" import="java.util.*"%>
+<jsp:include page="/View/main/layout/preventurl.jsp"></jsp:include>
 <% MemberVo m = (MemberVo)session.getAttribute("member");%>
 <!DOCTYPE html>
 <html>

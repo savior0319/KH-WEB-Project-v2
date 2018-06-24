@@ -1,8 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ page errorPage="/View/error/error.jsp"%>
-
 <%@page import="jsp.member.model.vo.*"%>
+<jsp:include page="/View/main/layout/preventurl.jsp"></jsp:include>
 <% MemberVo m = (MemberVo)session.getAttribute("member"); %>
 
 <!DOCTYPE html>
@@ -97,7 +97,6 @@
 
 	<!-- 푸터 시작 -->
 	<jsp:include page="/View/main/layout/footer.jsp"></jsp:include>
-	<!-- 푸터 끝 -->
 
 </body>
 

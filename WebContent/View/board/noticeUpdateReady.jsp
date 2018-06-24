@@ -2,6 +2,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ page import="jsp.board.model.vo.*" %>
 <%@ page errorPage="/View/error/error.jsp"%>
+<jsp:include page="/View/main/layout/preventurl.jsp"></jsp:include>
 <% BoardVo board = (BoardVo)request.getAttribute("board"); %>
 
 <!DOCTYPE html>

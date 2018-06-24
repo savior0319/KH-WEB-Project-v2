@@ -1,22 +1,22 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-
+<jsp:include page="/View/main/layout/preventurl.jsp"></jsp:include>
 <!DOCTYPE html>
 <html>
 
 <head>
-<!-- Global site tag (gtag.js) - Google Analytics -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=UA-120156974-1"></script>
-<script>
-	window.dataLayer = window.dataLayer || [];
-	function gtag() {
-		dataLayer.push(arguments);
-	}
-	gtag('js', new Date());
-	gtag('config', 'UA-120156974-1');
-</script>
-<jsp:include page="/View/main/layout/cssjs.jsp"></jsp:include>
-<title>에러페이지</title>
+	<!-- Global site tag (gtag.js) - Google Analytics -->
+	<script async src="https://www.googletagmanager.com/gtag/js?id=UA-120156974-1"></script>
+	<script>
+		window.dataLayer = window.dataLayer || [];
+		function gtag() {
+			dataLayer.push(arguments);
+		}
+		gtag('js', new Date());
+		gtag('config', 'UA-120156974-1');
+	</script>
+	<jsp:include page="/View/main/layout/cssjs.jsp"></jsp:include>
+	<title>에러페이지</title>
 </head>
 
 <style>
@@ -58,16 +58,12 @@
 				<br><br><br><br>
 			</div>
 		</div>
-		
-		
-		
-		
-		
 	</div>
 	<!-- 본문 끝 -->
 
 	<!-- 푸터 시작  -->
 	<jsp:include page="/View/main/layout/footer.jsp"></jsp:include>
+	<jsp:include page="/View/main/layout/preventurl.jsp"></jsp:include>
 	<!-- 푸터 끝 -->
 </body>
 

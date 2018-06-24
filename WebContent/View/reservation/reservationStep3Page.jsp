@@ -3,6 +3,7 @@
 <%@ page errorPage="/View/error/error.jsp"%>
 <%@page import="jsp.member.model.vo.*"%>
 <%@page import="jsp.reservation.model.vo.*"%>
+<jsp:include page="/View/main/layout/preventurl.jsp"></jsp:include>
 <% 
 ReservationVo rv = (ReservationVo)request.getAttribute("reservationInfo");
 MemberVo mv = (MemberVo)request.getAttribute("memberInfo");
@@ -115,20 +116,20 @@ MemberVo mv = (MemberVo)request.getAttribute("memberInfo");
 
 				<div class="ui center aligned segment" style="padding-top: 30px; padding-bottom: 30px; background: #f9fafb;">
 					<div class="ui small header">개인정보 취급 위탁 동의<br>
-					(예약 처리를 위한 목적으로 제공됩니다.)
-				</div>
+						(예약 처리를 위한 목적으로 제공됩니다.)
+					</div>
 					<input type="checkbox" id="agree2" name="agree" /> 동의합니다.<br><br>
 					<div class="ui form">
-					<textarea rows="8" style="resize:none;" readonly>
-더 펜션은 고객님께서 예약하신 서비스 제공을 위해 최소한의 정보를 아래와 같이 위탁하고 있습니다.
-고객님께서는 정보 제공에 대해 동의하지 않으실 수 있으며, 동의하지 않으시는 경우 예약 서비스 제공이 제한됩니다.
+						<textarea rows="8" style="resize:none;" readonly>
+							더 펜션은 고객님께서 예약하신 서비스 제공을 위해 최소한의 정보를 아래와 같이 위탁하고 있습니다.
+							고객님께서는 정보 제공에 대해 동의하지 않으실 수 있으며, 동의하지 않으시는 경우 예약 서비스 제공이 제한됩니다.
 
 
-위탁받는자 : 더 펜션
-위탁 업무 : 예약 신청 서비스
-위탁 항목 : 이름, 연락처 등등
-보유 및 이용기간 : 서비스 완료 1개월 후 삭제 등
-					</textarea>
+							위탁받는자 : 더 펜션
+							위탁 업무 : 예약 신청 서비스
+							위탁 항목 : 이름, 연락처 등등
+							보유 및 이용기간 : 서비스 완료 1개월 후 삭제 등
+						</textarea>
 					</div>
 				</div>
 
@@ -192,13 +193,13 @@ MemberVo mv = (MemberVo)request.getAttribute("memberInfo");
                 				},
                 				type : 'post',
                 				success : function(){
-                					 alert('결제완료');
-                				/*	console.log("결제 성공");*/
+                					alert('결제완료');
+                					/*	console.log("결제 성공");*/
                 					location.href="/View/reservation/reservationStep4Page.jsp";
                 				},
                 				error : function() {
-                					 alert('서버오류(잠시 후 다시 시도 해주세요');
-                		/*			console.log("결제 실패");*/
+                					alert('서버오류(잠시 후 다시 시도 해주세요');
+                					/*			console.log("결제 실패");*/
                 				}
                 			});
 
