@@ -72,7 +72,7 @@ Date date = new Date(writeDay.getTime());
 			<%if(btlv.getBv().getBdWriter() != null) { %>
 			<span class="ui small header" style="margin-right: 15px;"><i class="user icon"></i>작성자</span><span style="display: inline-block; width: 15%;"><%=btlv.getBv().getBdWriter()%></span>
 			<%} else { %>
-			<span class="ui small header" style="margin-right: 15px;"><i class="user icon"></i>작성자</span><span style="display: inline-block; width: 15%;">탈퇴회원</span>
+			<span class="ui small header" style="margin-right: 15px;"><i class="user icon"></i>작성자</span><span style="display: inline-block; width: 15%;">탈퇴한 회원</span>
 			<%} %>
 			<span class="ui small header" style="margin-right: 15px;"><i class="calendar icon"></i>작성일</span><span style="display: inline-block; width: 15%;"><%=date%></span>
 			<span class="ui small header" style="margin-right: 15px;"><i class="eye icon"></i>조회수</span><span style="display: inline-block; width: 15%;"><%=btlv.getBv().getBdViewCount() %></span>
@@ -114,9 +114,12 @@ Date date = new Date(writeDay.getTime());
 						<img src="/Image/user.JPG">
 					</a>
 					<%if(c.getCmWriter() != null) {%>
-						<a class="author"><%=c.getCmWriter() %></a>
+					<a class="author"><%=c.getCmWriter() %></a>
 					<%} else { %>
-						<a class="author">탈퇴회원</a>
+					<a class="author">탈퇴한 회원</a>
+					<script>
+						$('.prevent').hide();
+					</script>
 					<%} %>
 					<div class="metadata">
 						<div class="date"><%=c.getCmWriteDate()%></div>
@@ -137,14 +140,14 @@ Date date = new Date(writeDay.getTime());
 						</div>
 						<input type="hidden" name="CM_NO" value="<%=c.getCmNo()%>" />
 						<input type="hidden" name="CM_BD_NO" value="<%=c.getCmBdNo()%>" />
-						<button type="button" class="tiny ui button" id="<%=c.getCmNo()%>_btn" onclick="modify(<%=c.getCmNo()%>);">수정</button>
+						<button type="button" class="tiny ui button prevent" id="<%=c.getCmNo()%>_btn" onclick="modify(<%=c.getCmNo()%>);">수정</button>
 						<input type="hidden" class="tiny ui button" id="<%=c.getCmNo()%>_submit" value="수정">
-						<button type="button" class="tiny ui button" id="<%=c.getCmNo()%>_reBtn" style="display: none;" onClick="cancle(<%=c.getCmNo()%>);">취소</button>
+						<button type="button" class="tiny ui button prevent" id="<%=c.getCmNo()%>_reBtn" style="display: none;" onClick="cancle(<%=c.getCmNo()%>);">취소</button>
 					</form>
 					<form action="/commentDelete" style="display: inline">
 						<input type="hidden" name="CM_NO" value="<%=c.getCmNo()%>" />
 						<input type="hidden" name="CM_BD_NO" value="<%=c.getCmBdNo()%>" />
-						<input type="submit" class="tiny ui button" value="삭제" />
+						<input type="submit" class="tiny ui button prevent" value="삭제" />
 					</form>
 
 					<%-- 댓글 추천 --%>
@@ -152,7 +155,7 @@ Date date = new Date(writeDay.getTime());
 						<!-- 추천수 중복되는 걸 막기위해서 아이디 당 한번씩밖에 안되도록 설정 -->
 						<input type="hidden" name="cmNo" value="<%=c.getCmNo()%>" />
 
-						<button type="button" class="ui icon red tiny button" id="submitCmBd<%=index %>">
+						<button type="button" class="ui icon red tiny button prevent" id="submitCmBd<%=index %>">
 							<i class="ui heart icon"></i>
 						</button>
 						<!-- <input type="button" id="submitCmBd<%=index %>" class="mini ui red button" value="추천" /> -->
@@ -186,24 +189,24 @@ if (m != null && m.getMbId().equals(btlv.getBv().getBdWriter())) {
 
 <form action="/reviewUpdateReady" style="display:inline;">
 	<input type="hidden" name="bdNo" value="<%=btlv.getBv().getBdNo()%>" />
-	<input type="submit" class="ui tiny brown button" value="글 수정">
+	<input type="submit" class="ui tiny brown button prevent" value="글 수정">
 </form>
 
-	<% if(!btlv.getList().isEmpty()){ %>
-				<form action="/reviewUpdateImageReady" style="display:inline;">
-					<input type="hidden" name="bdNo" value="<%=btlv.getBv().getBdNo()%>" />
-					<input type="submit" class="ui orange button" value="사진 수정">
-				</form>
-				
-				<form action="/reviewDeleteImageReady" style="display:inline;">
-					<input type="hidden" name="bdNo" value="<%=btlv.getBv().getBdNo()%>" />
-					<input type="submit" class="ui orange button" value="사진 삭제">
-				</form>
-				<%} %>
+<% if(!btlv.getList().isEmpty()){ %>
+<form action="/reviewUpdateImageReady" style="display:inline;">
+	<input type="hidden" name="bdNo" value="<%=btlv.getBv().getBdNo()%>" />
+	<input type="submit" class="ui orange button prevent" value="사진 수정">
+</form>
+
+<form action="/reviewDeleteImageReady" style="display:inline;">
+	<input type="hidden" name="bdNo" value="<%=btlv.getBv().getBdNo()%>" />
+	<input type="submit" class="ui orange button prevent" value="사진 삭제">
+</form>
+<%} %>
 
 <form action="/reviewDelete" method="post" style="display:inline;">
 	<input type="hidden" name="bdNo" value="<%=btlv.getBv().getBdNo()%>" />
-	<input type="submit" class="ui tiny red button" value="글 삭제">
+	<input type="submit" class="ui tiny red button prevent" value="글 삭제">
 </form>
 <%
 }

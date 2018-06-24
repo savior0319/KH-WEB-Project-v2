@@ -94,45 +94,51 @@
 							<td>
 								<a href="/reviewSelect?bdNo=<%=b.getBdNo()%>" style="font-weight: 600;">[후기] <%=b.getBdName()%></a>
 							</td>
+							<%if(b.getBdWriter() != null) {%>
 							<td><%=b.getBdWriter()%></td>
-							<td><%=date%></td>
-							<td><%=b.getBdRecommendCount() %></td>
-							<td><%=b.getBdViewCount()%></td>
-						</tr>
-					</tbody>
-					
-					<%
-				}
-				%>
-				<tfoot>
-					<tr><th colspan="6">
-						<div class="ui right floated pagination menu">
-							<%=getPageCount%>
-						</div>
-					</th>
-				</tr>
-			</tfoot>
-			<%
-		}
-		%>
+							<%} else { %>
+							<td>탈퇴한 회원</td>
+							<%
+						}
+						%>
+						<td><%=date%></td>
+						<td><%=b.getBdRecommendCount() %></td>
+						<td><%=b.getBdViewCount()%></td>
+					</tr>
+				</tbody>
 
-	</table>
+				<%
+			}
+			%>
+			<tfoot>
+				<tr><th colspan="6">
+					<div class="ui right floated pagination menu">
+						<%=getPageCount%>
+					</div>
+				</th>
+			</tr>
+		</tfoot>
+		<%
+	}
+	%>
 
-	<form action="/reviewSearch" method="get" style="display:inline;">
-		<select class="ui dropdown" name="searchOption" style="width:80px;">
-			<option value="title" selected>제목</option>
-			<option value="contents">내용</option>
-			<option value="writer">작성자</option>
-		</select> 
-		<div class="ui input" style="margin-top: 15px;">
-			<input type="text" name="search" placeholder="검색" style="margin-right: 5px;" id="searchVal">
-			<input class="ui blue button" type="submit" value="검색" style="margin-left: 5px;" onclick="return blankCheck();">
-		</div>
-	</form>
+</table>
 
-	<br><br>
+<form action="/reviewSearch" method="get" style="display:inline;">
+	<select class="ui dropdown" name="searchOption" style="width:80px;">
+		<option value="title" selected>제목</option>
+		<option value="contents">내용</option>
+		<option value="writer">작성자</option>
+	</select> 
+	<div class="ui input" style="margin-top: 15px;">
+		<input type="text" name="search" placeholder="검색" style="margin-right: 5px;" id="searchVal">
+		<input class="ui blue button" type="submit" value="검색" style="margin-left: 5px;" onclick="return blankCheck();">
+	</div>
+</form>
 
-	<%-- 공지사항 글쓰기 관리자 페이지로 이동 --%>
+<br><br>
+
+<%-- 공지사항 글쓰기 관리자 페이지로 이동 --%>
 </div>
 </div>
 </div>
