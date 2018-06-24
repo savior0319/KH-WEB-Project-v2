@@ -158,7 +158,7 @@ public class BoardDao {
 		   + " (select Board_tb.*, row_number() over(order by bd_no desc) as num from board_tb where "+option+" like '%" + search + "%') "
 		   + "where num between " + startTotalBoard +" and " + endTotalBoard +" and BD_CATEGORY='공지사항'";
 
-		   System.out.println(query);
+		/* System.out.println(query); */
 		   
 		ArrayList<BoardVo> list = new ArrayList<BoardVo>();
 
@@ -183,7 +183,7 @@ public class BoardDao {
 			JDBCTemplate.close(rset);
 			JDBCTemplate.close(stmt);
 			
-			System.out.println(list);
+			/*System.out.println(list);*/
 			
 		}
 		return list;
@@ -291,7 +291,7 @@ public class BoardDao {
 		      option = "BD_WRITER";
 		   }
 		   
-		   System.out.println("option값:"+option);
+		   /*System.out.println("option값:"+option);*/
 		   
 		   
 		   String query = "select * from"
@@ -341,7 +341,7 @@ public class BoardDao {
 		   }
 		   
 		   String query = "select count(*) as totalCount from Board_TB where "+ option +" like '%" +search + "%' and BD_CATEGORY='후기'";
-		   System.out.println(query);
+		  /* System.out.println(query);*/
 		   try {
 		      stmt = conn.createStatement();
 		      rset = stmt.executeQuery(query);
