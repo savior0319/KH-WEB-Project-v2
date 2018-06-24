@@ -32,7 +32,7 @@
 	<!-- 헤더 시작  -->
 	<jsp:include page="/View/main/layout/header.jsp"></jsp:include>
 	<!-- 헤더 끝 -->
-
+	<br>
 	<!-- 본문 시작 -->
 	<div class="ui container">
 		<!-- 여기에 본문 내용 작성하면 됨 -->
@@ -53,8 +53,7 @@
 					<input type="submit" class="ui orange tiny button" id="loginPlease" value="글쓰기"> 
 				</form>
 			</div>
-
-			<div id="board" style="width: 100%; height: 500px;">
+			<div id="board" style="width: 100%; padding-bottom: 80px;">
 				<table class="ui table" width="100%" cellpadding="0" cellspacing="0" border="0">
 
 					<thead>

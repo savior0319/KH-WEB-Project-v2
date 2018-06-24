@@ -94,7 +94,7 @@ pageEncoding="UTF-8"%>
     더 궁금한 것은 어디에 문의하면 되나요?
   </div>
   <div class="content">
-    <p>- 추가적으로 궁금하신 사항은 <a href="/View/member/question.jsp">1:1문의</a>를 해주시거나 <span style="font-weight: 600">대표전화(010-3787-5606)</span>로 연락 부탁드립니다.</p>
+    <p>- 추가적으로 궁금하신 사항은 <a href="/questionmove">1:1문의</a>를 해주시거나 <span style="font-weight: 600">대표전화(010-3787-5606)</span>로 연락 부탁드립니다.</p>
   </div>
 </div>
 <br><br>
