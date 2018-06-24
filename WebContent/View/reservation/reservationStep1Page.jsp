@@ -48,13 +48,24 @@ table {
 
 <!-- 로그인 여부  -->
 <c:set value="${sessionScope.member.mbId}" var="id"></c:set>
-<c:if test="${empty id}">
+<c:choose>
+<c:when test="${empty id}">
 <script type="text/javascript">
-	$(document).ready(function() {
-		$('#loginCheck').show();
-	});
+  $(document).ready(function() {
+    $('#loginCheck').show();
+  });
 </script>
-</c:if>
+</c:when>
+<c:otherwise>
+<script type="text/javascript">
+  $(document).ready(function() {
+    $('#loginCheck').html("<i class='close icon'></i><div class='ui small header'>※ 예약 전 꼭 <a href='/reservationGuide'>예약안내</a>를 읽어보시기 바랍니다.</div>");
+    $('#loginCheck').show();
+  });
+</script>
+</c:otherwise>
+</c:choose> 
+
 
 <body>
 	<!-- 헤더 -->
@@ -98,112 +109,112 @@ table {
 		<div class="ui green message">
 			<i class="close icon"></i>
 			<div class="ui small header">※ 예약하시려면 아래에서 예약할 방을 선택해주세요.<br>예약은 <span style="color: red;">내일</span> 부터 <span style="color: red;">6개월</span>까지만 가능합니다<span style="color: red;">(당일 예약은 불가능합니다.)</span><br>
-      객실에 대한 자세한 정보는 <a href="/roomIntroduce">객실안내</a>를 예약에 대한 자세한 정보는 <a href="/reservationGuide">예약안내</a>를 참고해주세요.
-				<div style="margin-top: 15px;">
-					<button class="ui blue basic button" style="padding-top: 20px;"></button><span style="color : black"> = 예약가능한방 </span>
-					<button class="ui red basic button" style="padding-top: 20px; margin-left: 15px;"></button><span style="color : black"> = 예약중인방</span>
-				</div>
-			</div></div>
+        객실에 대한 자세한 정보는 <a href="/roomIntroduce">객실안내</a>를 참고해주세요. 
+        <div style="margin-top: 15px;">
+         <button class="ui blue basic button" style="padding-top: 20px;"></button><span style="color : black"> = 예약가능한방 </span>
+         <button class="ui red basic button" style="padding-top: 20px; margin-left: 15px;"></button><span style="color : black"> = 예약중인방</span>
+       </div>
+     </div></div>
 
-			<div class="ui red message" id="loginCheck" style="display: none">
-				<i class="close icon"></i>
-				<div class="ui small header">※ 예약하려면 로그인이 필요합니다.</div>
-			</div>
+     <div class="ui red message" id="loginCheck" style="display: none">
+      <i class="close icon"></i>
+      <div class="ui small header">※ 예약하려면 로그인이 필요합니다.</div>
+    </div>
 
-			<div class="ui center aligned basic segment">
-				<table class="ui orange table" id="calendar" border="1" align="center">
-					<thead>
-						<tr align="center">
-							<td>
-								<button class="ui inverted orange button" onclick="prevCalendar()">
-									<i class="angle left icon" style="margin: 0;"></i>
-								</button>
-							</td>
-							<td colspan="5" id="calendarYM"></td>
-							<td>
-								<button class="ui inverted orange button" onclick="nextCalendar()">
-									<i class="angle right icon" style="margin: 0;"></i>
-								</button>
-							</td>
-						</tr>
-						<tr align="center">
-							<th style="border-top: 0px;">일</th>
-							<th style="border-top: 0px;">월</th>
-							<th style="border-top: 0px;">화</th>
-							<th style="border-top: 0px;">수</th>
-							<th style="border-top: 0px;">목</th>
-							<th style="border-top: 0px;">금</th>
-							<th style="border-top: 0px;">토</th>
-						</tr>
-					</thead>
-
-
-				</table>
-			</div>
-
-		</div>
+    <div class="ui center aligned basic segment">
+      <table class="ui orange table" id="calendar" border="1" align="center">
+       <thead>
+        <tr align="center">
+         <td>
+          <button class="ui inverted orange button" onclick="prevCalendar()">
+           <i class="angle left icon" style="margin: 0;"></i>
+         </button>
+       </td>
+       <td colspan="5" id="calendarYM"></td>
+       <td>
+        <button class="ui inverted orange button" onclick="nextCalendar()">
+         <i class="angle right icon" style="margin: 0;"></i>
+       </button>
+     </td>
+   </tr>
+   <tr align="center">
+     <th style="border-top: 0px;">일</th>
+     <th style="border-top: 0px;">월</th>
+     <th style="border-top: 0px;">화</th>
+     <th style="border-top: 0px;">수</th>
+     <th style="border-top: 0px;">목</th>
+     <th style="border-top: 0px;">금</th>
+     <th style="border-top: 0px;">토</th>
+   </tr>
+ </thead>
 
 
-		<!-- 푸터 -->
-		<jsp:include page="/View/main/layout/footer.jsp"></jsp:include>
-		<!-- 푸터 끝 -->
-	</body>
+</table>
+</div>
+
+</div>
 
 
-	<!-- 로그인 안했을 경우-->
-	<div class="ui mini modal" id="needLogin">
-		<div class="header">로그인</div>
-		<div class="content">
-			<label style="margin-left: 4px;">아이디</label>
-			<div class="ui input" style="margin-left: 10px;">
-				<input type="text" id="id" placeholder="아이디" maxlength="16">
-			</div>
-			<br><br>
-			<label>비밀번호</label>
-			<div class="ui input">
-				<input type="password" id="pwd" placeholder="비밀번호" maxlength="16">
-			</div>
-			<br><br>
-			<div class="ui centered grid">
-				<div id="recap" class="g-recaptcha" data-sitekey="6Lfrr18UAAAAAGd424fRQMeX4GYy6FjS7Af1V8tJ"></div>
-			</div>
-			<div class="ui centered grid" id="naverLoginBtn">
-				<div id="naver_id_login" style="margin-top: 10px;"></div>
-			</div>
-		</div>
-		<div class="actions">
-			<div class="ui blue cancel button" id="confirm">로그인</div>
-			<div class="ui orange cancel button">취소</div>
-		</div>
-	</div>
-
-	<!-- recapcha 확인용-->
-	<div class="ui mini modal" id="robot">
-		<div class="header">로그인 실패</div>
-		<div class="content">
-			<p>로봇이 아님을 인증하세요</p>
-		</div>
-		<div class="actions">
-			<div class="ui blue cancel button">확인</div>
-		</div>
-	</div>
+<!-- 푸터 -->
+<jsp:include page="/View/main/layout/footer.jsp"></jsp:include>
+<!-- 푸터 끝 -->
+</body>
 
 
-	<!-- 아이디 || 비밀번호 공백 일 경우 -->
-	<div class="ui mini modal" id="blankModal">
-		<div class="header">로그인 실패</div>
-		<div class="content">
-			<p>아이디와 비밀번호를 모두 입력해주세요</p>
-		</div>
-		<div class="actions">
-			<div class="ui blue cancel button" id="termsModal">확인</div>
-		</div>
-	</div>
+<!-- 로그인 안했을 경우-->
+<div class="ui mini modal" id="needLogin">
+  <div class="header">로그인</div>
+  <div class="content">
+   <label style="margin-left: 4px;">아이디</label>
+   <div class="ui input" style="margin-left: 10px;">
+    <input type="text" id="id" placeholder="아이디" maxlength="16">
+  </div>
+  <br><br>
+  <label>비밀번호</label>
+  <div class="ui input">
+    <input type="password" id="pwd" placeholder="비밀번호" maxlength="16">
+  </div>
+  <br><br>
+  <div class="ui centered grid">
+    <div id="recap" class="g-recaptcha" data-sitekey="6Lfrr18UAAAAAGd424fRQMeX4GYy6FjS7Af1V8tJ"></div>
+  </div>
+  <div class="ui centered grid" id="naverLoginBtn">
+    <div id="naver_id_login" style="margin-top: 10px;"></div>
+  </div>
+</div>
+<div class="actions">
+ <div class="ui blue cancel button" id="confirm">로그인</div>
+ <div class="ui orange cancel button">취소</div>
+</div>
+</div>
+
+<!-- recapcha 확인용-->
+<div class="ui mini modal" id="robot">
+  <div class="header">로그인 실패</div>
+  <div class="content">
+   <p>로봇이 아님을 인증하세요</p>
+ </div>
+ <div class="actions">
+   <div class="ui blue cancel button">확인</div>
+ </div>
+</div>
 
 
-	<script type="text/javascript">
+<!-- 아이디 || 비밀번호 공백 일 경우 -->
+<div class="ui mini modal" id="blankModal">
+  <div class="header">로그인 실패</div>
+  <div class="content">
+   <p>아이디와 비밀번호를 모두 입력해주세요</p>
+ </div>
+ <div class="actions">
+   <div class="ui blue cancel button" id="termsModal">확인</div>
+ </div>
+</div>
 
-		<%
+
+<script type="text/javascript">
+
+  <%
       Calendar cal = Calendar.getInstance(); // 이전 달과 다음 달을 비교하기 위해 생성함
       %>
 

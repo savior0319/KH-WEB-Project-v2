@@ -6,22 +6,22 @@
 <html>
 
 <head>
-<!-- Global site tag (gtag.js) - Google Analytics -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=UA-120156974-1"></script>
-<script>
-	window.dataLayer = window.dataLayer || [];
-	function gtag() {
-		dataLayer.push(arguments);
-	}
-	gtag('js', new Date());
-	gtag('config', 'UA-120156974-1');
-</script>
-<jsp:include page="/View/main/layout/cssjs.jsp"></jsp:include>
-<title>펜션소개</title>
+	<!-- Global site tag (gtag.js) - Google Analytics -->
+	<script async src="https://www.googletagmanager.com/gtag/js?id=UA-120156974-1"></script>
+	<script>
+		window.dataLayer = window.dataLayer || [];
+		function gtag() {
+			dataLayer.push(arguments);
+		}
+		gtag('js', new Date());
+		gtag('config', 'UA-120156974-1');
+	</script>
+	<jsp:include page="/View/main/layout/cssjs.jsp"></jsp:include>
+	<title>펜션소개</title>
 
-<!-- 웹 폰트 적용 -->
-<link href="https://fonts.googleapis.com/css?family=Nanum+Myeongjo" rel="stylesheet">
-<link href="https://fonts.googleapis.com/css?family=Nanum+Brush+Script" rel="stylesheet">
+	<!-- 웹 폰트 적용 -->
+	<link href="https://fonts.googleapis.com/css?family=Nanum+Brush+Script" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css?family=Jua|Nanum+Gothic" rel="stylesheet">
 
 </head>
 
@@ -50,66 +50,67 @@
 	<!-- 헤더 밑 사진 시작 -->
 	<div>
 		<div>
-		<div style="border :0px; padding: 0px; margin: 0px;"> <img src="${requestScope.dTb.desImagePath }" class="swiperImg" style="opacity: 0.8;"> </div>
-		<div style="background:url('/Image/title/pattern01a.png'); border :0px; padding: 0px; margin: 0px;">
-		<div class="ui center aligned basic segment"
-		style="letter-spacing: 5px; font-family: 'Nanum Brush Script', cursive; font-size: 35px;">
-		여행의 아름다운 추억을 더 펜션에서 만들어 가세요.
-		</div>
-		</div>
+			<div style="border :0px; padding: 0px; margin: 0px;"> <img src="${requestScope.dTb.desImagePath }" class="swiperImg" style="opacity: 0.8;"> </div>
+			<div style="background:url('/Image/title/pattern01a.png'); border :0px; padding: 0px; margin: 0px;">
+				<div class="ui center aligned basic segment"
+				style="letter-spacing: 5px; font-family: 'Nanum Brush Script', cursive; font-size: 35px;">
+				여행의 아름다운 추억을 더 펜션에서 만들어 가세요.
+			</div>
 		</div>
 	</div>
-	<!-- 헤더 밑 사진 끝 -->
-	
-	<!-- 본문 시작 -->
-	<br>
-	<div class="ui container" style="font-family: 'Nanum Myeongjo', serif; font-size: 15px;">
-		<!-- 여기에 본문 내용 작성하면 됨 -->
-		
-		${requestScope.dTb.desPensionAbout }
-		<!-- 아래 사진 시작 -->
-<div class="ui center aligned basic segment">
-    <img src="${requestScope.MainPicTb[0].mainPicPath }" style="width: 100%;">
 </div>
+<!-- 헤더 밑 사진 끝 -->
 
-<div class="ui two column centered grid">
-  <div class="four column centered row">
-    <div class="column">
-      <img src="${requestScope.MainPicTb[1].mainPicPath }">
-    </div>
-    <div class="column">
-      <img src="${requestScope.MainPicTb[2].mainPicPath }">
-    </div>
-    <div class="column">
-      <img src="${requestScope.MainPicTb[3].mainPicPath }">
-    </div>
-  </div>
-  <div class="four column row">
-    <div class="column">
-      <img src="${requestScope.MainPicTb[4].mainPicPath }">
-    </div>
-    <div class="column">
-      <img src="${requestScope.MainPicTb[5].mainPicPath }">
-    </div>
-    <div class="column">
-      <img src="${requestScope.MainPicTb[6].mainPicPath }">
-    </div>
-    <div class="column">
-      <img src="${requestScope.MainPicTb[7].mainPicPath }">
-    </div>
-  </div>
-</div>
-<!-- 아래 사진 끝 -->
+<!-- 본문 시작 -->
+<br>
+<div class="ui container">
+	<!-- 여기에 본문 내용 작성하면 됨 -->
+	<div class="ui center aligned basic segment" style="font-family: 'Nanum Gothic', sans-serif; font-family: 'Jua', sans-serif; font-size: 20px;">
+		${requestScope.dTb.desPensionAbout}
 	</div>
-	<!-- 본문 끝 -->
+	<!-- 아래 사진 시작 -->
+	<div class="ui center aligned basic segment" style="padding-top: 0px;">
+		<img src="${requestScope.MainPicTb[0].mainPicPath }" style="width: 100%;">
+	</div>
+
+	<div class="ui two column centered grid">
+		<div class="four column centered row">
+			<div class="column">
+				<img src="${requestScope.MainPicTb[1].mainPicPath }">
+			</div>
+			<div class="column">
+				<img src="${requestScope.MainPicTb[2].mainPicPath }">
+			</div>
+			<div class="column">
+				<img src="${requestScope.MainPicTb[3].mainPicPath }">
+			</div>
+		</div>
+		<div class="four column row">
+			<div class="column">
+				<img src="${requestScope.MainPicTb[4].mainPicPath }">
+			</div>
+			<div class="column">
+				<img src="${requestScope.MainPicTb[5].mainPicPath }">
+			</div>
+			<div class="column">
+				<img src="${requestScope.MainPicTb[6].mainPicPath }">
+			</div>
+			<div class="column">
+				<img src="${requestScope.MainPicTb[7].mainPicPath }">
+			</div>
+		</div>
+	</div>
+	<!-- 아래 사진 끝 -->
+</div>
+<!-- 본문 끝 -->
 
 
 
 
 
-	<!-- 푸터 시작  -->
-	<jsp:include page="/View/main/layout/footer.jsp"></jsp:include>
-	<!-- 푸터 끝 -->
+<!-- 푸터 시작  -->
+<jsp:include page="/View/main/layout/footer.jsp"></jsp:include>
+<!-- 푸터 끝 -->
 </body>
 
 <script>

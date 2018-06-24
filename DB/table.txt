@@ -467,18 +467,25 @@ INSERT INTO DESCRIPTION_TB
              DES_PENSION_ABOUT, 
              DES_MAINVIEW) 
 VALUES      ( 
-'석양이 아름다운 음포 해수욕장 바다가 있는곳 태안 더펜션 객실을 소개합니다.' 
+'삶에 지친이에게 피로를 날려보내고, 생에 활력을 가져다 주는 힐링 펜션' 
 , 
 '/Image/title/ti02.jpg', 
-'펜션 내용이다~~~~~~~~~~~', 
-'Lorem ipsum dolor sit amet consectetur adipisicing elit. Corporis tempore voluptatum exercitationem suscipit autem accusantium minus adipisci, eveniet aut earum iste ullam? Dignissimos, minus inventore porro expedita accusamus quam harum modi nihil ipsum nesciunt ducimus ullam animi libero aperiam. Minima nostrum deserunt perferendis dolorum porro beatae eligendi blanditiis modi eius reiciendis vero, ex libero iusto pariatur. Voluptates dignissimos earum eius, nemo nihil sit qui accusantium in adipisci, reprehenderit doloremque? Earum laudantium molestias nam soluta? Corporis alias possimus, officia, blanditiis commodi tenetur deserunt ipsum saepe soluta voluptate vero minus magnam voluptates eum ea ullam doloremque ipsa fuga. Dicta accusantium fugiat ut! Suscipit labore, beatae incidunt libero, temporibus quos error aspernatur amet enim, explicabo culpa alias in. Libero nam veritatis, totam repudiandae ipsum iste commodi? Sint in, culpa sit, officiis omnis, cumque corrupti eos error aliquid sapiente cupiditate corporis quod eveniet maiores quo. Laborum ipsa rerum obcaecati ipsum nemo voluptates repellat facere illum, quas accusantium. Expedita consectetur quaerat minus fugit aliquid aperiam placeat rerum hic velit voluptatibus nemo repudiandae est voluptatum magnam inventore similique quibusdam quidem vel dolore, laboriosam nesciunt reiciendis suscipit. Saepe odio quidem cumque, impedit soluta quia. Nam itaque pariatur dolorem quas ducimus at similique esse commodi, tenetur nobis asperiores, accusantium veritatis assumenda accusamus. Laboriosam necessitatibus quis aspernatur dolorum non impedit expedita. Perspiciatis recusandae hic molestiae qui officia, cupiditate iste. Mollitia aspernatur voluptatem illum, eos accusamus quo temporibus voluptatum possimus in officiis laudantium sapiente quod. Culpa fugiat saepe nulla itaque dolores dicta, minima exercitationem provident recusandae cumque illo laboriosam consequuntur. Reiciendis repellendus adipisci laborum dolores eligendi ut molestiae ab hic quisquam illum! Unde blanditiis tenetur ipsum aut ad? Voluptatem esse neque ex incidunt. Tenetur et, quas sapiente rem repellendus autem nihil, earum accusamus quibusdam doloribus ea totam expedita praesentium commodi deleniti magni pariatur suscipit doloremque sunt ratione. Laborum animi enim nostrum sequi et quibusdam fuga voluptatem. In error, mollitia earum fugit quasi delectus, velit ratione perspiciatis rerum quia, excepturi quidem sequi dignissimos labore nam sed! Natus, labore! Voluptates aliquam quis accusamus, voluptas odio a rem enim excepturi veritatis asperiores ipsam alias amet, in necessitatibus dolorem aspernatur numquam, esse tempore dolor architecto ex tenetur doloribus labore exercitationem. Odio et ipsum ea sed! Unde, beatae laborum, at quia vitae repellat vero modi ipsam dolore similique tenetur non officiis eos placeat. Laudantium, quas '
+'볼거리, 즐길거리가 많은 곳! 더 펜션에서 인사드립니다.', 
+'볼거리, 즐길거리가 많은 곳! 
+더 펜션에서 인사드립니다.<br>
+행복한 설레임으로 가득 채워오시는 모든 분들께 시간이 지난 후에도<br> 
+쾌적한 휴식과 함께 건강함을 얻어 가실 수 있습니다.<br>
+천연 잔디 미니 축구장과 족구장, 아이들이 좋아하는 수영장,<br>
+온가족이 즐길 수 있는 바베큐장 등 푸르른 자연과 함께<br>
+즐길거리가 다양합니다.<br> 당신의 가장 아름다운 추억을 위해 항상 최선을 다하겠습니다. 감사합니다.<br>
+'
 ); 
 
 INSERT INTO PENSION_TB 
 VALUES      ('옥수수방', 
              5, 
              9, 
-             '내용', 
+             '향긋한 옥수수향이 가득한 자연의 방! 옥수수방입니다.', 
              60000, 
              50000, 
              10000); 
@@ -487,7 +494,7 @@ INSERT INTO PENSION_TB
 VALUES      ('갈대방', 
              6, 
              10, 
-             '내용', 
+             '향긋한 갈대향이 가득한 자연의 방! 갈대방입니다.', 
              62000, 
              52000, 
              10000); 
@@ -496,7 +503,7 @@ INSERT INTO PENSION_TB
 VALUES      ('수수방', 
              7, 
              11, 
-             '내용', 
+             '향긋한 수수향이 가득한 자연의 방! 수수방입니다.', 
              64000, 
              54000, 
              10000); 
@@ -505,7 +512,7 @@ INSERT INTO PENSION_TB
 VALUES      ('대나무방', 
              8, 
              12, 
-             '내용', 
+             '향긋한 대나무향이 가득한 자연의 방! 대나무방입니다.', 
              66000, 
              56000, 
              10000); 
@@ -514,7 +521,7 @@ INSERT INTO PENSION_TB
 VALUES      ('레몬방', 
              5, 
              10, 
-             '내용', 
+             '향긋한 레몬향이 가득한 자연의 방! 레몬방입니다.', 
              68000, 
              58000, 
              10000); 
@@ -523,7 +530,7 @@ INSERT INTO PENSION_TB
 VALUES      ('햄버거방', 
              4, 
              8, 
-             '내용', 
+             '향긋한 햄버거향이 가득한 자연의 방! 햄버거방입니다.', 
              70000, 
              60000, 
              10000); 
@@ -933,11 +940,21 @@ INSERT INTO QUESTION_TB VALUES(Q_NO_SEQ.NEXTVAL, '이 펜션 얼마죠21?', '230
 INSERT INTO QUESTION_TB VALUES(Q_NO_SEQ.NEXTVAL, '이 펜션 얼마죠22?', '240원에 삽니다', 'test', SYSDATE, DEFAULT); 
 INSERT INTO QUESTION_TB VALUES(Q_NO_SEQ.NEXTVAL, '이 펜션 얼마죠23?', '안사', 'test', SYSDATE, DEFAULT); 
 
--- 예약 안내 데이터
 UPDATE DESCRIPTION_TB 
-SET DES_ATTENTION = '주의사항입니다.', 
-    DES_REFUND = '환불정보입니다.', 
-    DES_ACCOUNT = '계좌정보입니다.', 
-    DES_ETC = '기타정보입니다.';
-    
+SET DES_ATTENTION = '입실시간과 퇴실 시간은 반드시 준수해 주세요.<br>
+입실 시간은 대부분의 펜션은 오후 2시부터이며, 퇴실 시간은 오전 11시까지입니다.<br>
+오후 3시 입실인 경우도 있으니 이용 전 반드시 확인해 주세요.<br>
+펜션주, 더 펜션과 사전 약속 없이 입실시간을 어길 경우 입실이 거부 될 수 있습니다.', 
+    DES_REFUND = '* 환불 적용은 이용요금 전액 입금시 에만 적용합니다.<br>
+* 환불 수수료 안내 (기본: 취소수수료 10%)<br>
+* 예약후 취소시에는 환불위약금 (예약금의 10%)이 있습니다. <br>
+* 예약일 변경 시 발생한 수수료도 취소 수수료와 동일합니다.<br>
+* 올바른 예약문화의 정착을 위하여 불가피한 조치이오니 양해 부탁드립니다.<br>', 
+    DES_ACCOUNT = '이용일기준(환불금액)<br>이용2일전~당일(0% 환불)<br>이용 3일전(30% 환불)<br>이용 4일전(40% 환불)<br>이용 5일전(50% 환불)<br>이용 6일전(60% 환불)<br>이용 7일전(90% 환불)<br>
+    *환불은 입금자명으로 입금됩니다. 송금수수료는 없습니다.', 
+    DES_ETC = '펜션입실 시 애완동물 동반 입실은 안됩니다.<br>
+크기와 숫자에 상관없이 애완동물 입실 동반 펜션이 아니라면 애완동물은 펜션으로 데리고 오시면 안됩니다.<br>
+애완동물 입실이 안 된다고 명시한 펜션에 가서 어떻게든 하면 된다고 애완동물을 데리고 오시는 고객님들이 계십니다.<br>
+기분좋게 놀러 간 펜션, 현장에서 애완동물로 인해 입실 거부될 수 있으니 규정은 꼭 지켜주세요.';
+
 COMMIT; 
