@@ -23,6 +23,10 @@
 </script>
 <jsp:include page="/View/main/layout/cssjs.jsp"></jsp:include>
 <title>객실안내 - ${requestScope.pv.psName}</title>
+
+<!-- 웹 폰트 적용 -->
+<link href="https://fonts.googleapis.com/css?family=Nanum+Myeongjo" rel="stylesheet">
+
 </head>
 
 <style>
@@ -62,7 +66,7 @@
 	<div class="ui container">
 		<!-- 여기에 본문 내용 작성하면 됨 -->
 		<div class="fancy-title title-border title-center">
-		<h1>ROOM <span>${requestScope.pv.psName }</span> 객실소개</h1>
+		<h1 style="font-family: 'Nanum Myeongjo', serif; font-size: 28px;"><span>${requestScope.pv.psName }</span> 객실소개</h1>
 		</div><hr>
 		<div class="ui two column very relaxed grid">
   <div class="column">
@@ -72,8 +76,8 @@
 <table class="ui celled table">
   <tbody>
     <tr>
-      <td>기준/최대</td>
-      <td>기준:${requestScope.pv.psPersonnel }/최대:${requestScope.pv.psMaxPersonnel }</td>
+      <td>기준/최대인원</td>
+      <td>기준:${requestScope.pv.psPersonnel }/최대:${requestScope.pv.psMaxPersonnel }(명)</td>
     </tr>
       </tbody>
 </table>
@@ -83,9 +87,9 @@
   <thead>
     <tr>
       <th>객실명</th>
-      <th>주중</th>
-      <th>주말</th>
-      <th>추가요금</th>
+      <th>주중요금(원)</th>
+      <th>주말요금(원)</th>
+      <th>추가요금(원)</th>
     </tr>
   </thead>
   <tbody>
