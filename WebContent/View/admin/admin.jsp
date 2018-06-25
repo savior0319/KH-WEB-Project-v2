@@ -60,9 +60,9 @@
       		<!-- <div class="ui six column relaxed grid list"> -->
       		<div class="ui three column relaxed grid list">
 	      		<div class="ui column">
-					<i class="ui map marker icon"></i>
+					<i class="calendar alternate icon"></i>
 				    <div class="ui content">
-				      <a class="header">오늘 예약 수</a>
+				      <a class="header" href="/adminReserveManager">오늘 예약 수</a>
 				      <div class="ui description" id="countReserve"><%=countReserve %></div>
 				    </div>
 	      		</div>
@@ -83,17 +83,17 @@
 				    </div>
 	      		</div> -->
 	      		<div class="column">
-					<i class="map marker icon"></i>
+					<i class="question circle icon"></i>
 				    <div class="content">
-				      <a class="header">미 답변 질문 </a>
+				      <a class="header" href="/adminQuestionList">미 답변 질문 </a>
 				      <div class="description" id="countQuestion"><%=countQuestion %></div>
 				    </div>
 	      		</div>
 	      		
 	      		<div class="column">
-					<i class="map marker icon"></i>
+					<i class="user icon"></i>
 				    <div class="content">
-				      <a class="header">이달의 신규 회원</a>
+				      <a class="header" href="/adminMemberList">이달의 신규 회원</a>
 				      <div class="description" id="countMember"><%=countNewMember %></div>
 				    </div>
 	      		</div>
@@ -105,7 +105,7 @@
    		
    		<!-- 공지사항  시작--> 
     	<div class="ui right align fluid segment">
-    			공지사항
+    			<h3 class="ui header" style="display: inline;"> 공지사항 </h3>
     			<!-- 관리자가 공지사항을 등록하는 페이지로 이동  -->
       			<a href="/adminBoardList">more</a>
       			
@@ -147,7 +147,8 @@
     	
     	<div class="ui center align segment">
     		
-      			<h3 class="ui header"> 1 : 1 질문 </h3>
+      			<h3 class="ui header" style="display: inline;"> 1 : 1 질문 </h3>
+      			<a href="/adminQuestionList">more</a>
     			<table class="ui selectable inverted table">
 				  <thead>
 				    <tr>
