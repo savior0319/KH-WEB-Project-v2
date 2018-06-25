@@ -57,13 +57,13 @@
 		</div>
 	</div>
 	<!-- 6.  -->
-	<div class="item">매출
+<!-- 	<div class="item">매출
 		<i class="chart bar icon"></i>
 		<div class="menu dropdown">
 			<a class="ui simple item" href="/adminSalesManager">매출 현황</a>
 
 		</div>
-	</div>
+	</div> -->
 	<a class="item" href="/">
 		메인으로
 		<i class="sign out iternate icon"></i>

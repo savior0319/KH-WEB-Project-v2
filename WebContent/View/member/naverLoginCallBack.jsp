@@ -36,7 +36,7 @@
 
 <body>
 	<script type="text/javascript">
-		var naver_id_login = new naver_id_login("PyoIesHAhe6a3F1GDj9P", "http://localhost/View/member/naverLoginCallBack.jsp");
+		var naver_id_login = new naver_id_login("PyoIesHAhe6a3F1GDj9P", "http://192.168.10.32/View/member/naverLoginCallBack.jsp");
 		
 		// 네이버 로그인 완료 메세지 출력
 		alert('로그인완료');

@@ -169,10 +169,10 @@
 	});
 
 	/* 네아로 */
-	var naver_id_login = new naver_id_login("PyoIesHAhe6a3F1GDj9P", "http://localhost/View/member/naverLoginCallBack.jsp");
+	var naver_id_login = new naver_id_login("PyoIesHAhe6a3F1GDj9P", "http://192.168.10.32/View/member/naverLoginCallBack.jsp");
 	var state = naver_id_login.getUniqState();
 	naver_id_login.setButton("green", 3, 40);
-	naver_id_login.setDomain("http://localhost/View/member/naverLogin.jsp");
+	naver_id_login.setDomain("http://192.168.10.32/View/member/naverLogin.jsp");
 	naver_id_login.setState(state);
 	naver_id_login.setPopup(); /* 팝업 로그인 창*/
 	naver_id_login.init_naver_id_login();

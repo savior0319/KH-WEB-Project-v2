@@ -76,7 +76,7 @@
 			 	<tfoot>
 			 		<tr>
 			 			<th colspan="7">
-			 				<div class="ui segment">
+			 				<div class="ui basic segment">
 			 					<%= pageNavi %>
 			 				</div>
 			 			</th>

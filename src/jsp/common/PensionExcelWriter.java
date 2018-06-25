@@ -253,7 +253,7 @@ public class PensionExcelWriter {
 			cell.setCellValue("비용");
 			
 			cell = row.createCell(9);
-			cell.setCellValue("결제 날찌");
+			cell.setCellValue("결제 날짜");
 
 			// 리스트의 size 만큼 row를 생성
 			

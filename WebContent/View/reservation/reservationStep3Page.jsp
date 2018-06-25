@@ -121,13 +121,13 @@ MemberVo mv = (MemberVo)request.getAttribute("memberInfo");
 					<input type="checkbox" id="agree2" name="agree" /> 동의합니다.<br><br>
 					<div class="ui form">
 						<textarea rows="8" style="resize:none;" readonly>
-							더 펜션은 고객님께서 예약하신 서비스 제공을 위해 최소한의 정보를 아래와 같이 위탁하고 있습니다.
-							고객님께서는 정보 제공에 대해 동의하지 않으실 수 있으며, 동의하지 않으시는 경우 예약 서비스 제공이 제한됩니다.
+더 펜션은 고객님께서 예약하신 서비스 제공을 위해 최소한의 정보를 아래와 같이 위탁하고 있습니다.
+고객님께서는 정보 제공에 대해 동의하지 않으실 수 있으며, 동의하지 않으시는 경우 예약 서비스 제공이 제한됩니다.
 
-							위탁받는자 : 더 펜션
-							위탁 업무 : 예약 신청 서비스
-							위탁 항목 : 이름, 연락처 등등
-							보유 및 이용기간 : 서비스 완료 1개월 후 삭제 등
+위탁받는자 : 더 펜션
+위탁 업무 : 예약 신청 서비스
+위탁 항목 : 이름, 연락처 등등
+보유 및 이용기간 : 서비스 완료 1개월 후 삭제 등
 						</textarea>
 					</div>
 				</div>
@@ -177,7 +177,7 @@ MemberVo mv = (MemberVo)request.getAttribute("memberInfo");
                 			pay_method : 'card',	// 결제수단 : 카드
                 			merchant_uid : 'merchant_' + new Date().getTime(),
                 			name : '더펜션예약:<%=rv.getResRoomName()%>',
-                			amount : '100',	//////////////////////////////////////////////////////////////////////// 결제 금액 (실제 금액으로 수정함)
+                			amount : '<%=rv.getResPrice()%>',	//////////////////////////////////////////////////////////////////////// 결제 금액 (실제 금액으로 수정함)
                 			buyer_email : '<%=mv.getMbEmail()%>', // 고객 이메일
                 			buyer_name :  '<%=mv.getMbName()%>(<%=mv.getMbId()%>)',
                 			buyer_tel :  '<%=mv.getMbPhone()%>'
