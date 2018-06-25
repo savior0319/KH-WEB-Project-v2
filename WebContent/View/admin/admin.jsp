@@ -62,7 +62,7 @@
 	      		<div class="ui column">
 					<i class="calendar alternate icon"></i>
 				    <div class="ui content">
-				      <a class="header" href="/adminReserveManager">오늘 예약 수</a>
+				      <a class="header" href="/adminReserveManager">이달의 예약 수</a>
 				      <div class="ui description" id="countReserve"><%=countReserve %></div>
 				    </div>
 	      		</div>

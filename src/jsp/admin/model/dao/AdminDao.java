@@ -2983,7 +2983,8 @@ public class AdminDao {
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		int count = 0 ; 
-		String query = "select COUNT(*) as count from RESERVATION_TB where to_char( RES_RESERVATION_DATE, 'yyyymmdd' ) = to_char( sysdate, 'yyyymmdd')";
+		//select count(*) as count from MEMBER_TB where MB_ENTDATE >= TRUNC(sysdate,'MM') AND MB_ENTDATE<= ADD_MONTHS( TRUNC(sysdate,'MM'), 1 )-1
+		String query = "select COUNT(*) as count from RESERVATION_TB where RES_RESERVATION_DATE >= TRUNC(sysdate,'MM') AND RES_RESERVATION_DATE<= ADD_MONTHS( TRUNC(sysdate,'MM'), 1 )-1";
 		try {
 			pstmt = conn.prepareStatement(query);
 			rs = pstmt.executeQuery();
