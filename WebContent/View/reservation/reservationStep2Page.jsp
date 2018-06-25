@@ -266,7 +266,7 @@ table {
 		var year = <%=yearStr%>;
 		var month = <%=monthStr%>-1;
 		var inDay = <%=dayStr%>;
-		var outDay = <%=dayStr%>+Number(periodValue);
+		var outDay = <%=dayStr%>+(Number(periodValue)-1);
 		
 		//console.log("indate: "+year+"/"+month+"/"+inDay);
 		//console.log("outdate: "+year+"/"+month+"/"+outDay);
@@ -294,7 +294,7 @@ table {
 	    }
 	    
 	    var weekdayCnt = count; // 평일
-	    var weekendCnt = periodValue - count; // 주말
+	    var weekendCnt = periodValue - weekdayCnt; // 주말
 	    
 	    var money = weekdayCnt*<%=pv.getPsWeekday()%> + weekendCnt*<%=pv.getPsWeekend()%>;
 

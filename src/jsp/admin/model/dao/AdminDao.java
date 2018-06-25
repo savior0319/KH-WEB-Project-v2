@@ -654,6 +654,7 @@ public class AdminDao {
 		case "4":query = prop.getProperty("mainupdate4");break;
 		case "5":query = prop.getProperty("mainupdate5");break;
 		case "6":query = prop.getProperty("mainupdate6");break;
+		
 		}
 		int result = 0;
 		try {
