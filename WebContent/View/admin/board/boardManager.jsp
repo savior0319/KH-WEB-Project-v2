@@ -70,17 +70,17 @@ String searchOption = request.getParameter("searchOption");
 							%>
 							<%for(BoardVo b : blist){ %>
 							<tr align="center">
-								<td><div class="ui samll header>"<%= b.getBdNo() %></div></td>
-								<td><div class="ui samll header>"<%= b.getBdName() %></div></td>
-								<td><div class="ui samll header>"<%= b.getBdWriteDate() %></div></td>
-								<td><div class="ui samll header>"<%= b.getBdViewCount() %></div></td>
+								<td><div class="ui samll header"><%= b.getBdNo() %></div></td>
+								<td><div class="ui samll header"><%= b.getBdName() %></div></td>
+								<td><div class="ui samll header"><%= b.getBdWriteDate() %></div></td>
+								<td><div class="ui samll header"><%= b.getBdViewCount() %></div></td>
 								<td>
 									<form action="/adminBoardDetail" method="post">
 										<input type="hidden" name="bdNo" value="<%=b.getBdNo() %>">
 										<input type="submit" class="ui orange button" value="상세보기">
 									</form>
 								</td>
-
+ 
 							</tr>
 							<%} %>
 							<%} %>

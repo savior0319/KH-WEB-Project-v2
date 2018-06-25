@@ -357,6 +357,7 @@ public class BoardService {
 		return list;
 	}
 
+
 	public boolean reViewUpdate(BoardTotalInfoVo btlv) {
 		Connection conn = null;
 		conn = JDBCTemplate.getConnect(conn);
@@ -393,6 +394,12 @@ public class BoardService {
 		JDBCTemplate.close(conn);
 		
 		return totalResult;
+}
+	public int recommendConfirm(int bdNo, String rmId) {
+		conn = JDBCTemplate.getConnect(conn);
+		int result = new BoardDao().recommendConfirm(conn, bdNo, rmId);
+		JDBCTemplate.close(conn);
+		return result;
 	}
 
 }

@@ -79,9 +79,9 @@ public class AdminService {
 		String pageNavi = new AdminDao().getMemberPageNavi(conn, currentPage, recordCountPerPage, naviCountPerPage);
 
 		MemberPageVo mpv = null;
-		if (!list.isEmpty() && !pageNavi.isEmpty()) {
+		/*if (!list.isEmpty() && !pageNavi.isEmpty()) {*/
 			mpv = new MemberPageVo(list, pageNavi);
-		}
+		/*}*/
 		JDBCTemplate.close(conn);
 		return mpv;
 	}
@@ -100,9 +100,9 @@ public class AdminService {
 		String pageNavi = new AdminDao().getBoardPageNavi(conn, currentPage, recordCountPerPage, naviCountPerPage);
 
 		BoardAdminPageVo bpv = null;
-		if (!list.isEmpty() && !pageNavi.isEmpty()) {
+		/*if (!list.isEmpty() && !pageNavi.isEmpty()) {*/
 			bpv = new BoardAdminPageVo(list, pageNavi);
-		}
+		/*}*/
 		JDBCTemplate.close(conn);
 		return bpv;
 	}
@@ -139,9 +139,9 @@ public class AdminService {
 		String pageNavi = new AdminDao().getReservePageNavi(conn, currentPage, recordCountPerPage, naviCountPerPage);
 
 		ReservePageVo rpv = null;
-		if (!list.isEmpty() && !pageNavi.isEmpty()) {
+		/*if (!list.isEmpty() && !pageNavi.isEmpty()) {*/
 			rpv = new ReservePageVo(list, pageNavi);
-		}
+		/*}*/
 		JDBCTemplate.close(conn);
 		return rpv;
 	}
@@ -163,9 +163,9 @@ public class AdminService {
 		String pageNavi = new AdminDao().getSalesPageNavi(conn, currentPage, recordCountPerPage, naviCountPerPage);
 
 		SalesPageVo spv = null;
-		if (!list.isEmpty() && !pageNavi.isEmpty()) {
+		/*if (!list.isEmpty() && !pageNavi.isEmpty()) {*/
 			spv = new SalesPageVo(list, pageNavi);
-		}
+		/*}*/
 		JDBCTemplate.close(conn);
 		return spv;
 
@@ -186,9 +186,9 @@ public class AdminService {
 		String pageNavi = new AdminDao().getQuestionPageNavi(conn, currentPage, recordCountPerPage, naviCountPerPage);
 
 		QuestionPageVo qpv = null;
-		if (!list.isEmpty() && !pageNavi.isEmpty()) {
+		/*if (!list.isEmpty() && !pageNavi.isEmpty()) {*/
 			qpv = new QuestionPageVo(list, pageNavi);
-		}
+		/*}*/
 		JDBCTemplate.close(conn);
 		return qpv;
 	}
@@ -384,9 +384,9 @@ public class AdminService {
 			String pageNavi = new AdminDao().getReservePageNavi(conn, currentPage, recordCountPerPage, naviCountPerPage,  searchData,  searchOption);
 
 			ReservePageVo rpv = null;
-			if (!list.isEmpty() && !pageNavi.isEmpty()) {
+			/*if (!list.isEmpty() && !pageNavi.isEmpty()) {*/
 				rpv = new ReservePageVo(list, pageNavi);
-			}
+			/*}*/
 			JDBCTemplate.close(conn);
 			return rpv;
 		}
@@ -405,9 +405,9 @@ public class AdminService {
 			String pageNavi = new AdminDao().getMemberPageNavi(conn, currentPage, recordCountPerPage, naviCountPerPage,searchData,searchOption);
 
 			MemberPageVo mpv = null;
-			if (!list.isEmpty() && !pageNavi.isEmpty()) {
+			/*if (!list.isEmpty() && !pageNavi.isEmpty()) {*/
 				mpv = new MemberPageVo(list, pageNavi);
-			}
+			/*}*/
 			JDBCTemplate.close(conn);
 			return mpv;
 		}
@@ -426,9 +426,10 @@ public class AdminService {
 			String pageNavi = new AdminDao().getLoginLogPageNavi(conn, currentPage, recordCountPerPage, naviCountPerPage);
 
 			LoginLogPageVo llpv = null;
-			if (!list.isEmpty() && !pageNavi.isEmpty()) {
+			
+			/*if (!list.isEmpty() && !pageNavi.isEmpty()) {*/
 				llpv = new LoginLogPageVo(list, pageNavi);
-			}
+		/*}*/
 			JDBCTemplate.close(conn);
 			return llpv;
 		}
@@ -447,9 +448,9 @@ public class AdminService {
 			String pageNavi = new AdminDao().getLoginLogPageNavi(conn, currentPage, recordCountPerPage, naviCountPerPage,searchData,searchOption);
 
 			LoginLogPageVo llpv = null;
-			if (!list.isEmpty() && !pageNavi.isEmpty()) {
+			/*if (!list.isEmpty() && !pageNavi.isEmpty()) {*/
 				llpv = new LoginLogPageVo(list, pageNavi);
-			}
+			/*}*/
 			JDBCTemplate.close(conn);
 			return llpv;
 		}
@@ -468,9 +469,9 @@ public class AdminService {
 			String pageNavi = new AdminDao().getQuestionPageNavi(conn, currentPage, recordCountPerPage, naviCountPerPage,searchData,searchOption);
 
 			QuestionPageVo qpv = null;
-			if (!list.isEmpty() && !pageNavi.isEmpty()) {
+			/*if (!list.isEmpty() && !pageNavi.isEmpty()) {*/
 				qpv = new QuestionPageVo(list, pageNavi);
-			}
+			/*}*/
 			JDBCTemplate.close(conn);
 			return qpv;
 		}
@@ -488,9 +489,9 @@ public class AdminService {
 			String pageNavi = new AdminDao().getBoardPageNavi(conn, currentPage, recordCountPerPage, naviCountPerPage,searchData, searchOption);
 
 			BoardAdminPageVo bpv = null;
-			if (!list.isEmpty() && !pageNavi.isEmpty()) {
+			/*if (!list.isEmpty() && !pageNavi.isEmpty()) {*/
 				bpv = new BoardAdminPageVo(list, pageNavi);
-			}
+			/*}*/
 			JDBCTemplate.close(conn);
 			return bpv;
 		}
@@ -539,9 +540,9 @@ public class AdminService {
 			String pageNavi = new AdminDao().getSalesPageNavi(conn, currentPage, recordCountPerPage, naviCountPerPage,searchData,searchOption);
 
 			SalesPageVo spv = null;
-			if (!list.isEmpty() && !pageNavi.isEmpty()) {
+			/*if (!list.isEmpty() && !pageNavi.isEmpty()) {*/
 				spv = new SalesPageVo(list, pageNavi);
-			}
+			/*}*/
 			JDBCTemplate.close(conn);
 			return spv;
 		}
@@ -653,9 +654,9 @@ public class AdminService {
 			String pageNavi = new AdminDao().getReserveCancelPageNavi(conn, currentPage, recordCountPerPage, naviCountPerPage,  searchData,  searchOption);
 
 			ReserveCancelPageVo rcpv = null;
-			if (!list.isEmpty() && !pageNavi.isEmpty()) {
+			/*if (!list.isEmpty() && !pageNavi.isEmpty()) {*/
 				rcpv = new ReserveCancelPageVo(list, pageNavi);
-			}
+			/*}*/
 			JDBCTemplate.close(conn);
 			return rcpv;
 			
@@ -674,9 +675,9 @@ public class AdminService {
 			String pageNavi = new AdminDao().getReserveCancelPageNavi(conn, currentPage, recordCountPerPage, naviCountPerPage);
 
 			ReserveCancelPageVo rcpv = null;
-			if (!list.isEmpty() && !pageNavi.isEmpty()) {
+			/*if (!list.isEmpty() && !pageNavi.isEmpty()) {*/
 				rcpv = new ReserveCancelPageVo(list, pageNavi);
-			}
+			/*}*/
 			JDBCTemplate.close(conn);
 			return rcpv;
 		}
@@ -694,9 +695,9 @@ public class AdminService {
 			String pageNavi = new AdminDao().getReserveHistoryPageNavi(conn, currentPage, recordCountPerPage, naviCountPerPage,  searchData,  searchOption);
 
 			ReserveHistoryPageVo rhpv = null;
-			if (!list.isEmpty() && !pageNavi.isEmpty()) {
+			/*if (!list.isEmpty() && !pageNavi.isEmpty()) {*/
 				rhpv = new ReserveHistoryPageVo(list, pageNavi);
-			}
+			/*}*/
 			JDBCTemplate.close(conn);
 			return rhpv;
 		}
@@ -715,9 +716,9 @@ public class AdminService {
 			String pageNavi = new AdminDao().getReserveHistoryPageNavi(conn, currentPage, recordCountPerPage, naviCountPerPage);
 
 			ReserveHistoryPageVo rhpv = null;
-			if (!list.isEmpty() && !pageNavi.isEmpty()) {
+			/*if (!list.isEmpty() && !pageNavi.isEmpty()) {*/
 				rhpv = new ReserveHistoryPageVo(list, pageNavi);
-			}
+			/*}*/
 			JDBCTemplate.close(conn);
 			return rhpv;
 		}
@@ -749,5 +750,46 @@ public class AdminService {
 				}
 			}
 			return result;
+		}
+
+		public int countReserve() {
+			Connection conn = null;
+			conn = JDBCTemplate.getConnect(conn);
+			int result = aDao.countReserve(conn);
+			JDBCTemplate.close(conn);
+			return result;
+
+		}
+
+		public int countQuesetion() {
+			Connection conn = null;
+			conn = JDBCTemplate.getConnect(conn);
+			int result = aDao.countQuesetion(conn);
+			JDBCTemplate.close(conn);
+			return result;
+		}
+
+		public int countNewMember() {
+			Connection conn = null;
+			conn = JDBCTemplate.getConnect(conn);
+			int result = aDao.countNewMember(conn);
+			JDBCTemplate.close(conn);
+			return result;
+		}
+
+		public ArrayList<BoardVo> indexBoardList() {
+			Connection conn = null;
+			conn = JDBCTemplate.getConnect(conn);
+			 ArrayList<BoardVo> list = aDao.indexBoardList(conn);
+			 JDBCTemplate.close(conn);
+			 return list;
+		}
+
+		public ArrayList<QuestionVo> indexQuestionList() {
+			Connection conn = null;
+			conn = JDBCTemplate.getConnect(conn);
+			 ArrayList<QuestionVo> list = aDao.indexQuestionList(conn);
+			 JDBCTemplate.close(conn);
+			 return list;
 		}
 }
