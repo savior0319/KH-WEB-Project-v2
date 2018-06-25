@@ -721,4 +721,33 @@ public class AdminService {
 			JDBCTemplate.close(conn);
 			return rhpv;
 		}
+
+		public ArrayList<PensionPicTb> delPicList(String roomName) {
+			Connection conn = null;
+			conn = JDBCTemplate.getConnect(conn);
+			ArrayList<PensionPicTb> list = aDao.delPicList(conn,roomName);
+			
+			JDBCTemplate.close(conn);
+			
+			return list;
+		}
+
+		public boolean roomDeleteFinal(String roomName,int size) {
+			Connection conn = null;
+			conn = JDBCTemplate.getConnect(conn);
+			boolean result = false;
+			// 1. 사진 삭제
+			int row = aDao.roomDeletePics(conn, roomName);
+			if(row==size) {
+				// 2. 방 삭제
+				boolean resultRoom = aDao.roomDeleteFinal(conn, roomName);
+				if(resultRoom) {
+					JDBCTemplate.commit(conn);
+					result = true;
+				}else {
+					JDBCTemplate.rollBack(conn);
+				}
+			}
+			return result;
+		}
 }
