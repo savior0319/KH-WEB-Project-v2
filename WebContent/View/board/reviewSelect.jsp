@@ -6,6 +6,8 @@
 <%
 MemberVo m = (MemberVo)session.getAttribute("member");
 BoardTotalInfoVo btlv = (BoardTotalInfoVo)request.getAttribute("review");
+int rmConfirm = (int)request.getAttribute("rmConfirm");
+System.out.println(rmConfirm);
 
 @SuppressWarnings("all")
 ArrayList<Comment> list = (ArrayList<Comment>) request.getAttribute("comment");
@@ -55,19 +57,26 @@ Date date = new Date(writeDay.getTime());
 				<!-- 추천 버튼 위치 옮김 -->
 				<%
 				if(m != null) {
+					if(rmConfirm == 0) {
 				%>
 				<form id="rmBd" method="get" style="display:inline;">
 					<!-- 추천수 중복되는 걸 막기위해서 아이디 당 한번씩밖에 안되도록 설정 -->
 					<input type="hidden" name="bdNo" value="<%=btlv.getBv().getBdNo() %>" />
 					<!-- <input type="button" id="submitRmBd" class="ui icon button" value="추천" /> -->
 					<button type="button" class="ui icon red tiny button" id="submitRmBd">
-						<i class="ui heart icon"></i>
+						<i id="emptyHeart" class="ui heart outline icon"></i>
 					</button>
-
 				</form>
 				<%
-			}
-			%>
+					} else {
+				%>
+						<button type="button" class="ui icon red tiny button">
+						<i class="ui heart icon"></i>
+						</button>
+				<%
+					}
+				}
+				%>
 			<div class="ui divider"></div>
 			<%if(btlv.getBv().getBdWriter() != null) { %>
 			<span class="ui small header" style="margin-right: 15px;"><i class="user icon"></i>작성자</span><span style="display: inline-block; width: 15%;"><%=btlv.getBv().getBdWriter()%></span>
@@ -263,12 +272,15 @@ if (m != null && m.getMbId().equals(btlv.getBv().getBdWriter())) {
 	$('#submitRmBd').click(function() {
 		var formData = $("#rmBd").serialize();
 		
+		console.log(formData);
+		
 		$.ajax({
 			type : "GET",
 			url : "/recommendBoard",
 			data : formData,
 			success : function(data) {
 				$('#spanRmBd').text(data);
+				$('#emptyHeart').attr('class', 'ui heart icon');
 			}
 		});
 	});

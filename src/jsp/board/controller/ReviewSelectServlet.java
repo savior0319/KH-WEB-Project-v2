@@ -9,12 +9,14 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import jsp.admin.model.service.AdminService;
 import jsp.admin.model.vo.BoardTotalInfoVo;
 import jsp.board.model.service.BoardService;
 import jsp.board.model.service.CommentService;
 import jsp.board.model.vo.Comment;
+import jsp.member.model.vo.MemberVo;
 
 /**
  * Servlet implementation class ReviewSelectServlet
@@ -47,6 +49,15 @@ public class ReviewSelectServlet extends HttpServlet {
 		// 조회수 카운트
 		int inquiryResult = new BoardService().hitsCount(bdNo);
 		
+		// 추천 여부
+		HttpSession session = request.getSession(false);
+		int rmConfirm = 0;
+		if((MemberVo)session.getAttribute("member") != null) {
+			String rmId = ((MemberVo)session.getAttribute("member")).getMbId();
+			rmConfirm = new BoardService().recommendConfirm(bdNo, rmId);
+			// 0이면 추천 안함, 1이면 추천했었음
+		}
+		
 		// 사진 불러오기
 		
 		
@@ -55,6 +66,7 @@ public class ReviewSelectServlet extends HttpServlet {
 				RequestDispatcher view = request.getRequestDispatcher("/View/board/reviewSelect.jsp");
 				request.setAttribute("review", btlv); // 후기 객체
 				request.setAttribute("comment", list); // 댓글 객체 리스트
+				request.setAttribute("rmConfirm", rmConfirm);
 				view.forward(request, response);
 			}
 			else {

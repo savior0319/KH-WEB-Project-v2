@@ -357,4 +357,11 @@ public class BoardService {
 		return list;
 	}
 
+	public int recommendConfirm(int bdNo, String rmId) {
+		conn = JDBCTemplate.getConnect(conn);
+		int result = new BoardDao().recommendConfirm(conn, bdNo, rmId);
+		JDBCTemplate.close(conn);
+		return result;
+	}
+
 }
