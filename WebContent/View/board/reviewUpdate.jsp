@@ -38,7 +38,7 @@
 		<!-- 여기에 본문 내용 작성하면 됨 -->
 		<div class="ui red message"><div class="ui small header">※ 이곳은 더 펜션 후기를 남기는 공간입니다.<br>기타 다른 글은 삼가 부탁드립니다.</div></div>
 		<div class="ui center aligned segment">
-			<form action="/reviewUpdate" method="post">
+			<form action="/reviewUpdate" method="post"  enctype="Multipart/form-data" style="display:inline;">
 			<!--글번호 : <%=board.getBdNo()%><br>
 			글쓴이 : <%=board.getBdWriter()%><br>
 			작성일 : <%=board.getBdWriteDate()%><br> -->
@@ -53,6 +53,10 @@
 			<div class="ui form">
 				<textarea rows="20" cols="100" style="resize:none;" name="bdContents"/><%=board.getBdContents()%></textarea>
 			</div>
+			<div class="ui left aligned basic segment">
+					<input class="ui orange basic button" type="file" name="img" id="img" accept="image/*" multiple><br><br>
+					<div id="image"></div>
+				</div>
 			<br>
 			<input type="submit" class="ui blue button" value="수정하기"/>
 			<button type="button" class="ui red button" onclick="history.back();">취소</button>
@@ -69,6 +73,24 @@
 <script>
 	function back() {
 		history.go(-1);
+	}
+	var uploadfile = document.getElementById('img');
+	var fileslength = 0;
+	uploadfile.onchange = function(e){
+		var files = e.target.files;
+		fileslength = files.length;
+		for(var i=0; i<fileslength; i++){
+			if(i===0)
+			{
+				document.getElementById('image').innerHTML = "";
+			}
+			var fileReader = new FileReader();
+			fileReader.readAsDataURL(e.target.files[i]);
+			fileReader.onload = function(e){
+				var str = "<div style='display:inline;'> <img src='"+e.target.result+"'style='width:100px; height:100px;'> </div>";
+				document.getElementById('image').innerHTML += str;
+			}
+		}
 	}
 </script>
 

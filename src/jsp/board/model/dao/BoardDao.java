@@ -1054,6 +1054,31 @@ public class BoardDao {
 		return list;
 	}
 
+
+	public boolean reViewUpdate(Connection conn, BoardVo bv) {
+		int row = 0;
+		PreparedStatement pstmt = null;
+		String query = "update board_tb set BD_NAME=?, BD_CONTENTS=? where BD_NO=?";
+		boolean result = false;
+		
+		try {
+			pstmt = conn.prepareStatement(query);
+			pstmt.setString(1, bv.getBdName());
+			pstmt.setString(2, bv.getBdContents());
+			pstmt.setInt(3, bv.getBdNo());
+			row = pstmt.executeUpdate();
+			if(row>0) {
+				result = true;
+			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			JDBCTemplate.close(pstmt);
+		}
+  return result;
+}
+
 	public int recommendConfirm(Connection conn, int bdNo, String rmId) {
 		PreparedStatement pstmt = null;
 		ResultSet rset = null;
