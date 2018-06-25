@@ -56,7 +56,7 @@ body {
 <c:set value="${sessionScope.member.mbId}" var="id"></c:set>
 <c:if test="${id eq 'thepension'}">
 <div style="color: white; font-size: 14px; font-weight: 600">
-	관리자 로그인 했습니다 <a href="/View/admin/admin.jsp" style="color: orange;">관리 페이지로 이동</a>
+	관리자 로그인 했습니다 <a href="/adminIndex" style="color: orange;">관리 페이지로 이동</a>
 </div>
 </c:if>
 

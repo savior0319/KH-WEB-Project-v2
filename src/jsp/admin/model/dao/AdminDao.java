@@ -262,7 +262,7 @@ public class AdminDao {
 
 		try {
 			pstmt = conn.prepareStatement(query);
-			pstmt.setString(1,"공지");
+			pstmt.setString(1,"공지사항");
 			pstmt.setInt(2, start);
 			pstmt.setInt(3, end);
 			rs = pstmt.executeQuery();
@@ -299,7 +299,7 @@ public class AdminDao {
 		String query = "select count(*) as totalCount from board_tb where bd_category=?";
 		try {
 			pstmt = conn.prepareStatement(query);
-			pstmt.setString(1, "공지");
+			pstmt.setString(1, "공지사항");
 			rs = pstmt.executeQuery();
 			if(rs.next()) {
 				recordTotalCount = rs.getInt("totalCount");
@@ -1879,7 +1879,7 @@ public class AdminDao {
 
 		try {
 			pstmt = conn.prepareStatement(query);
-			pstmt.setString(1,"공지");
+			pstmt.setString(1,"공지사항");
 			pstmt.setInt(2, start);
 			pstmt.setInt(3, end);
 			rs = pstmt.executeQuery();
@@ -1917,7 +1917,7 @@ public class AdminDao {
 		String query = "select count(*) as totalCount from board_tb where bd_category=?";
 		try {
 			pstmt = conn.prepareStatement(query);
-			pstmt.setString(1, "공지");
+			pstmt.setString(1, "공지사항");
 			rs = pstmt.executeQuery();
 			if(rs.next()) {
 				recordTotalCount = rs.getInt("totalCount");
@@ -2977,4 +2977,159 @@ public class AdminDao {
 		}
 		return result;
 	}
+	
+	// todo: sql 
+	public int countReserve(Connection conn) {
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		int count = 0 ; 
+		String query = "select COUNT(*) as count from RESERVATION_TB where to_char( RES_RESERVATION_DATE, 'yyyymmdd' ) = to_char( sysdate, 'yyyymmdd')";
+		try {
+			pstmt = conn.prepareStatement(query);
+			rs = pstmt.executeQuery();
+			if(rs.next()) {
+				count = rs.getInt("count");
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally {
+			JDBCTemplate.close(rs);
+			JDBCTemplate.close(pstmt);
+		}
+		return count;
+		
+	}
+
+	public int countQuesetion(Connection conn) {
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		int count = 0 ; 
+		String query = "select count(*) as count from question_tb where Q_ANSWER_CHECK ='N'";
+		try {
+			pstmt = conn.prepareStatement(query);
+			rs = pstmt.executeQuery();
+			if(rs.next()) {
+				count = rs.getInt("count");
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally {
+			JDBCTemplate.close(rs);
+			JDBCTemplate.close(pstmt);
+		}
+		return count;
+	}
+	// todo: sql
+	public int countNewMember(Connection conn) {
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		int count = 0 ; 
+		String query = "select count(*) as count from MEMBER_TB where MB_ENTDATE >= TRUNC(sysdate,'MM') AND MB_ENTDATE<= ADD_MONTHS( TRUNC(sysdate,'MM'), 1 )-1";
+		try {
+			pstmt = conn.prepareStatement(query);
+			rs = pstmt.executeQuery();
+			if(rs.next()) {
+				count = rs.getInt("count");
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally {
+			JDBCTemplate.close(rs);
+			JDBCTemplate.close(pstmt);
+		}
+		return count;
+	}
+
+	public ArrayList<BoardVo> indexBoardList(Connection conn) {
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		ArrayList<BoardVo> list = new ArrayList<BoardVo>();
+		// 시작 페이지 계산 
+		int start = 1;
+		// 만약 요청한 페이지가 1이라면 1		(1*10) - (10-1) = 10-9 =1
+		// 만약 요청한 페이지가 2이라면 11 		(2*10) - 9	= 11
+
+		// 끝 페이지 계산 
+		int end = 5;	// 숫자가딱 맞지 않아도 된다.
+
+		String query = "select * from "
+				+ "(select board_tb.* , row_number() over(order by bd_no desc) as num from board_tb where bd_category=?) "
+				+"where num between ? and ?";
+
+		try {
+			pstmt = conn.prepareStatement(query);
+			pstmt.setString(1,"공지사항");
+			pstmt.setInt(2, start);
+			pstmt.setInt(3, end);
+			rs = pstmt.executeQuery();
+			while(rs.next()) {
+				BoardVo bv = new BoardVo();
+				bv.setBdNo(rs.getInt("BD_NO"));
+				bv.setBdName(rs.getString("BD_NAME"));
+				bv.setBdContents(rs.getString("BD_CONTENTS"));
+				bv.setBdWriter(rs.getString("BD_WRITER"));
+				bv.setBdWriteDate(rs.getTimestamp("BD_WRITE_DATE"));
+				bv.setBdViewCount(rs.getInt("BD_VIEW_COUNT"));
+				bv.setBdRecommendCount(rs.getInt("BD_RECOMMEND_COUNT"));
+				bv.setBdCategory(rs.getString("BD_CATEGORY"));
+				list.add(bv);
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally {
+			JDBCTemplate.close(rs);
+			JDBCTemplate.close(pstmt);
+		}
+
+		return list;
+	}
+
+	public ArrayList<QuestionVo> indexQuestionList(Connection conn) {
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		ArrayList<QuestionVo> list = new ArrayList<QuestionVo>();
+		// 시작 페이지 계산 
+		int start = 1;
+		// 만약 요청한 페이지가 1이라면 1		(1*10) - (10-1) = 10-9 =1
+		// 만약 요청한 페이지가 2이라면 11 		(2*10) - 9	= 11
+
+		// 끝 페이지 계산 
+		int end = 5;	// 숫자가딱 맞지 않아도 된다.
+
+		String query = "select * from "
+				+ "(select question_tb.* , row_number() over(order by Q_NO desc) as num from question_tb where Q_ANSWER_CHECK =?) "
+				+"where num between ? and ?";
+
+		try {
+			pstmt = conn.prepareStatement(query);
+			pstmt.setString(1,"N");
+			pstmt.setInt(2, start);
+			pstmt.setInt(3, end);
+			rs = pstmt.executeQuery();
+			while(rs.next()) {
+				QuestionVo qv = new QuestionVo();
+				qv.setqNo(rs.getInt("Q_NO"));
+				qv.setqName(rs.getString("Q_NAME"));
+				qv.setqContents(rs.getString("Q_CONTENTS"));
+				qv.setqWriter(rs.getString("Q_WRITER"));
+				qv.setqWriteDate(rs.getTimestamp("Q_WRITE_DATE"));
+				qv.setqAnswerCheck(rs.getString("Q_ANSWER_ChECK"));
+				list.add(qv);
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally {
+			JDBCTemplate.close(rs);
+			JDBCTemplate.close(pstmt);
+		}
+
+		return list;
+	}
+
+	
 }

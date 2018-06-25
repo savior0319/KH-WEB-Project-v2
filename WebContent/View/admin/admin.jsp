@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ page import = "jsp.admin.model.vo.*,jsp.board.model.vo.*,jsp.member.model.vo.*,java.util.*" %>
 <jsp:include page="/View/main/layout/preventurl.jsp"></jsp:include>
 <!DOCTYPE html>
 <html>
@@ -17,6 +18,28 @@
 	3. 오늘의 현황 처리
 	4. 모든 관리자 페이지에서 반응형 처리 필요. 
  -->
+ <%
+	
+	AdminIndexVo aiv = (AdminIndexVo)request.getAttribute("adminInfo");
+	
+ 	int countReserve = 0;
+	int countQuestion = 0;
+	int countNewMember = 0;
+	
+	ArrayList<BoardVo> boardList = null;
+	ArrayList<QuestionVo> questionList = null;
+	%>
+	
+	<% if(aiv != null){
+		countReserve = aiv.getCountReserve();
+		countQuestion = aiv.getCountQuestion();
+		countNewMember = aiv.getCountNewMember();
+		boardList = aiv.getBoardList();
+		questionList = aiv.getQuestionList();
+	%>
+	
+  
+ 
   <jsp:include page="/View/admin/layout/sideMenu.jsp"></jsp:include>
   <!-- 이 부분이 본문 -->
   <div class="ui pusher">
@@ -40,7 +63,7 @@
 					<i class="ui map marker icon"></i>
 				    <div class="ui content">
 				      <a class="header">오늘 예약 수</a>
-				      <div class="ui description" id="countReserve">0</div>
+				      <div class="ui description" id="countReserve"><%=countReserve %></div>
 				    </div>
 	      		</div>
 	      		
@@ -63,7 +86,7 @@
 					<i class="map marker icon"></i>
 				    <div class="content">
 				      <a class="header">미 답변 질문 </a>
-				      <div class="description" id="countQuestion">0</div>
+				      <div class="description" id="countQuestion"><%=countQuestion %></div>
 				    </div>
 	      		</div>
 	      		
@@ -71,7 +94,7 @@
 					<i class="map marker icon"></i>
 				    <div class="content">
 				      <a class="header">이달의 신규 회원</a>
-				      <div class="description" id="countMember">0</div>
+				      <div class="description" id="countMember"><%=countNewMember %></div>
 				    </div>
 	      		</div>
 	      		
@@ -91,16 +114,29 @@
 				    <tr>
 				      <th>글 번호</th>
 				      <th>제목</th>
-				      <th>날자</th>
+				      <th>날짜</th>
 				    </tr>
 				  </thead>
 				  <!-- 이 부분에 따로 글 추가 (최근 5개 정도 )  -->
 				  <tbody>
-				    <tr>
+				   <!--  <tr>
 				      <td>John</td>
 				      <td>Approved</td>
 				      <td>None</td>
-				    </tr>
+				    </tr> -->
+				    <% if(boardList != null && !boardList.isEmpty()){ %>
+					    <%for(BoardVo bv : boardList){ %>
+					    <tr>
+					    <td><%=bv.getBdNo() %></td>
+					     <td><%=bv.getBdName() %></td>
+					      <td><%=bv.getBdWriteDate() %></td>
+					    </tr>
+					    <%}%>
+				    <% }else{ %>
+				    	<tr>
+				    	<td colspan="3">공지사항이 없습니다.</td>
+				    	</tr>
+				     <%} %>
 				  </tbody>
 				</table>
     	</div>
@@ -117,22 +153,31 @@
 				    <tr>
 				      <th>작성자</th>
 				      <th>제목</th>
-				      <th>날자</th>
+				      <th>날짜</th>
 				    </tr>
 				  </thead>
 				  <!-- 이 부분에 따로 글 추가 (최근 5개 정도 )  -->
 				  <tbody>
-				    <tr>
-				      <td>John</td>
-				      <td>Approved</td>
-				      <td>None</td>
-				    </tr>
+				    <% if(questionList != null && !questionList.isEmpty()){ %>
+					    <%for(QuestionVo qv : questionList){ %>
+					    <tr>
+					    <td><%=qv.getqWriter() %></td>
+					     <td><%=qv.getqName() %></td>
+					      <td><%=qv.getqWriteDate() %></td>
+					    </tr>
+					    <%}%>
+				    <% }else{ %>
+				    	<tr>
+				    	<td colspan="3">공지사항이 없습니다.</td>
+				    	</tr>
+				     <%} %>
 				  </tbody>
 				</table>
     	</div>
     	<!--  1:1 END -->
      </div>
   </div>
+  <% } %>
 <!-- </div> -->
 
 <script>

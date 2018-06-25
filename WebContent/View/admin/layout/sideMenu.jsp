@@ -5,7 +5,7 @@
 <div class="ui visible inverted left vertical thin sidebar menu">
 	<!-- 1. 홈 메뉴 바  -->
 	<!--  이 부분이 약간은 복잡 -->
-	<a class="item" href="/View/admin/admin.jsp">
+	<a class="item" href="/adminIndex">
 		관리자 메인
 		<i class="home icon"></i>
 	</a>
