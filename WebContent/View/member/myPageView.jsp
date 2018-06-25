@@ -272,8 +272,8 @@
 					<div class="ui red message" style="width : 60%; margin: 0 auto;" id="withdrawMessage">
 						<h5>탈퇴 시 The Pension 이용권한 및 관련기록이 모두 삭제 됩니다.<br>
 							또한 가입 시 입력한 개인정보 또한 일괄 삭제되어 복구될 수 없으므로<br>
-						탈퇴 시 이점 유의 해주시기 바랍니다.<br>
-					※ 작성한 게시글 및 댓글은 자동으로 삭제되지 않습니다.</h5>
+							탈퇴 시 이점 유의 해주시기 바랍니다.<br>
+						※ 작성한 게시글 및 댓글은 자동으로 삭제되지 않습니다.</h5>
 						<div class="ui center aligned basic segment" style="color : black; padding-top: 0px; padding-bottom: 0px;">
 							탈퇴 내용에 동의합니다
 							<input type="checkbox" id="agreementChk">
@@ -625,8 +625,7 @@ var ajaxLoadNowHis = ajaxLoadHis;
 					<th>객실명</th>
 					<th>예약인원</th>
 					<th>요금</th> */
-					
-					if(ajaxLoadNowCc != ajaxLoadCc - 1){ 
+					if(ajaxLoadNowHis != ajaxLoadHis - 1){ 
 						console.log("중복출력방지");
 					} else {
 

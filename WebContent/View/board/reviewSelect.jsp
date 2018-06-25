@@ -175,14 +175,14 @@ if (list.isEmpty()) {
 			<div class="date"><%=c.getCmWriteDate()%></div>
 			<div class="rating">
 				<i class="star icon"></i>
-				<p id="cmRmCount<%=index%>" style="display: inline;"><%=c.getCmRecCount()%></p>
+				<p id="cmRmCount<%=index%>" style="display: inline; margin-right: 5px;"><%=c.getCmRecCount()%></p>
 			</div>
 		</div>
-		<div id="<%=c.getCmNo()%>_input_show" class="text" style="margin-top: 8px; margin-bottom: 0px;"><%=c.getCmContents()%></div>
-		<br>
+
 
 		<%
-		if (m != null && m.getMbId().equals(c.getCmWriter())) {
+		if (m != null) {
+		if(m.getMbId().equals(c.getCmWriter())) {
 		%>
 		<form action="/commentUpdate" method="post" style="display: inline;">
 			<div class="ui input">
@@ -200,21 +200,29 @@ if (list.isEmpty()) {
 			<input type="submit" class="tiny ui button prevent" value="삭제" />
 		</form>
 
-		<%-- 댓글 추천 --%>
-		<form action="/recommendComment" id="rmCm<%=index%>" method="get" style="display: inline;">
-			<!-- 추천수 중복되는 걸 막기위해서 아이디 당 한번씩밖에 안되도록 설정 -->
-			<input type="hidden" name="cmNo" value="<%=c.getCmNo()%>" />
 
-			<button type="button" class="ui icon red tiny button prevent" id="submitCmBd<%=index%>">
-				<i class="ui heart icon"></i>
-			</button>
-			<!-- <input type="button" id="submitCmBd<%=index%>" class="mini ui red button" value="추천" /> -->
-		</form>
-		<br>
 		<%
-		index++;
 	}
 	%>
+	<%-- 댓글 추천 --%>
+	<form action="/recommendComment" id="rmCm<%=index%>" method="get" style="display: inline;">
+		<!-- 추천수 중복되는 걸 막기위해서 아이디 당 한번씩밖에 안되도록 설정 -->
+		<input type="hidden" name="cmNo" value="<%=c.getCmNo()%>" />
+
+		<button type="button" class="ui icon red tiny button prevent" id="submitCmBd<%=index%>"> 
+			<i class="ui heart icon"></i>
+		</button>
+		<!-- <input type="button" id="submitCmBd<%=index%>" class="mini ui red button" value="추천" /> -->
+	</form>
+	<br>        
+	<%
+	index++;
+}
+%>
+<div id="<%=c.getCmNo()%>_input_show" class="text" style="margin-top: 8px; margin-bottom: 0px;"><%=c.getCmContents()%></div>
+<br>
+
+
 </div>
 
 </div>
@@ -227,9 +235,7 @@ if (list.isEmpty()) {
 </div>
 
 
-<%
-if (m != null && m.getMbId().equals(btlv.getBv().getBdWriter())) {
-%>
+<% if(m!=null) { %>
 <form action="/noticeComment" class="ui reply form" method="get">
 	<div class="field">
 		<textarea name="CM_CONTENTS" id="cmContents" style="resize: none;" placeholder="댓글 내용을 입력하세요"></textarea>
@@ -237,31 +243,30 @@ if (m != null && m.getMbId().equals(btlv.getBv().getBdWriter())) {
 	<input type="hidden" name="bdNo" value=<%=btlv.getBv().getBdNo()%> />
 	<input type="submit" value="댓글 작성" onclick="return commentCheck();" class="ui blue button" />
 </form>
-<br>
-<br>
+<br><br>
+<%} %>
 
-<form action="/reviewUpdateReady" style="display: inline;">
+<%
+if (m != null && m.getMbId().equals(btlv.getBv().getBdWriter())) {
+%>
+<form action="/reviewUpdateReady" style="display:inline;">
 	<input type="hidden" name="bdNo" value="<%=btlv.getBv().getBdNo()%>" />
 	<input type="submit" class="ui tiny brown button prevent" value="글 수정">
 </form>
 
-<%
-if (!btlv.getList().isEmpty()) {
-%>
-<form action="/reviewUpdateImageReady" style="display: inline;">
+<% if(!btlv.getList().isEmpty()){ %>
+<form action="/reviewUpdateImageReady" style="display:inline;">
 	<input type="hidden" name="bdNo" value="<%=btlv.getBv().getBdNo()%>" />
-	<input type="submit" class="ui orange tiny button prevent" value="사진 수정">
+	<input type="submit" class="ui tiny orange button prevent" value="사진 수정">
 </form>
 
-<form action="/reviewDeleteImageReady" style="display: inline;">
+<form action="/reviewDeleteImageReady" style="display:inline;">
 	<input type="hidden" name="bdNo" value="<%=btlv.getBv().getBdNo()%>" />
-	<input type="submit" class="ui orange tiny button prevent" value="사진 삭제">
+	<input type="submit" class="ui tiny orange button prevent" value="사진 삭제">
 </form>
-<%
-}
-%>
+<%} %>
 
-<form action="/reviewDelete" method="post" style="display: inline;">
+<form action="/reviewDelete" method="post" style="display:inline;">
 	<input type="hidden" name="bdNo" value="<%=btlv.getBv().getBdNo()%>" />
 	<input type="submit" class="ui tiny red button prevent" value="글 삭제">
 </form>
@@ -292,7 +297,7 @@ if (!btlv.getList().isEmpty()) {
 		document.getElementById(id+"_reBtn").style="display:inline";
 	}
 	function cancle(id){
-		document.getElementById(id+"_input_show").style="display:block";
+		document.getElementById(id+"_input_show").style="display:inline";
 		document.getElementById(id+"_input").type="hidden";
 		document.getElementById(id+"_btn").style="display:inline";
 		document.getElementById(id+"_submit").type="hidden";
@@ -314,44 +319,44 @@ if (!btlv.getList().isEmpty()) {
 </script>
 
 <script>
-	// 게시글에 대한 추천버튼
-	$('#submitRmBd').click(function() {
-		var formData = $("#rmBd").serialize();
-		
-		console.log(formData);
-		
-		$.ajax({
-			type : "GET",
-			url : "/recommendBoard",
-			data : formData,
-			success : function(data) {
-				$('#spanRmBd').text(data);
-				$('#emptyHeart').attr('class', 'ui heart icon');
-			}
-		});
-	});
-	
-	
-	
-	// 댓글에 대한 추천 버튼
-	var listSize = <%=list.size()%>;
-	
-	for(let i=0; i<listSize; i++) {
-		
-		$('#submitCmBd'+i).click(function() {
-			
-			var formData = $('#rmCm'+i).serialize();
-			
-			$.ajax({
-				type : "GET",
-				url : "/recommendComment",
-				data : formData,
-				success : function(data) {
-					$('#cmRmCount'+i).text(data);
-				}
-			});
-		});
-	}
+   // 게시글에 대한 추천버튼
+   $('#submitRmBd').click(function() {
+   	var formData = $("#rmBd").serialize();
+
+   	console.log(formData);
+
+   	$.ajax({
+   		type : "GET",
+   		url : "/recommendBoard",
+   		data : formData,
+   		success : function(data) {
+   			$('#spanRmBd').text(data);
+   			$('#emptyHeart').attr('class', 'ui heart icon');
+   		}
+   	});
+   });
+   
+   
+   
+   // 댓글에 대한 추천 버튼
+   var listSize = <%=list.size()%>;
+   
+   for(let i=0; i<listSize; i++) {
+
+   	$('#submitCmBd'+i).click(function() {
+
+   		var formData = $('#rmCm'+i).serialize();
+
+   		$.ajax({
+   			type : "GET",
+   			url : "/recommendComment",
+   			data : formData,
+   			success : function(data) {
+   				$('#cmRmCount'+i).text(data);
+   			}
+   		});
+   	});
+   }
 
 </script>
 
