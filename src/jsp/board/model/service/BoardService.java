@@ -357,4 +357,42 @@ public class BoardService {
 		return list;
 	}
 
+	public boolean reViewUpdate(BoardTotalInfoVo btlv) {
+		Connection conn = null;
+		conn = JDBCTemplate.getConnect(conn);
+		boolean totalResult = false;
+		// int sucess = 0;
+		//1. 게시판 등록
+		boolean boardResult = new BoardDao().reViewUpdate(conn,btlv.getBv());
+		//2. 게시판 파일 등록
+		// 필요한 정보 -> 게시판 번호...
+		// 게시판 번호 가져오기
+		//TODO: 야매
+		
+		int bdNo = btlv.getBv().getBdNo();
+		boolean fileResult[] = new boolean[btlv.getList().size()];
+		
+		//3. 게시판에 첨부파일 추가
+		boolean picResultFinal = true;
+		for (int i = 0; i < btlv.getList().size(); i++) {
+			btlv.getList().get(i).setBdFilebdNo(bdNo);
+			fileResult[i] = new BoardDao().fileInsert(conn, btlv.getList().get(i));
+			
+			if(!fileResult[i]) {
+				picResultFinal = false;
+			}
+		}
+		
+		totalResult = boardResult && picResultFinal;
+		//최종결과
+		if(totalResult) {
+			JDBCTemplate.commit(conn);
+		}else {
+			JDBCTemplate.rollBack(conn);
+		}
+		JDBCTemplate.close(conn);
+		
+		return totalResult;
+	}
+
 }

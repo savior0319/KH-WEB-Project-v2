@@ -41,7 +41,7 @@ pageEncoding="UTF-8"%>
 				<div class="ui left aligned basic segment">
 					<label><span class="ui small header">글제목</span></label> 
 					<div class="ui input">
-						<input type="text" size=90 name="bd_Name" maxlength="50" placeholder="제목을 입력하세요" /><br>
+						<input type="text" size=90 name="bd_Name" maxlength="50" placeholder="제목을 입력하세요" required/><br>
 					</div>
 				</div>
 				<br>
