@@ -87,8 +87,6 @@ pageEncoding="UTF-8"%>
 
 		function check() {
 			var text = document.getElementById('text').value;
-			console.log(fileslength);
-			console.log(text);
 			if(text=="" && fileslength==0)
 			{
 				alert("내용을 작성해주세요");
