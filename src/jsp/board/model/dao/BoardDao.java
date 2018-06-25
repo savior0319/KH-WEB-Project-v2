@@ -1053,4 +1053,29 @@ public class BoardDao {
 		}
 		return list;
 	}
+
+	public int recommendConfirm(Connection conn, int bdNo, String rmId) {
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		int result = 0;
+		
+		String query = "SELECT * FROM RECOMMEND_BOARD_TB WHERE BD_NO=? and MB_ID=?";
+		
+		try {
+			pstmt = conn.prepareStatement(query);
+			pstmt.setInt(1, bdNo);
+			pstmt.setString(2, rmId);
+			rset = pstmt.executeQuery();
+			if(rset.next())
+			{
+				result = 1;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			JDBCTemplate.close(rset);
+			JDBCTemplate.close(pstmt);
+		}
+		return result;
+	}
 }
