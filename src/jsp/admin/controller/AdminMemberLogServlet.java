@@ -44,8 +44,10 @@ public class AdminMemberLogServlet extends HttpServlet {
 		
 		//ArrayList<MemberLoginLogVo> list = new AdminService().selectAllMemberLog();
 		LoginLogPageVo llpv =null;
-		if(searchData != null && searchOption != null) {
+		if(searchData != null && searchOption != null &&!searchData.equals("")) {
+			System.out.println(searchData + ":" + searchOption);
 			llpv = new AdminService().selectAllMemberLog(currentPage,searchData,searchOption);
+			
 		}else {
 			llpv = new AdminService().selectAllMemberLog(currentPage);
 		}

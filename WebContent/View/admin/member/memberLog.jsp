@@ -5,8 +5,8 @@ pageEncoding="UTF-8"%>
 <jsp:include page="/View/main/layout/preventurl.jsp"></jsp:include>
 <%
 LoginLogPageVo llpv = (LoginLogPageVo) request.getAttribute("allMemberLog");
-String searchData = request.getParameter("searchData");
-String searchOption = request.getParameter("searchOption");
+	String searchData = request.getParameter("searchData");
+	String searchOption = request.getParameter("searchOption");
 %>
 <!DOCTYPE html>
 <html>
